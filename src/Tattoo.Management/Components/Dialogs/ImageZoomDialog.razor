@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.JSInterop
+@using Radzen
+@using Tattoo.Management.Security
+@inject DialogService DialogService
+@inject IJSRuntime JSRuntime
+
+<NotranslateDirective>
+    <div class="zoom-dialog">
+        <div class="zoom-dialog-content">
+            <button class="close-button pulsate-fwd" @onclick="CloseDialog">✖</button>
+            <img src="@_imagePath" @ref="zoomImage" class="zoom-image" @onwheel="OnZoom" />
+        </div>
+    </div>
+</NotranslateDirective>
+
+
+@code {
+    [Parameter] public string _imagePath { get; set; }
+
+    private ElementReference zoomImage;
+    private double scale = 1;
+
+    private async Task OnZoom(WheelEventArgs e)
+    {
+        const double scaleAmount = 0.1;
+        scale += (e.DeltaY < 0) ? scaleAmount : -scaleAmount;
+        scale = Math.Clamp(scale, 0.5, 3);
+        await JSRuntime.InvokeVoidAsync("zoomImage.setScale", zoomImage, scale);
+    }
+
+    private void CloseDialog()
+    {
+        DialogService.Close(null);
+    }
+}

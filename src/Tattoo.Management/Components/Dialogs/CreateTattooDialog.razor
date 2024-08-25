@@ -1,0 +1,72 @@
+﻿@* @page "/CreateTattooDialog/" *@
+
+@using System.Text.RegularExpressions;
+@using Services
+@using System.Globalization;
+@using System.Text.Json;
+@using System.Linq;
+@using System.Linq.Dynamic.Core;
+@using Microsoft.JSInterop;
+@using Radzen.Blazor
+@using Radzen;
+@using Tattoo.Management.Security
+@inject HttpClient _http;
+@inject NotificationService _notificationService;
+@inject DialogService _dialogService;
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration;
+
+<NotranslateDirective>
+    @if (_isLoading)
+    {
+        <div class="loader-wrapper" style="position: absolute;z-index: 2;margin-left: 12rem;">
+            <RadzenStack AlignItems="AlignItems.Center" Class="rz-m-12" Gap="2rem">
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap">
+                    <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Light" Value="100" ShowValue="false"
+                                               Mode="ProgressBarMode.Indeterminate" />
+                </RadzenStack>
+            </RadzenStack>
+        </div>
+    }
+
+    <div class="justify-content-center">
+        <RadzenRow>
+            <RadzenColumn>
+                <RadzenFormField Text="Tattoo Name" Style="width: 100%;">
+                    <RadzenTextBox Name="c" @bind-Value="_creationForm.TattooName" class="" Placeholder="Type a name for the tattoo" />
+                    <RadzenRequiredValidator Text="Name is required" Component="Name" Popup="true" />
+                </RadzenFormField>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenColumn class="text-start desktop-only">
+                <RadzenStack Style="width:10rem;float:inline-start;">
+                    <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen desktop-only">
+                        <ChildContent>
+                            <RadzenDropDown @bind-Value="_creationForm.TattooStyleId" class="dropdown-layout desktop-only" AllowClear=true Data="@_tattooStyles" TextProperty="Value" ValueProperty="Id" TValue=long? />
+                        </ChildContent>
+                    </RadzenFormField>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenColumn>
+                <RadzenCard>
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your tattoo image</RadzenText>
+                    <RadzenUpload @ref="upload" Complete=@OnComplete Auto="false" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/uploadSingle")" Change="OnChange" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
+                                  Progress="OnProgress" class="w-100 upload-custom" />
+                </RadzenCard>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow>
+            <RadzenColumn class="text-end p-3">
+                <div class="button-container">
+                    <RadzenButton Text="Upload" Icon="report" class="btn-delete" ButtonStyle="ButtonStyle.Primary" Click="OnSubmit" Disabled="!ValidateGlobalFields()"
+                                  ButtonType="ButtonType.Submit" Style="" />
+                    <RadzenButton Click="OnCancelClick" Text="Cancel" Style=""
+                                  ButtonStyle="ButtonStyle.Secondary" />
+                </div>
+            </RadzenColumn>
+        </RadzenRow>
+    </div>
+</NotranslateDirective>

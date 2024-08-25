@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Tattoo.Management.Helpers
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+@inject LazyAssemblyLoader loader
+@inject NavigationManager NavigationManager
+@inject GlobalState stateService
+
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+
+<NotranslateDirective>
+    <RadzenLayout>
+        <RadzenHeader Class="header-background">
+            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                <RadzenLabel Text="ADRIAN-TATTOO" /><p>Management</p>
+            </RadzenStack>
+        </RadzenHeader>
+        <RadzenSidebar Responsive="false" class=@(!sidebarExpanded ? "sidebarHided" : "") Style="width: max-content">
+            <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
+                <RadzenBadge Style="position: absolute;margin-left: 30px !important;background-color:#4dabf5;margin-top: 4px;" BadgeStyle="BadgeStyle.Secondary" IsPill="@true" Text=@(stateService.GlobalCountSolicited.ToString()) class="rz-ml-2" />
+                <RadzenPanelMenuItem title="Appoitment" Text="Appoitment" Path="" Icon="free_cancellation" Match="NavLinkMatch.All" />
+                <RadzenPanelMenuItem title="Galery" Text="Galery" Path="/GaleryTattoo" Icon="collections" />
+                <RadzenPanelMenuItem title="Location" Text="Location" Icon="dashboard" Path="/leafletmap" />
+                <RadzenPanelMenuItem title="Tattoo Style" Text="Style" Path="/TattooStyle" Icon="palette" />
+                <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattoo" Icon="question_answer" />
+                <RadzenPanelMenuItem title="FAQ ES" Text="FAQ ES" Path="/FAQTattooSpanish" Icon="question_answer" />
+            </RadzenPanelMenu>
+        </RadzenSidebar>
+        <RadzenBody class="w-100">
+            <div class="rz-p-4">
+                @if (stateService.IsAuthenticated)
+                {
+                    @Body
+                }
+                else
+                {
+                    <Tattoo.Management.Components.Dialogs.LoginAuth/>
+                }
+            </div>
+        </RadzenBody>
+    </RadzenLayout>
+</NotranslateDirective>
+
+@code {
+    bool sidebarExpanded = false;
+    [Inject] private IReservationService _reservationService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (await AvailableDateLogin())
+        {
+            stateService.IsAuthenticated = true;
+
+        }
+        await base.OnInitializedAsync();
+        
+
+        stateService.OnGlobalCountSolicitedChanged += StateHasChanged;
+        int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
+        stateService.SetGlobalCountSolicited(countSolicitedAppointment);
+
+    }
+
+    private async Task<bool> AvailableDateLogin()
+    {
+        // Recupera la fecha almacenada en localStorage
+        var authDateString = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "auth_date") ?? "";
+
+        // Verifica si authDateString no es nulo o vacío
+        if (!string.IsNullOrEmpty(authDateString))
+        {
+            // Parsea la fecha almacenada
+            if (DateTime.TryParse(authDateString, out var authDate))
+            {
+                // Obtiene la fecha actual
+                var currentDate = DateTime.Now.Date; // Obtiene solo la parte de la fecha
+
+                // Compara las fechas
+                return (authDate.Date == currentDate);
+            }
+        }
+        return false;
+    }
+
+    public void Dispose()
+    {
+        stateService.OnGlobalCountSolicitedChanged -= StateHasChanged;
+    }
+}

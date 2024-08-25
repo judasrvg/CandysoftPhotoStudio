@@ -1,0 +1,38 @@
+﻿@* @page "/faqtattoo" *@
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.StudioUI.Models.Forms
+@using Tattoo.StudioUI.Models.Forms.Enum
+@using Tattoo.StudioUI.Models.Requests
+@using Tattoo.StudioUI.Security
+@inherits LayoutComponentBase
+@* @inject TooltipService tooltipService; *@
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject NavigationManager NavigationManager;
+
+@page "/faq"
+@using Radzen
+
+<NotranslateDirective>
+
+    <h3>Frequently Asked Questions</h3>
+
+    <div class="faq-container">
+        <RadzenAccordion>
+            <Items>
+                @foreach (var faq in _ConfigValuesData)
+                {
+                    <RadzenAccordionItem Text="@faq.Value">
+                        <p>@($"-{faq.ValueDescription}")</p>
+                    </RadzenAccordionItem>
+                }
+            </Items>
+            
+        </RadzenAccordion>
+    </div>
+</NotranslateDirective>
+
+

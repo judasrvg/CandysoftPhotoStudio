@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Bienvenido a InkVibes Tattoo Studio</value>
+  </data>
+  <data name="WelcomeSubtitle" xml:space="preserve">
+    <value>Tatua tu historia, posee tu arte</value>
+  </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+    <value>Bienvenido, el destino principal para tatuajes de alta calidad. Nuestro equipo de artistas expertos se dedica a convertir tu visión en realidad con una artesanía inigualable. Estamos comprometidos con la excelencia en cada pieza, asegurando una experiencia única y personalizada. Descubre la diferencia en InkVibes Tattoo, donde el arte se encuentra con la precisión en un entorno de primera clase.</value>
+  </data>
+  <data name="FindUsButton" xml:space="preserve">
+    <value>Encuéntranos</value>
+  </data>
+  <data name="TheArtistTitle" xml:space="preserve">
+    <value>El Artista</value>
+  </data>
+  <data name="AdrianName" xml:space="preserve">
+    <value>Adrián</value>
+  </data>
+  <data name="DiverseStyles" xml:space="preserve">
+    <value>Estilos Diversos</value>
+  </data>
+  <data name="AdrianBio" xml:space="preserve">
+    <value>Procedente de La Habana, Cuba, Adrián comenzó a tatuar a los 16 años. A pesar de que obtener suministros siempre fue un desafío, y que los materiales básicos de tatuaje tardaban meses en llegar, nunca dejó que eso le impidiera perseguir sus sueños. Después de tatuar en Cuba durante más de 7 años, a finales del '22, Adrián se mudó a Florida. Tras conocer a los propietarios de Emphasis, demostró rápidamente que pertenecía al talentoso equipo de artistas del estudio. Adrián tiene una habilidad diversa y ningún proyecto es demasiado grande o pequeño para nuestra nueva adición al equipo.</value>
+  </data>
+  <data name="MyWorkTitle" xml:space="preserve">
+    <value>Mi Trabajo</value>
+  </data>
+  <data name="BookNowButton" xml:space="preserve">
+    <value>RESERVA YA!</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>RESERVA YA!</value>
+  </data>
+  <data name="ContactUsTitle" xml:space="preserve">
+    <value>Contáctenos</value>
+  </data>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>EMAIL</value>
+  </data>
+  <data name="AddressLabel" xml:space="preserve">
+    <value>DIRECCIÓN</value>
+  </data>
+  <data name="OpeningHoursLabel" xml:space="preserve">
+    <value>HORARIO DE APERTURA</value>
+  </data>
+  <data name="OpeningHours" xml:space="preserve">
+    <value>Lunes - Domingo: 10am - 7pm</value>
+  </data>
+  <data name="FAQTitle" xml:space="preserve">
+    <value>Preguntas Frecuentes</value>
+  </data>
+  <data name="CommitmentTitle" xml:space="preserve">
+    <value>Nuestro Compromiso con la Calidad</value>
+  </data>
+  <data name="CommitmentDescription" xml:space="preserve">
+    <value>En nuestro estudio de tatuajes, la limpieza es nuestra principal prioridad. Nos ocupamos meticulosamente de garantizar un entorno prístino e higiénico para nuestros clientes. Tu seguridad y satisfacción son primordiales para nosotros, y nuestro compromiso con la sanidad refleja nuestra dedicación a brindar la mejor experiencia de tatuaje posible.</value>
+  </data>
+  <data name="OurNeedlesTitle" xml:space="preserve">
+    <value>Nuestras Agujas</value>
+  </data>
+  <data name="OurNeedlesDescription" xml:space="preserve">
+    <value>Todas las agujas de tatuaje utilizadas en InkVibes Tattoo cumplen con los más altos estándares de la industria, son preesterilizadas y de un solo uso.</value>
+  </data>
+  <data name="OurInkTitle" xml:space="preserve">
+    <value>Nuestra Tinta</value>
+  </data>
+  <data name="OurInkDescription" xml:space="preserve">
+    <value>Toda la tinta utilizada en InkVibes Tattoo cumple con los más altos estándares de la industria, es 100% vegana y no tóxica.</value>
+  </data>
+  <data name="OurProcessTitle" xml:space="preserve">
+    <value>Nuestro Proceso</value>
+  </data>
+  <data name="OurProcessDescription" xml:space="preserve">
+    <value>Adherimos a los más altos estándares de salud e higiene, asegurando tu seguridad y la nuestra. Todos los procedimientos se realizan con equipos de un solo uso.</value>
+  </data>
+  <data name="OurSafetyTitle" xml:space="preserve">
+    <value>Nuestra Seguridad</value>
+  </data>
+  <data name="OurSafetyDescription" xml:space="preserve">
+    <value>Todo el equipo y las áreas de trabajo utilizadas para realizar procedimientos en InkVibes Tattoo se esterilizan y limpian a fondo entre clientes, asegurándote tranquilidad.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="Artist" xml:space="preserve">
+    <value>El Artista</value>
+  </data>
+  <data name="Gallery" xml:space="preserve">
+    <value>Mi Trabajo</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contacto</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>Preguntas Frecuentes</value>
+  </data>
+  <data name="InitViewTitle" xml:space="preserve">
+    <value>TATUA TU HISTORIA, POSEE TU ARTE</value>
+  </data>
+  <data name="InitViewButton" xml:space="preserve">
+    <value>¡Vamos a EMPEZAR!</value>
+  </data>
+  <data name="HeaderFAQ" xml:space="preserve">
+    <value>Preguntas Frecuentes</value>
+  </data>
+  <data name="RightReserved" xml:space="preserve">
+    <value>Todos los derechos reservados</value>
+  </data>
+  <data name="ViewMoreButton" xml:space="preserve">
+    <value>VER MAS</value>
+  </data>
+  <data name="UploadDesign" xml:space="preserve">
+    <value>Comparte con nosotros tu diseño preferido</value>
+  </data>
+  <data name="YourName" xml:space="preserve">
+    <value>Tu Nombre</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Requerido</value>
+  </data>
+  <data name="YourEmail" xml:space="preserve">
+    <value>Tu Correo Electrónico</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Inválido</value>
+  </data>
+  <data name="YourPhone" xml:space="preserve">
+    <value>Tu Teléfono</value>
+  </data>
+  <data name="PreferredDate" xml:space="preserve">
+    <value>Fecha Preferida</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detalles</value>
+  </data>
+  <data name="IsCoverUp" xml:space="preserve">
+    <value>¿Es una cobertura?</value>
+  </data>
+  <data name="WithColor" xml:space="preserve">
+    <value>Con Color</value>
+  </data>
+  <data name="BlackAndWhite" xml:space="preserve">
+    <value>Blanco y Negro</value>
+  </data>
+  <data name="OverAge" xml:space="preserve">
+    <value>Tengo más de 18 años</value>
+  </data>
+  <data name="AcceptConditions" xml:space="preserve">
+    <value>Acepto recibir mensajes promocionales enviados a través de un marcador automático</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>ENVIAR</value>
+  </data>
+  <data name="GetDirections" xml:space="preserve">
+    <value>Ruta</value>
+  </data>
+  <data name="UploadChoose" xml:space="preserve">
+    <value>Selecciona</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completado</value>
+  </data>
+  <data name="EndDateInvalid" xml:space="preserve">
+    <value>Fecha final debe ser mayor que la inicial</value>
+  </data>
+  <data name="InvalidDates" xml:space="preserve">
+    <value>Fecha no válida</value>
+  </data>
+  <data name="MaximunFiles" xml:space="preserve">
+    <value>Puede subir un máximo de </value>
+  </data>
+  <data name="OnLimit" xml:space="preserve">
+    <value>Límite</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>Operación satisfactoria</value>
+  </data>
+  <data name="TellUsLes" xml:space="preserve">
+    <value>Cuéntanos menos</value>
+  </data>
+  <data name="TellUsMore" xml:space="preserve">
+    <value>Cuéntanos más</value>
+  </data>
+</root>

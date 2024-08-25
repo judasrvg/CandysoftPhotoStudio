@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34714.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.API", "src\App.API\App.API.csproj", "{5AAEFFFB-950D-4AB6-9083-B2660F3F0CA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Domain", "src\App.Domain\App.Domain.csproj", "{09640935-B2D2-4B69-9AE8-D6254488AAEA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infrastructure", "src\App.Infrastructure\App.Infrastructure.csproj", "{2BC006BC-3E8C-4CA6-A7E5-489A0A78A95C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Application", "src\App.Application\App.Application.csproj", "{9E813A4D-9785-4C82-9298-ED5F31332F61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tattoo.Management", "src\Tattoo.Management\Tattoo.Management.csproj", "{BA8E65C6-B98D-4882-A480-6296486BAABB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tattoo.StudioUI", "src\Tattoo.StudioUI\Tattoo.StudioUI.csproj", "{76ADAFC8-6F65-434A-B755-E88C57221740}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tattoo.InkVibesTattoo", "src\Tattoo.InkVibesTattoo\Tattoo.InkVibesTattoo.csproj", "{9ACE2ADD-B6DA-4225-9DA2-D01C12DC7430}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.ImagesAPI", "src\App.ImagesAPI\App.ImagesAPI.csproj", "{A632C024-85A6-4E9E-A867-8E54CE4C6B7D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5AAEFFFB-950D-4AB6-9083-B2660F3F0CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AAEFFFB-950D-4AB6-9083-B2660F3F0CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AAEFFFB-950D-4AB6-9083-B2660F3F0CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AAEFFFB-950D-4AB6-9083-B2660F3F0CA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09640935-B2D2-4B69-9AE8-D6254488AAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09640935-B2D2-4B69-9AE8-D6254488AAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09640935-B2D2-4B69-9AE8-D6254488AAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09640935-B2D2-4B69-9AE8-D6254488AAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BC006BC-3E8C-4CA6-A7E5-489A0A78A95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BC006BC-3E8C-4CA6-A7E5-489A0A78A95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BC006BC-3E8C-4CA6-A7E5-489A0A78A95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BC006BC-3E8C-4CA6-A7E5-489A0A78A95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E813A4D-9785-4C82-9298-ED5F31332F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E813A4D-9785-4C82-9298-ED5F31332F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E813A4D-9785-4C82-9298-ED5F31332F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E813A4D-9785-4C82-9298-ED5F31332F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA8E65C6-B98D-4882-A480-6296486BAABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA8E65C6-B98D-4882-A480-6296486BAABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA8E65C6-B98D-4882-A480-6296486BAABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA8E65C6-B98D-4882-A480-6296486BAABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76ADAFC8-6F65-434A-B755-E88C57221740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76ADAFC8-6F65-434A-B755-E88C57221740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76ADAFC8-6F65-434A-B755-E88C57221740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76ADAFC8-6F65-434A-B755-E88C57221740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ACE2ADD-B6DA-4225-9DA2-D01C12DC7430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ACE2ADD-B6DA-4225-9DA2-D01C12DC7430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ACE2ADD-B6DA-4225-9DA2-D01C12DC7430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ACE2ADD-B6DA-4225-9DA2-D01C12DC7430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A632C024-85A6-4E9E-A867-8E54CE4C6B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A632C024-85A6-4E9E-A867-8E54CE4C6B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A632C024-85A6-4E9E-A867-8E54CE4C6B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A632C024-85A6-4E9E-A867-8E54CE4C6B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {97451F10-1B96-4FFD-BC19-3844F4FF9BE8}
+	EndGlobalSection
+EndGlobal

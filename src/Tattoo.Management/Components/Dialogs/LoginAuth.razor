@@ -1,0 +1,56 @@
+﻿@page "/login"
+@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components
+@using Tattoo.Management.Helpers
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Security
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject NavigationManager NavigationManager;
+@inject GlobalState stateService;
+@inject NotificationService _notificationService;
+
+<NotranslateDirective>
+    <RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;background-color:transparent;">
+        <RadzenTemplateForm Data=@("LoginWithDefaultValues") class="text-center">
+            <RadzenPassword Placeholder="Enter your password" @bind-Value="password" Style="width:100%;" Change="OnLogin" />
+            <RadzenButton Text="Login" class="m-2" Click="@OnLogin" Style="width:50%;" />
+        </RadzenTemplateForm>
+    </RadzenCard>
+</NotranslateDirective>
+
+@code {
+    private string password;
+
+    private async Task OnLogin()
+    {
+        const string correctPasswordHash = "6c557dae12444fa4c6c178d6fa8313d3272aaf0627f26adaaa5c05d2c9593065"; // Hash de "tattoo99"
+
+        string enteredPasswordHash = PasswordHasher.HashPassword(password);
+
+        if (enteredPasswordHash == correctPasswordHash)
+        {
+            stateService.IsAuthenticated = true;
+            _notificationService.Notify(NotificationSeverity.Success, "Authorized", "WELCOME!", 4000);
+            
+            await SetAuthDateInLocalStorage();
+            NavigationManager.NavigateTo("/"); // Redirigir a la página principal
+        }
+        else
+        {
+            _notificationService.Notify(NotificationSeverity.Error, "Unauthorized", "Invalid Password", 4000);
+        }
+    }
+
+
+    private async Task SetAuthDateInLocalStorage()
+    {
+        var today = DateTime.Now.Date;
+        var authDate = today.ToString("yyyy-MM-dd"); // Formatea la fecha solo con año, mes y día
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "auth_date", authDate);
+    }
+}

@@ -1,0 +1,72 @@
+﻿@page "/language-selector"
+@using Microsoft.JSInterop
+@using Radzen
+@using Tattoo.InkVibesTattoo.Helpers
+@inject IJSRuntime JSRuntime
+@inject LocalizationService LocalizationService
+@inject GlobalState stateService
+
+<RadzenDropDown @bind-Value="selectedLanguage" Data="@languageOptions" TextProperty="Value" ValueProperty="Key"
+                Style="
+        position: absolute;
+        top: 0.5rem;
+        border-radius: 0;
+        width: 7rem;
+        right: 0;
+        background-color: rgb(38 38 38 / 0%);
+        z-index:1000;
+        color: floralwhite;
+        border: none;
+        position:fixed;"
+                Change="@(args => ChangeLanguage((string)args))" />
+
+@code {
+    private string selectedLanguage = "en";
+    private readonly List<LanguageOption> languageOptions = new List<LanguageOption>
+    {
+        new LanguageOption { Key = "en", Value = "<span class='fi fi-us'></span> English" },
+        new LanguageOption { Key = "es", Value = "<span class='fi fi-es'></span> Español" }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        stateService.OnGlobalLanguageChanged += StateHasChanged;
+
+        var savedLanguage = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "selectedLanguage");
+        if (string.IsNullOrEmpty(savedLanguage))
+        {
+            savedLanguage = "en";
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", savedLanguage);
+        }
+
+        selectedLanguage = NormalizeLanguage(savedLanguage);
+        await LocalizationService.SetCultureAsync(selectedLanguage);
+        stateService.SetGlobalLanguage(selectedLanguage);
+    }
+
+    private async void ChangeLanguage(string culture)
+    {
+        selectedLanguage = NormalizeLanguage(culture);
+        await LocalizationService.SetCultureAsync(selectedLanguage);
+        stateService.SetGlobalLanguage(selectedLanguage);
+
+        // Recargar el estado del componente para reflejar el cambio de idioma
+        StateHasChanged();
+    }
+
+    private string NormalizeLanguage(string culture)
+    {
+        return culture.StartsWith("es") ? "es" : "en";
+    }
+
+    public void Dispose()
+    {
+        stateService.OnGlobalLanguageChanged -= StateHasChanged;
+    }
+
+    public class LanguageOption
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
+}

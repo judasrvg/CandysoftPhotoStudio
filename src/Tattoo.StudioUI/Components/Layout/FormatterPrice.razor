@@ -1,0 +1,16 @@
+﻿@using Tattoo.StudioUI.Security
+
+@code {
+    [Parameter]
+    public decimal Price { get; set; }
+
+    private string MainPricePart => Price.ToString("C", new System.Globalization.CultureInfo("en-US")).Split('.')[0];
+
+    private string CentsPart => Price.ToString("C", new System.Globalization.CultureInfo("en-US")).Split('.')[1];
+}
+
+<NotranslateDirective>
+ 
+<span class="main-price">@MainPricePart.</span><span class="cents">@CentsPart</span>
+</NotranslateDirective>
+ 

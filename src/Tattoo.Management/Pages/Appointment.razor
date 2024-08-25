@@ -1,0 +1,421 @@
+﻿@page "/"
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.Management.Components.Dialogs
+@using Tattoo.Management.Components.Layout
+@using Tattoo.Management.Helpers
+@using Tattoo.Management.Models.Dialogs
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject TooltipService TooltipService
+<NotranslateDirective>
+    <RadzenRow>
+        <RadzenColumn Size="8">
+            <RadzenText class="main-header-layout pb-3">
+                <h3>
+                    Appointment
+                </h3>
+            </RadzenText>
+        </RadzenColumn>
+        <RadzenColumn Size="4" class="text-end">
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenBadge Shade="Shade.Light" BadgeStyle="BadgeStyle.Danger" Text="Canceled"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenBadge Shade="Shade.Light" BadgeStyle="BadgeStyle.Info" Text="Solicited"/>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenBadge Shade="Shade.Light" BadgeStyle="BadgeStyle.Success" Text="Confirmed"/>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+    
+    <RadzenScheduler @ref="@scheduler" style="height: 768px;" TItem="ReservationDto" Data="@appointments" 
+                     StartProperty="ReservationDateStart" EndProperty="ReservationDateEnd" TextProperty="ClientName"
+                     SelectedIndex="2" SlotSelect="@OnSlotSelect" AppointmentSelect="@OnAppointmentSelect"
+                     SlotRender="@OnSlotRender" AppointmentRender="@OnAppointmentRender" AppointmentMove="@OnAppointmentMove">
+        <RadzenDayView />
+        <RadzenWeekView />
+        <RadzenMonthView />
+        <RadzenYearView />
+    </RadzenScheduler>
+
+</NotranslateDirective>
+  
+
+@code {
+    [Inject] private IReservationService _reservationService { get; set; }
+    [Inject] private NotificationService _notificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
+    [Inject] private TooltipService _tooltipService { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
+    [Inject] private GlobalState stateService { get; set; }
+    [Inject] private DialogHelper DialogHelper { get; set; }
+    private bool _dialogOpen = false;
+    private bool _activeRequest = false;
+    RadzenScheduler<ReservationDto> scheduler;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LoadReservations();
+        ///TODO:Load Reservation list to
+    }
+
+    IList<ReservationDto> appointments = [];
+
+    void OnSlotRender(SchedulerSlotRenderEventArgs args)
+    {
+        // Highlight today in month view
+        if (args.View.Text == "Month" && args.Start.Date == DateTime.Today)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+
+        // Highlight working hours (9-18)
+        if ((args.View.Text == "Week" || args.View.Text == "Day") && args.Start.Hour > 8 && args.Start.Hour < 19)
+        {
+            args.Attributes["style"] = "background: rgba(255,220,40,.2);";
+        }
+    }
+
+    async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+    {
+
+        if (args.View.Text != "Year")
+        {
+            ReservationDto data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
+                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+
+            if (data != null)
+            {
+                appointments.Add(data);
+                // Either call the Reload method or reassign the Data property of the Scheduler
+                await scheduler.Reload();
+            }
+        }
+    }
+
+
+    async void OnAppointmentMouseEnter(SchedulerAppointmentMouseEventArgs<ReservationDto> args)
+    {
+        var data = await DialogService.OpenAsync<AppointmentDetails>("Appointment Details", new Dictionary<string, object> { { "Appointment", args.Data } });
+
+        if (data != null)
+        {
+            // Update the appointment
+            var appointment = appointments.FirstOrDefault(a => a.Id == data.Id);
+            if (appointment != null)
+            {
+                appointment.ReservationDateStart = data.ReservationDateStart;
+                appointment.ReservationDateEnd = data.ReservationDateEnd;
+                appointment.IsCoverUp = data.IsCoverUp;
+                appointment.IsWithColor = data.IsWithColor;
+                await scheduler.Reload();
+            }
+        }
+    }
+
+
+    void OnAppointmentMouseLeave(SchedulerAppointmentMouseEventArgs<ReservationDto> args)
+    {
+        // TooltipService.Close();
+    }
+
+    private async Task BusyDialog()
+    {
+        await DialogService.OpenAsync<BusyLoading>(
+            "",
+            null,
+            new DialogOptions()
+                {
+                    ShowTitle = false,
+                    Style = "display: contents;background-color: #ff000000 !important;border-radius: 50px 50px 50px 50px!important;min-height:auto;min-width:auto;width:auto",
+                    CloseDialogOnEsc = false
+                }
+        );
+    }
+
+    private async Task LoadReservations()
+    {
+        InvokeAsync(async () =>
+        {
+            var response = await _reservationService.GetAllReservationsAsync();
+            if (response.IsSuccess)
+            {
+                var parsedResponse = response?.Data as IEnumerable<ReservationDto>;
+                appointments = parsedResponse?.ToList() ?? new();
+            }
+            else
+            {
+                _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+            }
+
+            // Close the dialog
+            DialogService.Close();
+            StateHasChanged();
+        });
+
+        await BusyDialog();
+        StateHasChanged();
+
+    }
+
+    void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReservationDto> args)
+    {
+        // Nunca llames a StateHasChanged en AppointmentRender - esto llevaría a un bucle infinito
+
+        string backgroundColor = args.Data.CurrentStateType switch
+        {
+            Models.Forms.Enum.AppoitmentStateType.Solicited => "#4dabf5",
+            Models.Forms.Enum.AppoitmentStateType.Confirmed => "#70bf73",
+            // Models.Forms.Enum.AppoitmentStateType.Executed => "#1666a5",
+            Models.Forms.Enum.AppoitmentStateType.Canceled => "#f6695e",
+            _ => "white"
+        };
+
+        args.Attributes["style"] = $"background-color: {backgroundColor}; color: floralwhite;";
+    }
+
+    async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReservationDto> args)
+    {
+
+        var copy = new ReservationDto
+            {
+                Id= args.Data.Id,
+                ReservationDateStart = args.Data.ReservationDateStart,
+                ReservationDateEnd = args.Data.ReservationDateEnd,
+                ClientName = args.Data.ClientName,
+                ClientEmail = args.Data.ClientEmail,
+                ClientPhone = args.Data.ClientPhone,
+                BudgetAmount = args.Data.BudgetAmount,
+                CurrentStateType = args.Data.CurrentStateType,
+                Details = args.Data.Details,
+                Lang = args.Data.Lang,
+                ImagePaths = args.Data.ImagePaths,
+                IsCoverUp = args.Data.IsCoverUp,
+                IsWithColor = args.Data.IsWithColor
+            };
+
+        var data = await DialogService.OpenAsync<EditAppointmentPage>("Edit", new Dictionary<string, object> { { "Appointment", copy } });
+
+        if (data != null)
+        {
+            // Update the appointment
+            args.Data.ReservationDateStart=data.ReservationDateStart ;
+            args.Data.ReservationDateEnd=data.ReservationDateEnd ;
+            args.Data.ClientName=data.ClientName ;
+            args.Data.ClientEmail=data.ClientEmail ;
+            args.Data.ClientPhone=data.ClientPhone ;
+            args.Data.BudgetAmount=data.BudgetAmount ;
+            args.Data.CurrentStateType=data.CurrentStateType ;
+            args.Data.Details=data.Details ;
+            args.Data.ImagePaths = data.ImagePaths;
+            args.Data.Lang = data.Lang;
+            args.Data.IsCoverUp=data.IsCoverUp ;
+            args.Data.IsWithColor =data.IsWithColor ;        }
+
+        await scheduler.Reload();
+    }
+
+    async Task OnAppointmentMove(SchedulerAppointmentMoveEventArgs args)
+    {
+        if (!_activeRequest)
+        {
+            _activeRequest = true;
+            bool hasSucess = false;
+            InvokeAsync(async () =>
+           {
+               var draggedAppointment = appointments.FirstOrDefault(x => x == args.Appointment.Data);
+
+               if (draggedAppointment != null)
+               {
+                   draggedAppointment.ReservationDateStart = draggedAppointment.ReservationDateStart + args.TimeSpan;
+                   draggedAppointment.ReservationDateEnd = draggedAppointment.ReservationDateEnd + args.TimeSpan;
+                   hasSucess = await UpdateAppointmentValue(draggedAppointment);
+
+               }
+               if (!hasSucess)
+               {
+                   DialogService.Close();
+                   StateHasChanged();
+
+                   return;
+               }
+               await scheduler.Reload();
+               _notificationService.Notify(NotificationSeverity.Success, "Moved", "Success Operation", 4000);
+
+               // Close the dialog
+               DialogService.Close();
+               StateHasChanged();
+           });
+
+            await BusyDialog();
+            StateHasChanged();
+
+        }
+        
+
+
+    }
+
+    protected async Task<bool> UpdateAppointmentValue(ReservationDto appointment)
+    {
+        
+
+            var response = await _reservationService.UpdateReservationAsync(appointment);
+            var InsertedConfigValue = response.Data as ConfigValueDto;
+            _activeRequest = false;
+
+            if (response.IsSuccess && (InsertedConfigValue != null))
+            {
+                //_ConfigValuesData.Remove(ConfigValue);
+            }
+
+            return HasSuccessResponse(response);
+
+    }
+
+    private bool HasSuccessResponse(ResponseAdapterDto response)
+    {
+        if (!response.IsSuccess)
+        {
+            _notificationService.Notify(NotificationSeverity.Error, "Error: ", response.ErrorMessage, 4000);
+            return false;
+        }
+        return true;
+    }
+
+    async Task CompleteEvent( ReservationDto appointment)
+    {
+        if (!_activeRequest)
+        {
+            _activeRequest = true;
+
+            InvokeAsync(async () =>
+            {
+                appointment.CurrentStateType = Models.Forms.Enum.AppoitmentStateType.Confirmed;
+                bool hasSucess = await UpdateAppointmentValue(appointment);
+                _activeRequest = false;
+
+                if (!hasSucess)
+                {
+                    return;
+                }
+                _notificationService.Notify(NotificationSeverity.Success, "Completed", "Success Operation", 4000);
+
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+            await BusyDialog();
+            StateHasChanged();
+
+        }
+        
+    }
+
+    async Task CancelEvent( ReservationDto appointment)
+    {
+
+        if (!_activeRequest)
+        {
+            _activeRequest = true;
+
+            InvokeAsync(async () =>
+            {
+                appointment.CurrentStateType = Models.Forms.Enum.AppoitmentStateType.Canceled;
+
+                bool hasSucess = await UpdateAppointmentValue(appointment);
+                if (!hasSucess)
+                {
+                    return;
+                }
+                _notificationService.Notify(NotificationSeverity.Success, "Canceled", "Success Operation", 4000);
+
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+            await BusyDialog();
+            StateHasChanged();
+
+        }
+        
+    }
+
+    private async Task ShowDialogZoomImage(object args, string imagePath)
+    {
+        if (_dialogOpen)
+        {
+            return;
+        }
+
+        _dialogOpen = true;
+
+        try
+        {
+            await ShowNewDialog<ImageZoomDialog>(args, new DialogHeaders()
+                {
+                    dialogParams = new Dictionary<string, object>() {
+                {"_imagePath",  imagePath}
+            }
+                });
+        }
+        finally
+        {
+            _dialogOpen = false;
+        }
+    }
+
+    //**********************Dialog Generic***************
+
+    private async Task ShowNewDialog<T>(object arg, DialogHeaders dialogHeaders, string width = "780px") where T : ComponentBase
+    {
+        using (var dialogBuilder = DialogHelper.CreateDialog<T>(DialogService))
+        {
+            await dialogBuilder
+                .WithOptions(new DialogOptions() { CloseDialogOnOverlayClick = false, Width = width })
+                .WithHeaderParams(dialogHeaders)
+                .OnClose(async (args) =>
+                {
+                    if (stateService.GlobalIsSuccessDialogRequest || stateService.GlobalIsPartialSuccessDialogRequest)
+                    {
+                        await InvokeAsync(async () =>
+                        {
+                            _notificationService.Notify(new NotificationMessage
+                                {
+                                    Severity = stateService.GlobalIsPartialSuccessDialogRequest ? NotificationSeverity.Error : NotificationSeverity.Success,
+                                    Detail = stateService.GlobalDialogRequestMessage,
+                                    Duration = 4000
+                                });
+                            stateService.GlobalIsSuccessDialogRequest = false;
+                            stateService.GlobalIsPartialSuccessDialogRequest = false;
+                            StateHasChanged();
+                        });
+                    }
+                })
+                .ShowAsync();
+        }
+    }
+}
+
+
+
+
+
+

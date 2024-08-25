@@ -1,0 +1,89 @@
+﻿@using System.Globalization
+@using Tattoo.InkVibesTattoo.Helpers
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Security
+@inject LocalizationService LocalizationService
+@inject IJSRuntime JSRuntime
+
+
+<Router AppAssembly="@typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="typeof(MainLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+<NotranslateDirective>
+<RadzenDropDownDataGrid AllowSorting=false AllowFilteringByWord=false AllowColumnResize=false ShowSearch=false Data="@languageOptions" @bind-Value="selectedLanguage" TextProperty="Name" ValueProperty="Code" class="lang-layout" Change="@(args => ChangeLanguage((string)args))">
+    <Columns>
+        <RadzenDropDownDataGridColumn Property="Name" Title="">
+            <Template Context="data">
+                <NotranslateDirective>
+                
+                                    <span class="@(data.Code == "en" ? "fi fi-us" : "fi fi-es")"></span> @data.Name
+                </NotranslateDirective>
+
+            </Template>
+        </RadzenDropDownDataGridColumn>
+    </Columns>
+    <ValueTemplate>
+        @{
+            var selected = languageOptions.FirstOrDefault(l => l.Code == selectedLanguage);
+            if (selected != null)
+            {
+                <span class="@(selected.Code == "en" ? "fi fi-us" : "fi fi-es")"></span> @selected.Name
+            }
+        }
+    </ValueTemplate>
+</RadzenDropDownDataGrid>
+</NotranslateDirective>
+@code {
+    private string selectedLanguage = "en";
+    private List<LanguageOption> languageOptions = new List<LanguageOption>
+    {
+        new LanguageOption { Code = "en", Name = "EN" },
+        new LanguageOption { Code = "es", Name = "ES" }
+    };
+
+    [Inject] private GlobalState stateService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        stateService.OnGlobalLanguageChanged += StateHasChanged;
+
+        var savedLanguage = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "selectedLanguage");
+        if (string.IsNullOrEmpty(savedLanguage))
+        {
+            savedLanguage = "en";
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", savedLanguage);
+        }
+
+        selectedLanguage = NormalizeLanguage(savedLanguage);
+        await LocalizationService.SetCultureAsync(selectedLanguage);
+        stateService.SetGlobalLanguage(selectedLanguage);
+    }
+
+    private async void ChangeLanguage(string culture)
+    {
+        selectedLanguage = NormalizeLanguage(culture);
+        await LocalizationService.SetCultureAsync(selectedLanguage);
+        stateService.SetGlobalLanguage(selectedLanguage);
+
+        // Recargar el estado del componente para reflejar el cambio de idioma
+        StateHasChanged();
+    }
+
+    private string NormalizeLanguage(string culture)
+    {
+        return culture.StartsWith("es") ? "es" : culture;
+    }
+
+    public void Dispose()
+    {
+        stateService.OnGlobalLanguageChanged -= StateHasChanged;
+    }
+}

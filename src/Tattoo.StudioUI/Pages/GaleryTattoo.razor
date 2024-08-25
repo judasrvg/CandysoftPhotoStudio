@@ -1,0 +1,37 @@
+﻿@* @page "/galerytattoo" *@
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.StudioUI.Models.Forms
+@using Tattoo.StudioUI.Security
+@inherits LayoutComponentBase
+@* @inject TooltipService tooltipService; *@
+@inject IJSRuntime JSRuntime;
+@* @inject NotificationService _notificationService;
+@inject DialogService DialogService; *@
+@inject LazyAssemblyLoader loader;
+
+<NotranslateDirective>
+   
+    <RadzenDataList @ref="_GaleryTattoosDataGridRef" class="datalist-radzen data-list-products" Data="@_GaleryTattoosData" TItem="TattooDto" PageSize=200 WrapItems="true" AllowPaging="false">
+        <Template Context="tattoo">
+            <div class="image-container">
+                <RadzenImage Path="@(string.IsNullOrWhiteSpace(tattoo.ImagePath) ? "/css/images/genericproduct.webp" : tattoo.ImagePath)" class="tattoo-image image-thumbnail" AlternateText="@tattoo.TattooName" Click=@((args)=>ShowDialogZoomImage(args,tattoo.ImagePath)) />
+                <div class="image-overlay">
+                    <RadzenIcon @onclick="()=>OnClickIncrementRating(tattoo.Id)" Icon=@(tattoo.Rating == 0 ? "thumb_up_off_alt" : "thumb_up") class="icon-color-like"></RadzenIcon>
+                    <p class="icon-color-like">@(tattoo.Rating == 0 ? "" : tattoo.Rating.ToString())</p>
+
+                </div>
+            </div>
+        </Template>
+    </RadzenDataList>
+   @*  <RadzenStack class="text-end" Style="align-items: end !important;">
+        <RadzenButton class="w-80 book-now-layout" ButtonStyle="ButtonStyle.Light" Variant="Variant.Text" Text=@(moreTattoos ?"View MORE":"View Less") Click="@(()=>moreTattoos=!moreTattoos)" />
+
+    </RadzenStack> *@
+</NotranslateDirective>
+
+
+        
+

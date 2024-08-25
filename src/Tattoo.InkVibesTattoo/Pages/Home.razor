@@ -1,0 +1,292 @@
+﻿@page "/"
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using System.Globalization
+@using Tattoo.InkVibesTattoo.Components.Dialogs
+@using Tattoo.InkVibesTattoo.Components.Layout
+@using Tattoo.InkVibesTattoo.Helpers
+@using Tattoo.InkVibesTattoo.Models.Dialogs
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Models.Forms.Enum
+@using Tattoo.InkVibesTattoo.Models.Requests
+@using Tattoo.InkVibesTattoo.Security
+@using Tattoo.InkVibesTattoo.Services
+@using Microsoft.Extensions.Localization
+
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject TooltipService TooltipService;
+@inject IConfiguration Configuration;
+@inject LocalizationService LocalizationService;
+@* @inject IStringLocalizer<Resources.Resource> Localizer *@
+
+<div id="section0">
+    <RadzenRow class="text-center p-4">
+        <RadzenColumn class="home-presentation-layout">
+            <h1>@LocalizationService.GetString("WelcomeTitle")</h1>
+            <p>@LocalizationService.GetString("WelcomeSubtitle")</p>
+            <p>@LocalizationService.GetString("WelcomeDescription")</p>
+            <RadzenButton ButtonStyle="ButtonStyle.Warning" Style="font-family: 'MaterialCustom'; font-weight: 600; margin-bottom: 11px;" Variant="Variant.Filled" class="" Text="@LocalizationService.GetString("FindUsButton")" Click="@(() => ScrollToSection("section4"))" />
+            <RadzenRow class="mobile-only">
+                <RadzenColumn class="mobile-only">
+                    <RadzenStack class="mobile-only">
+                        <div class="social-links-footer mobile-only">
+                            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
+                            <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
+                            <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+                        </div>
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+<div id="section2" class="section">
+    <h1>@LocalizationService.GetString("TheArtistTitle")</h1>
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem">
+        <RadzenImage Path="/css/Images/artist.webp" class="artist-image-layout" />
+        <RadzenStack Gap="0">
+            <RadzenText TextStyle="TextStyle.H4" Class="rz-mb-0">@LocalizationService.GetString("AdrianName")</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1">@LocalizationService.GetString("DiverseStyles")</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2">@LocalizationService.GetString("AdrianBio")</RadzenText>
+        </RadzenStack>
+    </RadzenStack>
+</div>
+
+<div id="section3" class="section">
+    <h1>@LocalizationService.GetString("MyWorkTitle")</h1>
+    <GaleryTattoo />
+    <RadzenButton ButtonStyle="ButtonStyle.Warning" Style="font-family: 'MaterialCustom'; font-weight: 600;" Variant="Variant.Filled" class="mt-4" Text="@LocalizationService.GetString("BookNowButton")" Click="OnClickBookNow" />
+</div>
+
+<div id="section4" class="section">
+    <h1>@LocalizationService.GetString("ContactUsTitle")</h1>
+    <RadzenStack Style="align-items: center !important;" Gap="0">
+        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">@LocalizationService.GetString("EmailLabel")</RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1">
+            <a href="mailto:@stateService.GlobalemailAdress.Value" style="text-decoration: none; color: inherit;">
+                <b>@stateService.GlobalemailAdress.Value</b>
+            </a>
+            @if (isCopied)
+            {
+                <RadzenIcon Icon="check" Class="rz-ml-2" Style="color: green;" />
+            }
+            else
+            {
+                <RadzenIcon Icon="content_copy" Class="rz-ml-2" Style="cursor: pointer;" @onclick="CopyEmail" />
+            }
+        </RadzenText>
+
+        <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">@LocalizationService.GetString("AddressLabel")</RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1"><b>@stateService.GlobalemailAdress.ValueDescription</b></RadzenText>
+        @* <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">@LocalizationService.GetString("OpeningHoursLabel")</RadzenText>
+        <RadzenText TextStyle="TextStyle.Body1"><b>@LocalizationService.GetString("OpeningHours")</b></RadzenText> *@
+    </RadzenStack>
+    <div class="container-fluid">
+        <div class="row pt-4">
+            <div class="col">
+                <div id="map" style="height: 32rem;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="social-links-integrated">
+        <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
+        <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
+        <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+        <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
+        <a href="https://www.google.com/maps/dir/?api=1&origin=current+location&destination=@lat.ToString("F8", System.Globalization.CultureInfo.InvariantCulture),@lng.ToString("F8", System.Globalization.CultureInfo.InvariantCulture)" class="button button-icon map-button" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/map-pin.png" alt="Map Icon" /> @LocalizationService.GetString("GetDirections")</a>
+    </div>
+
+</div>
+
+<div id="section5" class="section">
+    <h1>@LocalizationService.GetString("FAQTitle")</h1>
+    <FAQTattoo />
+</div>
+
+<div id="section1" class="section puff-in-top">
+    <h2 class="pb-2">@LocalizationService.GetString("CommitmentTitle")</h2>
+    <p>@LocalizationService.GetString("CommitmentDescription")</p>
+
+    <div class="service-items">
+        <div class="service-item">
+            <i class="material-icons">health_and_safety</i>
+            <h3>@LocalizationService.GetString("OurNeedlesTitle")</h3>
+            <p>@LocalizationService.GetString("OurNeedlesDescription")</p>
+        </div>
+        <div class="service-item">
+            <i class="material-icons">palette</i>
+            <h3>@LocalizationService.GetString("OurInkTitle")</h3>
+            <p>@LocalizationService.GetString("OurInkDescription")</p>
+        </div>
+        <div class="service-item">
+            <i class="material-icons">handyman</i>
+            <h3>@LocalizationService.GetString("OurProcessTitle")</h3>
+            <p>@LocalizationService.GetString("OurProcessDescription")</p>
+        </div>
+        <div class="service-item">
+            <i class="material-icons">cleaning_services</i>
+            <h3>@LocalizationService.GetString("OurSafetyTitle")</h3>
+            <p>@LocalizationService.GetString("OurSafetyDescription")</p>
+        </div>
+    </div>
+</div>
+
+<RadzenRow class="footer-copyright">
+    <RadzenColumn Size="4" class="desktop-only">
+        <p>Powered by <b>CANDISOFT</b></p>
+    </RadzenColumn>
+    <RadzenColumn Size="4" class="desktop-only">
+        <p style="font-size: 14px;" class="desktop-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Ink Vibes Tattoo Studio</b></p>
+        @* <p><a @onclick="ShowPolicies">Cookies policy</a></p> *@
+
+    </RadzenColumn>
+    <RadzenColumn Size="8" class="mobile-only">
+        <p style="font-size: 12px;" class="mobile-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Ink Vibes Studio</b></p>
+    </RadzenColumn>
+    <RadzenColumn Size="4">
+        <div class="social-links-footer">
+            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
+            <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
+            <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+        </div>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    private async Task ScrollToSection(string sectionId)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);
+    }
+
+    [Inject] private IConfigValueService _configValueService { get; set; }
+    [Inject] private NotificationService NotificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
+    [Inject] private GlobalState stateService { get; set; }
+    bool isCopied = false;
+
+    private DotNetObjectReference<Home> objRef;
+
+    private readonly CacheValueType _customValueType = CacheValueType.StudioLocation;
+    double lat;
+    double lng;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        objRef = DotNetObjectReference.Create(this);
+        stateService.OnGlobalBasicValuesChanged += StateHasChanged;
+        stateService.OnGlobalLanguageChanged += StateHasChanged;
+        await LoadConfigValues();
+        lat = 42.6977; // Valor por defecto
+        lng = 23.3219; // Valor por defecto
+        int zoom = 3;
+        // Si hay coordenadas guardadas previamente, usarlas para centrar el mapa y agregar marcador
+        if (!string.IsNullOrEmpty(@stateService.GlobalLocation.Value))
+        {
+            var coords = @stateService.GlobalLocation.Value.Split(',');
+            if (coords.Length == 2 &&
+                double.TryParse(coords[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out lat) &&
+                double.TryParse(coords[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out lng))
+            {
+                zoom = 15; // Ajustar el zoom si hay coordenadas guardadas
+            }
+        }
+
+        // Inicializar el mapa con las coordenadas
+        await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
+
+        // Agregar marcador si hay coordenadas guardadas
+        if (!string.IsNullOrEmpty(@stateService.GlobalLocation.Value))
+        {
+            await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, $"Ink Vibes Tattoo");
+        }
+    }
+
+
+    private async Task ShowPolicies()
+    {
+        await DialogService.OpenAsync<CookiesPolicy>(
+            LocalizationService.GetString("PrivacyPolicy_Title"),
+            new Dictionary<string, object>());
+
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "cookieConsent", "accepted");
+        await JSRuntime.InvokeVoidAsync("hideCookieConsent");
+    }
+
+    private async Task CopyEmail()
+    {
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", stateService.GlobalemailAdress.Value);
+        isCopied = true;
+        StateHasChanged();
+        await Task.Delay(2000); // Mantén el estado copiado por 2 segundos
+        isCopied = false;
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+        }
+    }
+
+    async Task OnClickBookNow()
+    {
+        ReservationDto data = await DialogService.OpenAsync<AddAppointmentPage>(
+            
+            LocalizationService.GetString("BookNow"), new Dictionary<string, object> {
+                { "Start", DateTime.Now }, 
+                { "End", DateTime.Now }
+            }
+
+            );
+    }
+
+    private static Home instance;
+
+    public Home()
+    {
+        instance = this;
+    }
+
+    [JSInvokable]
+    public static Task MapClicked(double lat, double lng)
+    {
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+        stateService.OnGlobalBasicValuesChanged -= StateHasChanged;
+        stateService.OnGlobalLanguageChanged -= StateHasChanged;
+    }
+
+    /// <summary>
+    /// Data Load and Actions
+    /// </summary>
+    private async Task LoadConfigValues()
+    {
+        var response = await _configValueService.GetBasicsConfigValuesAsync();
+        if (response.IsSuccess)
+        {
+            var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
+            var globalLocation = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.StudioLocation) ?? new ConfigValueDto();
+            var globalemailAdress = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.EmailAddress) ?? new ConfigValueDto();
+            var globaltiktokInstagram = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.TikTokInstagram) ?? new ConfigValueDto();
+            var globalphoneFacebook = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.PhoneFacebook) ?? new ConfigValueDto();
+            stateService.SetGlobalBasicValues(globaltiktokInstagram, globalphoneFacebook, globalemailAdress, globalLocation);
+
+            StateHasChanged();
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+        }
+    }
+}

@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Tattoo.StudioUI.Components.Dialogs
+@using Tattoo.StudioUI.Components.Layout
+@using Tattoo.StudioUI.Helpers
+@using Tattoo.StudioUI.Models.Forms
+@using Tattoo.StudioUI.Security
+@inherits LayoutComponentBase
+
+@* <RadzenContextMenu /> *@
+<RadzenDialog />
+<RadzenNotification />
+<RadzenTooltip />
+
+<NotranslateDirective>
+    @if (!hasSeenInitView)
+    {
+        <RadzenStack class="w-100">
+            <div class="init-view">
+                <div class="logo-container">
+                    <img src="css/images/InitView.svg" alt="InitView" class="logo" />
+                </div>
+                <div class="slide-in-blurred-bottom">
+                    <h2 class="">INK YOUR STORY, OWN YOUR ART</h2>
+                    <button @onclick="NavigateToMain" class="start-button pulsate-bck ">Let's START!</button>
+                </div>
+            </div>
+        </RadzenStack>
+    }
+    else
+    {
+        <div class="main-layout">
+            <div class="menu desktop-only">
+                <div class="social-links desktop-only">
+                    <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
+                    <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
+                    <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+                    <a href=@($"tel:{@stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
+
+                </div>
+                <nav class="desktop-only">
+                    <ul>
+                        <li id="menu-home" @onclick=@(() => ScrollToSection("section1"))>Home</li>
+                        <li id="menu-artist" @onclick=@(() => ScrollToSection("section2"))>Artist</li>
+                        <li id="menu-gallery" @onclick=@(() => ScrollToSection("section3"))>Gallery</li>
+                        <li id="menu-contact" @onclick=@(() => ScrollToSection("section4"))>Contact</li>
+                        <li id="menu-faq" @onclick=@(() => ScrollToSection("section5"))>FAQ</li>
+                    </ul>
+                </nav>
+                <RadzenStack class="stack-book-now desktop-only">
+                    <RadzenButton class="w-80 book-now-layout pulsate-bck desktop-only" ButtonStyle="ButtonStyle.Light" Variant="Variant.Outlined" Text="BOOK NOW" Click="OnClickBookNow" />
+                </RadzenStack>
+            </div>
+            <div class="mobile-only">
+                <RadzenRow class="header-sidebarlayout mobile-only">
+                    <RadzenColumn Size="2">
+                        <RadzenStack class="mobile-only" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
+                            <RadzenSidebarToggle class="mobile-only" Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                        </RadzenStack>
+                    </RadzenColumn>
+                    <RadzenColumn Size="5" class="mobile-only">
+                        <RadzenStack class="stack-book-now mobile-only">
+                            <RadzenButton class="mobile-only w-80 book-now-layout pulsate-bck" ButtonStyle="ButtonStyle.Light" Variant="Variant.Outlined" Text="BOOK NOW" Click="OnClickBookNow" />
+                        </RadzenStack>
+                    </RadzenColumn>
+                    <RadzenColumn Size="5" class="mobile-only">
+                        <RadzenStack class="stack-book-now mobile-only">
+                            <div class="social-links mobile-only">
+                                <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
+                                <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
+                                <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+                                <a href=@($"tel:{@stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
+
+                            </div>
+                        </RadzenStack>
+                    </RadzenColumn>
+                </RadzenRow>
+            </div>
+            <RadzenSidebar class="mobile-only" Responsive="false" @bind-Expanded="@sidebarExpanded" style=" z-index: 3">
+                <RadzenStack AlignItems="AlignItems.End" Class="rz-p-2 mobile-only">
+                    <RadzenButton Icon="west" Variant="Variant.Text" ButtonStyle="ButtonStyle.Secondary" Click="@(() => sidebarExpanded = false)" />
+                </RadzenStack>
+                <RadzenPanelMenu class="mobile-only">
+                    <RadzenPanelMenuItem Text="HOME" Click=@(() => {ScrollToSection("section1");sidebarExpanded=false; }) Icon="home" />
+                    <RadzenPanelMenuItem Text="THE ARTIST" Click=@(() => {ScrollToSection("section2");sidebarExpanded=false; }) Icon="sentiment_satisfied_alt" />
+                    <RadzenPanelMenuItem Text="GALLERY" Click=@(() => {ScrollToSection("section3");sidebarExpanded=false; }) Icon="collections" />
+                    <RadzenPanelMenuItem Text="CONTACT US" Click=@(() => {ScrollToSection("section4");sidebarExpanded=false; }) Icon="dashboard" />
+                    <RadzenPanelMenuItem Text="FAQ" Click=@(() => {ScrollToSection("section5");sidebarExpanded=false; }) Icon="question_answer" />
+                </RadzenPanelMenu>
+            </RadzenSidebar>
+            <div class="content">
+                @Body
+            </div>
+        </div>
+    }
+</NotranslateDirective>
+

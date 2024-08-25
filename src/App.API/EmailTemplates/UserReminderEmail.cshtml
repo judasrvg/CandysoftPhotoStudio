@@ -1,0 +1,66 @@
+﻿@model App.Application.DTOs.ReminderEmailModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Recordatorio de Cita</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            padding: 20px;
+            background-color: #ffffff;
+            margin: 50px auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+
+        h2 {
+            color: #333333;
+        }
+
+        p, ul {
+            color: #555555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Hola @Model.ProviderName,</h2>
+        <p>Este es un recordatorio de que tienes una cita programada con:</p>
+        <ul>
+            <li><strong>Cliente:</strong> @Model.ClientName</li>
+            <li><strong>Fecha y hora:</strong> @Model.ReservationDate.ToString("f")</li>
+            <li><strong>Descripción:</strong> @Model.Description</li>
+        </ul>
+        <p>Por favor asegúrate de estar preparado para esta cita.</p>
+        <p>Saludos,</p>
+        <p><strong>Tu sistema de reservas</strong></p>
+        <div class="footer">
+            <p>Si necesitas más detalles, accede al sistema de gestión de reservas.</p>
+        </div>
+    </div>
+</body>
+</html>

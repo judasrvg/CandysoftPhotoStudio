@@ -1,0 +1,400 @@
+﻿@page "/add-appointment"
+@using System.Text.Json
+@using Microsoft.Extensions.Localization
+@using Tattoo.InkVibesTattoo.Components.Layout
+@using Tattoo.InkVibesTattoo.Helpers
+@using Tattoo.InkVibesTattoo.Models.Dialogs
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Models.Forms.Enum
+@using Tattoo.InkVibesTattoo.Models.Requests
+@using Tattoo.InkVibesTattoo.Security
+@using Tattoo.InkVibesTattoo.Services
+@inject IJSRuntime JSRuntime;
+@inject IConfiguration Configuration;
+@inject LocalizationService LocalizationService
+
+@if (_isLoading)
+{
+    <div class="loader-wrapper" style="position: absolute;z-index: 2;margin-left: 12rem;">
+        <RadzenStack AlignItems="AlignItems.Center" Class="rz-m-12" Gap="2rem">
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Wrap="FlexWrap.Wrap">
+                <RadzenProgressBarCircular ProgressBarStyle="ProgressBarStyle.Light" Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
+            </RadzenStack>
+        </RadzenStack>
+    </div>
+}
+<NotranslateDirective>
+    <RadzenTemplateForm TItem="ReservationDto" Data="@model" Submit=@OnSubmit class="gap-6 text-center">
+        @* Personal Data and Image *@
+        @if (_moreInfo)
+        {
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenCard>
+                        <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">@LocalizationService.GetString("UploadDesign")</RadzenText>
+                        <RadzenUpload @ref="upload" Change="OnChange" Complete=@OnComplete MaxFileCount=3 Auto="false" Multiple="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/Uploadimagesclient")" ChooseText="@LocalizationService.GetString("UploadChoose")" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})" class="w-100" />
+                    </RadzenCard>
+                </RadzenColumn>
+            </RadzenRow>
+        }
+
+        <RadzenRow class="pt-3">
+            <RadzenColumn>
+                <RadzenRow>
+                    @* nombre *@
+                    <RadzenColumn>
+                        <RadzenFormField Text="@LocalizationService.GetString("YourName")" class="w-100">
+                            <ChildContent>
+                                <RadzenTextBox Name="ClientName" @bind-Value="@model.ClientName" class="" Disabled=_readOnlyMode />
+                                <RadzenRequiredValidator Component="ClientName" Text="@LocalizationService.GetString("Required")" Popup=false></RadzenRequiredValidator>
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow class="pt-2">
+                    @* Email *@
+                    <RadzenColumn>
+                        <RadzenFormField Text="@LocalizationService.GetString("YourEmail")" class="w-100">
+                            <ChildContent>
+                                <RadzenTextBox Name="ClientEmail" @bind-Value="@model.ClientEmail" class="" Disabled=_readOnlyMode />
+                                <RadzenEmailValidator Component="ClientEmail" Text="@LocalizationService.GetString("Invalid")" Popup=false></RadzenEmailValidator>
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="pt-3">
+            <RadzenColumn>
+                <RadzenRow class="pt-2">
+                    @* Phone *@
+                    <RadzenColumn>
+                        <RadzenFormField Text="@LocalizationService.GetString("YourPhone")" class="w-100">
+                            <ChildContent>
+                                <RadzenTextBox Name="ClientPhone" @bind-Value="@model.ClientPhone" class="" Disabled=_readOnlyMode />
+                                <RadzenRequiredValidator Component="ClientPhone" Text="@LocalizationService.GetString("Required")" Popup=false />
+                                <RadzenCustomValidator Component="ClientPhone" Validator="@(() => System.Text.RegularExpressions.Regex.IsMatch(@model.ClientPhone, @"^\+?\d+$"))" Text="@LocalizationService.GetString("Invalid")" Popup=false />
+                            </ChildContent>
+                        </RadzenFormField>
+                    </RadzenColumn>
+                </RadzenRow>
+                <RadzenRow class="pt-2">
+                    @* Preferred Date and Time *@
+                    <RadzenColumn>
+                        <div class="">
+                            <RadzenRow>
+                                <RadzenColumn>
+                                    <RadzenLabel Text="@LocalizationService.GetString("PreferredDate")" Component="DatePickerDateOnlyType" Style="margin-right: 8px; vertical-align: middle;" />
+                                    <RadzenDatePicker Min="DateTime.Now.AddDays(-1)" @bind-Value="@dateValue" DateFormat="MM/dd/yyyy" Name="DatePickerDateOnlyType" />
+                                    <RadzenRequiredValidator Component="DatePickerDateOnlyType" Text="@LocalizationService.GetString("Required")" Popup=false />
+                                </RadzenColumn>
+                                <RadzenColumn>
+                                    <RadzenLabel Text="@LocalizationService.GetString("PreferredTime")" Component="DatePickerTimeOnlyType" Style=" vertical-align: middle;" />
+                                    <RadzenDatePicker @bind-Value="@timeValue" ShowSeconds="false" DateFormat="hh:mm tt" Name="DatePickerTimeOnlyType" />
+                                    <RadzenRequiredValidator Component="DatePickerTimeOnlyType" Text="@LocalizationService.GetString("Required")" Popup=false />
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </div>
+                    </RadzenColumn>
+                </RadzenRow>
+            </RadzenColumn>
+        </RadzenRow>
+        @* TattooInfoDetails *@
+        @if (_moreInfo)
+        {
+            <RadzenRow class="pt-2 w-100">
+                <RadzenColumn Size="12">
+                    <RadzenFormField Text="@LocalizationService.GetString("Details")" class="w-100">
+                        <ChildContent>
+                            <RadzenTextArea Name="ClientDetails" @bind-Value="@model.Details" class="" Disabled=_readOnlyMode />
+                        </ChildContent>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow class="pt-2 text-center">
+                <RadzenColumn Size="6">
+                    <RadzenCheckBox @bind-Value=@model.IsCoverUp Name="CheckBox1" />
+                    <RadzenLabel Text="@LocalizationService.GetString("IsCoverUp")" Component="IsCoverUp" Style="margin-left: 8px; vertical-align: middle;" />
+                </RadzenColumn>
+                <RadzenColumn Size="6">
+                    <RadzenToggleButton Click=@(args => model.IsWithColor = !model.IsWithColor) Text=@(model.IsWithColor ? LocalizationService.GetString("WithColor") : LocalizationService.GetString("BlackAndWhite")) ButtonStyle="ButtonStyle.Dark" ToggleButtonStyle="ButtonStyle.Secondary" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Light button" }})" />
+                </RadzenColumn>
+            </RadzenRow>
+        }
+        <RadzenStack class="text-end" Style="align-items: end !important;">
+            <RadzenButton class="w-80 book-now-layout pulsate-bck" Style="background-color: rgb(0 0 0 / 0%) !important;" ButtonStyle="ButtonStyle.Light" Variant="Variant.Text" Text=@(_moreInfo ? LocalizationService.GetString("TellUsLess") : LocalizationService.GetString("TellUsMore")) Click=@(args=>_moreInfo=!_moreInfo) />
+        </RadzenStack>
+        <RadzenRow class="pt-4 text-start" Style="text-align:start!important;font-size: 13px;">
+            <RadzenColumn Size="12">
+                <RadzenCheckBox @bind-Value=@isOverAge Name="OverAger" />
+                <RadzenLabel Text="@LocalizationService.GetString("OverAge")" Component="OverAger" Style="margin-left: 8px; vertical-align: middle;" />
+            </RadzenColumn>
+        </RadzenRow>
+        <RadzenRow class="pt-2 text-start" Style="text-align:start!important;font-size: 13px;">
+            <RadzenColumn Size="12">
+                <RadzenCheckBox @bind-Value=@acceptConditions Name="AcceptConditions" />
+                <RadzenLabel class="w-80" Text="@LocalizationService.GetString("AcceptConditions")" Component="AcceptConditions" Style="margin-left: 8px; vertical-align: middle; width: 90%;" />
+            </RadzenColumn>
+        </RadzenRow>
+        @* Statebuttons *@
+        <RadzenRow class="pt-2 text-center">
+            <RadzenColumn>
+                <RadzenButton ButtonType="ButtonType.Submit" Text="@LocalizationService.GetString("Send")" Disabled=@(!isOverAge || _onActionRequest) />
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenTemplateForm>
+</NotranslateDirective>
+@code {
+    [Parameter]
+    public DateTime Start { get; set; }
+
+    [Parameter]
+    public DateTime End { get; set; }
+    int progress;
+    bool showProgress;
+    bool _readOnlyMode = false;
+    ReservationDto model = new ReservationDto();
+    [Inject] private IReservationService _reservationService { get; set; }
+    [Inject] private NotificationService _notificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
+    [Inject] private TooltipService _tooltipService { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
+    [Inject] private GlobalState stateService { get; set; }
+    [Inject] private DialogHelper DialogHelper { get; set; }
+    private bool _dialogOpen = false;
+    private bool isOverAge = false;
+    private bool _moreInfo = false;
+    private bool acceptConditions = false;
+    private bool _onActionRequest = false;
+    RadzenUpload upload;
+    RadzenUpload uploadDD;
+    List<(string FileName, string Url)> uploadedFilePaths = new List<(string, string)>();
+    bool _isLoading = false;
+    DateOnly dateValue = DateOnly.FromDateTime(DateTime.Now);
+    TimeOnly timeValue = TimeOnly.FromDateTime(DateTime.Now);
+
+    protected override void OnParametersSet()
+    {
+        model.ReservationDateStart = Start;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    async void OnComplete(UploadCompleteEventArgs args)
+    {
+        showProgress = false;
+
+        if (args.JsonResponse != null)
+        {
+            var jsonResponse = args.JsonResponse.RootElement;
+            if (jsonResponse.ValueKind == JsonValueKind.Array)
+            {
+                uploadedFilePaths = jsonResponse.EnumerateArray()
+                    .Select(e => (e.GetProperty("file").GetString(), e.GetProperty("url").GetString()))
+                    .ToList();
+            }
+        }
+        else
+        {
+            _notificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Detail = "Image upload failed",
+                    Duration = 4000
+                });
+            _isLoading = false;
+            return;
+        }
+
+        if (uploadedFilePaths.Any())
+        {
+            HashSet<string> pathsContainer = new HashSet<string>();
+            foreach (var path in uploadedFilePaths)
+            {
+                pathsContainer.Add($"{Configuration["ImagesBaseUrl"]}/imagesshared/imagesclient/{path.FileName}");
+            }
+            model.ImagePaths = pathsContainer.ToArray();
+        }
+
+        await SubmitAppoitment();
+    }
+
+    private async Task OnChange(UploadChangeEventArgs e)
+    {
+        int maxFiles = 3;
+
+        if (e.Files.Count() > maxFiles)
+        {
+            _notificationService.Notify(NotificationSeverity.Warning, @LocalizationService.GetString("OnLimit"), $"{@LocalizationService.GetString("MaximunFiles")}{maxFiles} files.", 4000);
+            e.Files = e.Files.Take(maxFiles).ToList();
+            await upload.ClearFiles();
+        }
+    }
+
+    async Task OnProgress(UploadProgressArgs args)
+    {
+
+    }
+
+    async Task SubmitAppoitment()
+    {
+        _readOnlyMode = false;
+        InvokeAsync(async () =>
+        {
+            bool hasSucess = await UpdateAppointmentValue(model);
+            if (!hasSucess)
+            {
+                DialogService.Close();
+                _onActionRequest = false;
+                StateHasChanged();
+                return;
+            }
+
+            _notificationService.Notify(NotificationSeverity.Success, @LocalizationService.GetString("Completed"), @LocalizationService.GetString("OperationSuccess"), 4000);
+            int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
+            stateService.SetGlobalCountSolicited(countSolicitedAppointment);
+
+            DialogService.Close();
+            _onActionRequest = false;
+            StateHasChanged();
+        });
+
+        await BusyDialog();
+        DialogService.Close(model);
+    }
+
+    async Task OnSubmit()
+    {
+        model.ReservationDateStart = dateValue.ToDateTime(timeValue);
+        model.ReservationDateEnd = model.ReservationDateStart.AddHours(2);
+
+        _readOnlyMode = false;
+        _isLoading = true;
+        if (!_onActionRequest)
+        {
+            if (!ValidateDates(model.ReservationDateStart, model.ReservationDateEnd))
+            {
+                _notificationService.Notify(NotificationSeverity.Warning, @LocalizationService.GetString("InvalidDates"), @LocalizationService.GetString("EndDateInvalid"), 4000);
+                return;
+            }
+            _onActionRequest = true;
+
+            if (upload?.HasValue ?? false)
+            {
+                showProgress = true;
+                _isLoading = true;
+                await upload.Upload();
+            }
+            else
+            {
+                await SubmitAppoitment();
+            }
+        }
+    }
+
+    private bool ValidateDates(DateTime? startDate, DateTime? endDate)
+    {
+        if (startDate == null || endDate == null)
+        {
+            return false;
+        }
+
+        return endDate > startDate;
+    }
+
+    private async Task ShowDialogZoomImage(object args, string imagePath)
+    {
+        if (_dialogOpen)
+        {
+            return;
+        }
+
+        _dialogOpen = true;
+
+        try
+        {
+            await ShowNewDialog<ImageZoomDialog>(args, new DialogHeaders()
+                {
+                    dialogParams = new Dictionary<string, object>() {
+                    {"_imagePath",  imagePath}
+                }
+                }, "100vw!important", "zoom-up");
+        }
+        finally
+        {
+            _dialogOpen = false;
+        }
+    }
+
+    private async Task ShowNewDialog<T>(object arg, DialogHeaders dialogHeaders, string width = "780px", string cssClass = "") where T : ComponentBase
+    {
+        using (var dialogBuilder = DialogHelper.CreateDialog<T>(DialogService))
+        {
+            await dialogBuilder
+                .WithOptions(new DialogOptions() { CloseDialogOnOverlayClick = false, Width = width, CssClass = cssClass })
+                .WithHeaderParams(dialogHeaders)
+                .OnClose(async (args) =>
+                {
+                    if (stateService.GlobalIsSuccessDialogRequest || stateService.GlobalIsPartialSuccessDialogRequest)
+                    {
+                        await InvokeAsync(async () =>
+                        {
+                            _notificationService.Notify(new NotificationMessage
+                                {
+                                    Severity = stateService.GlobalIsPartialSuccessDialogRequest ? NotificationSeverity.Error : NotificationSeverity.Success,
+                                    Detail = stateService.GlobalDialogRequestMessage,
+                                    Duration = 4000
+                                });
+                            stateService.GlobalIsSuccessDialogRequest = false;
+                            stateService.GlobalIsPartialSuccessDialogRequest = false;
+                            StateHasChanged();
+                        });
+                    }
+                })
+                .ShowAsync();
+        }
+    }
+
+    protected async Task<bool> UpdateAppointmentValue(ReservationDto appointment)
+    {
+        var savedLanguage = stateService.GlobalLanguage;
+        if (!string.IsNullOrEmpty(savedLanguage))
+        {
+            appointment.Lang = savedLanguage;
+        }
+        var response = await _reservationService.AddReservationAsync(appointment);
+        var InsertedConfigValue = response.Data as ConfigValueDto;
+        if (response.IsSuccess && (InsertedConfigValue != null))
+        {
+        }
+
+        return HasSuccessResponse(response);
+    }
+
+    private bool HasSuccessResponse(ResponseAdapterDto response)
+    {
+        if (!response.IsSuccess)
+        {
+            _notificationService.Notify(NotificationSeverity.Error, "Error: ", response.ErrorMessage, 4000);
+            return false;
+        }
+        return true;
+    }
+
+    private async Task BusyDialog()
+    {
+        await DialogService.OpenAsync<BusyLoading>(
+            "",
+            null,
+            new DialogOptions()
+                {
+                    ShowTitle = false,
+                    Style = "display: contents;background-color: #ff000000 !important;border-radius: 50px 50px 50px 50px!important;min-height:auto;min-width:auto;width:auto",
+                    CloseDialogOnEsc = false
+                }
+        );
+    }
+}

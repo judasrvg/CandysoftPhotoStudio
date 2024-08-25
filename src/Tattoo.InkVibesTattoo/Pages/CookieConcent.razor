@@ -1,0 +1,50 @@
+﻿@using Tattoo.InkVibesTattoo.Helpers
+@inject LocalizationService LocalizationService
+@inject IJSRuntime JSRuntime
+@inject DialogService DialogService
+@implements IDisposable
+
+<div id="cookieConsent" style="display: none; position: fixed; bottom: 0; width: 100%; background-color: #262626db; color: white; padding: 15px; text-align: center;">
+    <span>@(LocalizationService.GetString("CookieConsent_Message"))
+        <p style="color: #4caf50;cursor:pointer;" @onclick="ShowPolicies">@(LocalizationService.GetString("LearnMore"))</p>
+
+    </span>
+
+    <button @onclick="AcceptCookies" style="margin-left: 15px; background-color: #4caf50; color: white; border: none; padding: 10px 20px; cursor: pointer;">@(LocalizationService.GetString("CookieConsent_Accept"))</button>
+</div>
+
+@code {
+    [Inject] private GlobalState stateService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        stateService.OnGlobalLanguageChanged += StateHasChanged;
+
+        var consent = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "cookieConsent");
+        if (string.IsNullOrEmpty(consent))
+        {
+            await JSRuntime.InvokeVoidAsync("showCookieConsent");
+        }
+    }
+
+    private async Task ShowPolicies()
+    {
+        await DialogService.OpenAsync<CookiesPolicy>(
+            LocalizationService.GetString("PrivacyPolicy_Title"),
+            new Dictionary<string, object>());
+
+        // await JSRuntime.InvokeVoidAsync("localStorage.setItem", "cookieConsent", "accepted");
+        // await JSRuntime.InvokeVoidAsync("hideCookieConsent");
+    }
+
+    private async Task AcceptCookies()
+    {
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "cookieConsent", "accepted");
+        await JSRuntime.InvokeVoidAsync("hideCookieConsent");
+    }
+
+    public void Dispose()
+    {
+        JSRuntime.InvokeVoidAsync("hideCookieConsent");
+    }
+}

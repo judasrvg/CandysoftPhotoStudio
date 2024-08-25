@@ -1,0 +1,320 @@
+﻿@page "/leafletmap"
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using System.Globalization
+@using Tattoo.Management.Components.Layout
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+
+<NotranslateDirective>
+    <RadzenText class="main-header-layout mobile-only">
+        <h3>
+            Location
+        </h3>
+    </RadzenText>
+
+    <RadzenText class="main-header-layout ">
+        <h3>
+            Studio Location
+        </h3>
+    </RadzenText>
+
+    <RadzenRow class="">
+        <RadzenColumn class="text-start ">
+            <RadzenStack Style="float:inline-start;">
+                <RadzenFormField Text="Location" class="text-end dropdown-gen ">
+                    <ChildContent>
+                        <RadzenText Disabled class="desktop-only" Style="color:floralwhite;width: 16rem;   height: 2rem;    padding-top: 8px;" Text=@_ConfigValue.Value></RadzenText>
+                        <RadzenText Disabled class="mobile-only " Style="color:dimgray;width: 16rem;   height: 2rem;    padding-top: 8px;" Text=@_ConfigValue.Value></RadzenText>
+
+                    </ChildContent>
+                </RadzenFormField>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-2">
+        <RadzenColumn class="text-end ">
+            <RadzenStack Style="float:inline-end;">
+
+                <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end ">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" class="" Icon="add_circle_outline" Text="Save" Click="@AddConfigValue" />
+
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-2">
+        <RadzenColumn class=" ">
+            <RadzenFormField Text="Phone" class="w-100">
+                <ChildContent>
+                    <RadzenTextBox Name="Phone" @bind-Value="@_phoneFacebook.Value" class="" />
+                    <RadzenRequiredValidator Component="Phone" Text="Required field" Popup=false></RadzenRequiredValidator>
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenFormField Text="Email" class="w-100">
+                <ChildContent>
+                    <RadzenTextBox Name="Email" @bind-Value="@_emailAdress.Value" class="" />
+                    <RadzenEmailValidator Component="Email" Text="Invalid Email" Popup=false></RadzenEmailValidator>
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-2">
+        <RadzenColumn class=" ">
+            @* Tictok *@
+            <RadzenFormField Text="TikTok" class="w-100">
+                <ChildContent>
+                    <RadzenTextBox Name="TikTok" @bind-Value="@_tiktokInstagram.Value" class="" />
+                    <RadzenRequiredValidator Component="TikTok" Text="Required field" Popup=false></RadzenRequiredValidator>
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn class=" ">
+            @* Facebook *@
+            <RadzenFormField Text="Facebook" class="w-100">
+                <ChildContent>
+                    <RadzenTextBox Name="Facebook" @bind-Value="@_phoneFacebook.ValueDescription" class=""  />
+                    <RadzenRequiredValidator Component="Facebook" Text="Required field" Popup=false></RadzenRequiredValidator>
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn class=" ">
+            @* Instagram *@
+            <RadzenFormField Text="Instagram" class="w-100">
+                <ChildContent>
+                    <RadzenTextBox Name="Instagram" @bind-Value="@_tiktokInstagram.ValueDescription" class=""  />
+                    <RadzenRequiredValidator Component="Instagram" Text="Required field" Popup=false></RadzenRequiredValidator>
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-2 w-100">
+        <RadzenColumn Size="12">
+            <RadzenFormField Text="Adress" class="w-100">
+                <ChildContent>
+                    <RadzenTextArea Name="Adress" @bind-Value="@_emailAdress.ValueDescription" class="" />
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+    <div class="container-fluid">
+        <div class="row pt-4">
+            <div class="col">
+                <div id="map" style="height: 32rem;"></div>
+
+            </div>
+        </div>
+    </div>
+</NotranslateDirective>
+
+@code {
+    [Inject] private IConfigValueService _configValueService { get; set; }
+    [Inject] private NotificationService NotificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
+
+    private DotNetObjectReference<LeafletMap> objRef;
+    private ConfigValueDto _ConfigValue = new ConfigValueDto();
+    private ConfigValueDto _tiktokInstagram = new ConfigValueDto();
+    private ConfigValueDto _phoneFacebook = new ConfigValueDto();
+    private ConfigValueDto _emailAdress= new ConfigValueDto();
+
+    private ConfigValueDto _baseConfigValue = new ConfigValueDto();
+    private ConfigValueDto _basetiktokInstagram = new ConfigValueDto();
+    private ConfigValueDto _basephoneFacebook = new ConfigValueDto();
+    private ConfigValueDto _baseemailAdress = new ConfigValueDto();
+    private readonly CacheValueType _customValueType = CacheValueType.StudioLocation;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _tiktokInstagram.ValueType = CacheValueType.TikTokInstagram;
+        _phoneFacebook.ValueType = CacheValueType.PhoneFacebook;
+        _emailAdress.ValueType = CacheValueType.EmailAddress;
+        objRef = DotNetObjectReference.Create(this);
+        await LoadConfigValues();
+        // await LoadExtraValues();
+        double lat = 42.6977; // Valor por defecto
+        double lng = 23.3219; // Valor por defecto
+        int zoom = 3;
+
+        // Si hay coordenadas guardadas previamente, usarlas para centrar el mapa y agregar marcador
+        if (!string.IsNullOrEmpty(_ConfigValue.Value))
+        {
+            var coords = _ConfigValue.Value.Split(',');
+            if (coords.Length == 2 &&
+                double.TryParse(coords[0].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out lat) &&
+                double.TryParse(coords[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out lng))
+            {
+                zoom = 15; // Ajustar el zoom si hay coordenadas guardadas
+            }
+        }
+
+        // Inicializar el mapa con las coordenadas
+        await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
+
+        // Agregar marcador si hay coordenadas guardadas
+        if (!string.IsNullOrEmpty(_ConfigValue.Value))
+        {
+            await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, "Stored Location");
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+
+        }
+    }
+
+    [JSInvokable]
+    public static Task MapClicked(double lat, double lng)
+    {
+        instance._ConfigValue.Value = $"{lat.ToString("F8", CultureInfo.InvariantCulture)}, {lng.ToString("F8", CultureInfo.InvariantCulture)}";
+        instance.StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private static LeafletMap instance;
+
+    public LeafletMap()
+    {
+        instance = this;
+    }
+
+    /// <summary>
+    /// Data Load and Actions
+    /// </summary>
+    private async Task LoadConfigValues()
+    {
+        var response = await _configValueService.GetBasicsConfigValuesAsync();
+        if (response.IsSuccess)
+        {
+            var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
+            _ConfigValue = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.StudioLocation) ?? new ConfigValueDto();
+            _emailAdress = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.EmailAddress) ?? new ConfigValueDto();
+            _tiktokInstagram = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.TikTokInstagram) ?? new ConfigValueDto();
+            _phoneFacebook = parsedResponse?.FirstOrDefault(cv => cv.ValueType == CacheValueType.PhoneFacebook) ?? new ConfigValueDto();
+
+            _baseConfigValue =  new ConfigValueDto();
+            _baseemailAdress =  new ConfigValueDto();
+            _basetiktokInstagram =  new ConfigValueDto();
+            _basephoneFacebook =  new ConfigValueDto();
+            _baseConfigValue.Value = _ConfigValue.Value;
+            _baseConfigValue.ValueDescription = _ConfigValue.ValueDescription;
+            _baseemailAdress.Value = _emailAdress.Value;
+            _baseemailAdress.ValueDescription = _emailAdress.ValueDescription;
+            _basetiktokInstagram.Value = _tiktokInstagram.Value;
+            _basetiktokInstagram.ValueDescription = _tiktokInstagram.ValueDescription;
+            _basephoneFacebook.Value = _phoneFacebook.Value;
+            _basephoneFacebook.ValueDescription = _phoneFacebook.ValueDescription;
+            StateHasChanged();
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+        }
+    }
+    /// 
+    
+    // protected async Task<bool> AddConfigValue()
+    // {
+    //     _ConfigValue.ValueType = _customValueType;
+
+    //     var response = _ConfigValue.Id == 0 ? await _configValueService.AddConfigValueAsync(_ConfigValue) : await _configValueService.UpdateConfigValueAsync(_ConfigValue);
+    //     var InsertedConfigValue = response.Data as ConfigValueDto;
+    //     if (response.IsSuccess && (InsertedConfigValue != null))
+    //     {
+    //         NotificationService.Notify(NotificationSeverity.Success, "Saved", "Success Operation", 4000);
+    //     }
+
+    //     return HasSuccessResponse(response);
+    // }
+
+    private async Task BusyDialog()
+    {
+        await DialogService.OpenAsync<BusyLoading>(
+            "",
+            null,
+            new DialogOptions()
+                {
+                    ShowTitle = false,
+                    Style = "display: contents;background-color: #ff000000 !important;border-radius: 50px 50px 50px 50px!important;min-height:auto;min-width:auto;width:auto",
+                    CloseDialogOnEsc = false
+                }
+        );
+    }
+
+    protected async Task AddConfigValue()
+    {
+        if (!((_baseConfigValue.Value != _ConfigValue.Value) || (_phoneFacebook.Value != _basephoneFacebook.Value || _basephoneFacebook.ValueDescription != _phoneFacebook.ValueDescription) || (_emailAdress.Value != _baseemailAdress.Value || _baseemailAdress.ValueDescription != _emailAdress.ValueDescription) || (_tiktokInstagram.Value != _basetiktokInstagram.Value || _basetiktokInstagram.ValueDescription != _tiktokInstagram.ValueDescription)))
+        {
+            NotificationService.Notify(NotificationSeverity.Warning, "Fill Something: ", "Please complete at least one field", 4000);
+            return;
+        }
+
+        InvokeAsync(async () =>
+            {
+                var response =new ResponseAdapterDto();
+                var response2=new ResponseAdapterDto();
+                var response3=new ResponseAdapterDto();
+                var response4 = new ResponseAdapterDto();
+                var InsertedConfigValue = new ConfigValueDto();
+                _ConfigValue.ValueType = _customValueType;
+                if (_baseConfigValue.Value != _ConfigValue.Value)
+                {
+                    response = _ConfigValue.Id == 0 ? await _configValueService.AddConfigValueAsync(_ConfigValue) : await _configValueService.UpdateConfigValueAsync(_ConfigValue);
+                    InsertedConfigValue = response.Data as ConfigValueDto;
+                    if (response.IsSuccess && (InsertedConfigValue != null))
+                    {
+                        NotificationService.Notify(NotificationSeverity.Success, "Saved", "Success Operation", 4000);
+                    }
+                    HasSuccessResponse(response);
+
+                }
+                if (_emailAdress.Value != _baseemailAdress.Value || _baseemailAdress.ValueDescription != _emailAdress.ValueDescription)
+                {
+                    response2 = _emailAdress.Id == 0 ? await _configValueService.AddConfigValueAsync(_emailAdress) : await _configValueService.UpdateConfigValueAsync(_emailAdress);
+                }
+                if (_tiktokInstagram.Value != _basetiktokInstagram.Value || _basetiktokInstagram.ValueDescription != _tiktokInstagram.ValueDescription)
+                {
+                    response3 = _tiktokInstagram.Id == 0 ? await _configValueService.AddConfigValueAsync(_tiktokInstagram) : await _configValueService.UpdateConfigValueAsync(_tiktokInstagram);
+                }
+                if (_phoneFacebook.Value != _basephoneFacebook.Value || _basephoneFacebook.ValueDescription != _phoneFacebook.ValueDescription)
+                {
+                    response4 = _phoneFacebook.Id == 0 ? await _configValueService.AddConfigValueAsync(_phoneFacebook) : await _configValueService.UpdateConfigValueAsync(_phoneFacebook);
+                }
+                
+
+
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+        await BusyDialog();
+        StateHasChanged();
+
+
+    }
+
+    private bool HasSuccessResponse(ResponseAdapterDto response)
+    {
+        if (!response.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Error: ", response.ErrorMessage, 4000);
+            return false;
+        }
+        return true;
+    }
+}

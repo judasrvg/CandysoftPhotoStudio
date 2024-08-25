@@ -1,0 +1,31 @@
+# @XTOS.NAG.API.BettingSettings_HostAddress = http://localhost:5146
+
+# ### Get Agent Configuration
+# GET {{XTOS.NAG.API.BettingSettings_HostAddress}}/api/AgentConfig/{id}/{configType}
+# Accept: application/json
+
+# ### Add Agent Configuration only for agent single
+# POST {{XTOS.NAG.API.BettingSettings_HostAddress}}/api/AgentConfig/AddAgentConfig
+# Content-Type: application/json
+# Accept: application/json
+
+# {
+#   "id": 2,
+#   "configType": "Type2",
+#   "configDetails": "New Agent Configuration Details"
+# }
+
+# ### Update Agent Configuration only for agent single
+# PUT {{XTOS.NAG.API.BettingSettings_HostAddress}}/api/AgentConfig/UpdateAgentConfig
+# Content-Type: application/json
+# Accept: application/json
+
+# {
+#   "id": 2,
+#   "configType": "Type2",
+#   "configDetails": "Updated New Agent Configuration Details"
+# }
+
+# ### Delete Agent Configuration only for agent single
+# DELETE {{XTOS.NAG.API.BettingSettings_HostAddress}}/api/AgentConfig/{id}/{configType}
+# Accept: application/json

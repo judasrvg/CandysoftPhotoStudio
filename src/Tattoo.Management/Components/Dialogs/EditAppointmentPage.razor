@@ -1,0 +1,522 @@
+﻿@page "/edit-appointment"
+@using System.Text.Json
+@using Tattoo.Management.Components.Layout
+@using Tattoo.Management.Helpers
+@using Tattoo.Management.Models.Dialogs
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Services
+@inject IConfiguration Configuration;
+
+<RadzenTemplateForm TItem="ReservationDto" Data="@model" Submit=@OnSubmit class="gap-6 text-center">
+    <RadzenRow>
+        
+        @* Badges con etiquetas IsEsto IsAquello *@
+        <RadzenColumn class="text-start">
+            <RadzenText Text="Appointment Details"></RadzenText>
+
+        </RadzenColumn>
+        <RadzenColumn  class="text-end">
+            @* <RadzenIcon title="Edit Appointment" Style="cursor:pointer;" @onclick=@(()=>_readOnlyMode = false) Icon="edit_calendar" /> *@
+            <RadzenToggleButton Click=@(args => {_readOnlyMode = !_readOnlyMode;OnParametersSet();}) Text="" Icon="edit_calendar" ButtonStyle="ButtonStyle.Light" Shade="Shade.Light"
+                                ToggleShade="Shade.Dark" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Edit Appointment" }})" />
+        </RadzenColumn>
+        @* @if (model.BudgetAmount > 0)
+        {
+            <RadzenColumn>
+                <RadzenBadge Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Success" Text=@($"Budget:${model.BudgetAmount}") />
+            </RadzenColumn>
+        } *@
+    </RadzenRow>
+    
+    <RadzenRow class="pt-3">
+        <RadzenColumn>
+            <RadzenDataList class="datalist-radzen data-list-products-appointment" Data="@model.ImagePaths" TItem="string" PageSize="5" WrapItems="true" AllowPaging="true">
+                <Template Context="imagepath">
+                    <div class="image-container-appintment">
+                        <RadzenImage Path="@(string.IsNullOrWhiteSpace(imagepath) ? "/css/images/genericproduct.webp" : imagepath)" class="tattoo-image-appintment image-thumbnail" AlternateText="" Click=@((args)=>ShowDialogZoomImage(args,imagepath)) />
+                        <div class="image-overlay">
+
+                            <RadzenIcon Icon="remove_circle" class="icon-color-remove" Visible="@(!_readOnlyMode)" @onclick="()=>ConfirmDelete(imagepath)"></RadzenIcon>
+                        </div>
+                    </div>
+                </Template>
+            </RadzenDataList>
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow>
+        <RadzenUpload @ref="upload" Change="OnChange" Visible="@(!_readOnlyMode)" Progress="@TrackProgress" Complete=@OnComplete Disabled=@(3-basePathDeep.Length == 0) MaxFileCount=@(3-model.ImagePaths.Length) Auto="true" Multiple="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/Uploadimagesclient")" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
+                      class="w-100" />
+        <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Medium" Visible=@(showProgress && 3-basePathDeep.Length != 0) >
+            <Template>Wait</Template>
+        </RadzenProgressBarCircular>
+        @* <RadzenButton Text="Cancel" Click=@(args => CancelUpload()) class="d-block mt-4" Visible=@(showProgress && 3-model.ImagePaths.Length != 0) />
+        <RadzenLabel Visible=@showComplete class="mt-4" Text=@completionMessage /> *@
+    </RadzenRow>
+    @* Personal Data and Image *@
+    <RadzenRow class="pt-3">
+        <RadzenColumn>
+            
+            <RadzenRow>
+                @* nombre *@
+                <RadzenColumn>
+                    <RadzenFormField Text="Client Name" class="w-100">
+                        <ChildContent>
+                            <RadzenTextBox Name="ClientName" @bind-Value="@model.ClientName" class="" Disabled=_readOnlyMode />
+                            <RadzenRequiredValidator Component="ClientName" Text="Required field" Popup=false></RadzenRequiredValidator>
+                        </ChildContent>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+            <RadzenRow class="pt-2">
+                @* Email *@
+                <RadzenColumn>
+                    <RadzenFormField Text="Client Email" class="w-100">
+                        <ChildContent>
+                            <RadzenTextBox Name="ClientEmail" @bind-Value="@model.ClientEmail" class="" Disabled=_readOnlyMode />
+                            <RadzenEmailValidator Component="ClientEmail" Text="Invalid Email" Popup=false></RadzenEmailValidator>
+                        </ChildContent>
+                    </RadzenFormField>
+                </RadzenColumn>
+            </RadzenRow>
+           @*  <RadzenRow class="pt-2">
+                @if (model.IsCoverUp)
+                {
+                    <RadzenColumn Size="6">
+                        <RadzenBadge Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Danger" Text="Tattoo CoverUp" />
+                    </RadzenColumn>
+                }
+                @if (!model.IsWithColor)
+                {
+                    <RadzenColumn Size="6">
+                        <RadzenBadge Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Dark" Text="Tattoo B/W" />
+
+                    </RadzenColumn>
+                }
+                else
+                {
+                    <RadzenColumn Size="6">
+                        <RadzenBadge Shade="Shade.Lighter" BadgeStyle="BadgeStyle.Primary" Text="Tattoo Color" />
+                    </RadzenColumn>
+                }
+            </RadzenRow> *@
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-3">
+        <RadzenColumn>
+
+            <RadzenRow class="pt-2">
+                @* Phone *@
+                <RadzenColumn Size="6">
+                    <RadzenFormField Text="Client Phone" class="w-100">
+                        <ChildContent>
+                            <RadzenTextBox Name="ClientPhone" @bind-Value="@model.ClientPhone" class="" Disabled=@_readOnlyMode />
+                            <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" Placeholder="(000) 000-0000" Name="Phone" @bind-Value=@model.ClientPhone Style="width: 100%;" aria-label="Phone" />
+
+                        </ChildContent>
+                    </RadzenFormField>
+                </RadzenColumn>
+                <RadzenColumn Size="6">
+                    <RadzenFormField Text="Appointment State" class="w-100">
+                        <ChildContent>
+                            <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Style="margin-bottom:0em;" @bind-Value="@model.CurrentStateType"
+                                            AllowFiltering="true" AllowClear="true" Data="@(Enum.GetValues(typeof(AppoitmentStateType)).Cast<Enum>())" Disabled=@_readOnlyMode />
+                        </ChildContent>
+                    </RadzenFormField>
+
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenColumn>
+    </RadzenRow>
+    @* Dates *@
+    <RadzenRow class="pt-2">
+        <RadzenColumn>
+            <RadzenFormField Text="Start Date" class="w-100">
+                <ChildContent>
+                    <RadzenDatePicker Name="Start" @bind-Value="@model.ReservationDateStart" ShowTime="true" Disabled=@_readOnlyMode />
+                    <RadzenRequiredValidator Component="Start" Text="StartDate is required" Popup=false /> 
+                    
+                </ChildContent>
+            </RadzenFormField>
+
+        </RadzenColumn>
+    </RadzenRow>
+    <RadzenRow class="pt-2">
+       
+        <RadzenColumn>
+            <RadzenFormField Text="End Date" class="w-100">
+                <ChildContent>
+                    <RadzenDatePicker Name="End" @bind-Value="@model.ReservationDateEnd" ShowTime="true" Disabled=@_readOnlyMode />
+                    <RadzenRequiredValidator Component="End" Text="EndDate is required" Popup=false />
+
+                </ChildContent>
+            </RadzenFormField>
+
+        </RadzenColumn>
+    </RadzenRow>
+    @* TattooInfoDetails *@
+    <RadzenRow class="pt-2 w-100">
+        <RadzenColumn Size="12">
+            <RadzenFormField Text="Details" class="w-100">
+                <ChildContent>
+                    <RadzenTextArea Name="ClientDetails" @bind-Value="@model.Details" class="" Disabled=@_readOnlyMode />
+                </ChildContent>
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow >
+    <RadzenRow class="pt-4 pb-4">
+        <RadzenColumn Size="6">
+            <RadzenCheckBox @bind-Value=@model.IsCoverUp Name="CheckBox1" Disabled=@_readOnlyMode />
+            <RadzenLabel Text="Is CoverUp" Component="IsCoverUp" Style="margin-left: 8px; vertical-align: middle;" />
+        </RadzenColumn>
+
+        <RadzenColumn Size="6">
+            <RadzenToggleButton Click=@(args => model.IsWithColor = !model.IsWithColor) Text=@(model.IsWithColor?"With Color":"Black & White") ButtonStyle="@(_isBaseWithColor ?ButtonStyle.Secondary:ButtonStyle.Dark)" ToggleButtonStyle="@(_isBaseWithColor ?ButtonStyle.Dark:ButtonStyle.Secondary)"
+                                Disabled=@_readOnlyMode InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Light button" }})" />
+        </RadzenColumn>
+    </RadzenRow>
+    
+    @* Statebuttons *@
+    @if (_readOnlyMode)
+    {
+        <RadzenRow class="pt-2 text-center" >
+            <RadzenColumn >
+                @if (model.CurrentStateType != Models.Forms.Enum.AppoitmentStateType.Canceled && model.CurrentStateType != Models.Forms.Enum.AppoitmentStateType.Confirmed)
+                {
+                    <RadzenButton class="w-80" ButtonStyle="ButtonStyle.Success" Variant="Variant.Outlined" Text="Confirmed" Click=@((argss)=>CompleteEvent(model)) />
+                }
+                @if (model.CurrentStateType != Models.Forms.Enum.AppoitmentStateType.Canceled)
+                {
+                    <RadzenButton class="w-80" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Outlined" Text="Canceled" Click=@((argss)=>CancelEvent(model)) />
+                }
+            </RadzenColumn>
+            
+        </RadzenRow>
+
+    }
+    else
+    {
+        <RadzenRow class="pt-2 text-center">
+            <RadzenColumn>
+                <RadzenButton ButtonType="ButtonType.Submit" Text="APPLY" Disabled=@showProgress />
+            </RadzenColumn>
+        </RadzenRow>
+    }
+    
+</RadzenTemplateForm>
+@code {
+    [Parameter]
+    public ReservationDto Appointment { get; set; }
+    bool _readOnlyMode = true;
+    ReservationDto model = new ReservationDto();
+    [Inject] private IReservationService _reservationService { get; set; }
+    [Inject] private NotificationService _notificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
+    [Inject] private TooltipService _tooltipService { get; set; }
+    [Inject] private NavigationManager? NavigationManager { get; set; }
+    [Inject] private GlobalState stateService { get; set; }
+    [Inject] private DialogHelper DialogHelper { get; set; }
+    private bool _dialogOpen = false;
+    private bool _onActionRequest = false;
+    private bool _isBaseWithColor = false;
+    RadzenUpload upload;
+    int progress;
+    bool showProgress;
+    bool showComplete;
+    string completionMessage;
+    bool cancelUpload = false;
+    private string[] basePathDeep;
+    protected override void OnParametersSet()
+    {
+        model = Appointment;
+        basePathDeep = model.ImagePaths;
+        _isBaseWithColor = model.IsWithColor;
+    }
+
+    void TrackProgress(UploadProgressArgs args)
+    {
+        showProgress = true;
+        // showComplete = false;
+        progress = args.Progress;
+
+        // cancel upload
+        args.Cancel = args.Files.Count() + basePathDeep.Length > 3;
+
+        // reset cancel flag
+        // cancelUpload = false;
+    }
+
+    protected async Task ConfirmDelete(string path)
+    {
+        model.ImagePaths = model.ImagePaths.Where(x => x != path).ToArray();
+        basePathDeep = basePathDeep.Where(x => x != path).ToArray();
+    }
+
+    async void OnComplete(UploadCompleteEventArgs args)
+    {
+
+        showProgress = false;
+        showComplete = true;
+        List<(string FileName, string Url)> uploadedFilePaths = new List<(string, string)>();
+
+        if (args.JsonResponse != null)
+        {
+            var jsonResponse = args.JsonResponse.RootElement;
+            if (jsonResponse.ValueKind == JsonValueKind.Array)
+            {
+                uploadedFilePaths = jsonResponse.EnumerateArray()
+                    .Select(e => (e.GetProperty("file").GetString(), e.GetProperty("url").GetString()))
+                    .ToList();
+
+                model.ImagePaths = basePathDeep.Union(uploadedFilePaths.Select(x => $"{Configuration["ImagesBaseUrl"]}/imagesshared/imagesclient/{x.FileName}").ToArray()).ToArray();
+
+            }
+        }
+        else
+        {
+            if (!args.Cancelled)
+            {
+                _notificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Detail = "Image upload failed",
+                        Duration = 4000
+                    });
+                return;
+            }
+
+            else
+            {
+                _notificationService.Notify(new NotificationMessage
+                    {
+                        Severity = NotificationSeverity.Error,
+                        Detail = "You can upload only 3 files",
+                        Duration = 4000
+                    });
+                return;
+            }
+
+        }
+    }
+    void CancelUpload()
+    {
+        cancelUpload = true;
+    }
+
+
+    private async Task OnChange(UploadChangeEventArgs e)
+    {
+        // Define el límite máximo de archivos
+        int maxFiles = 3;
+
+        // Comprueba la cantidad de archivos seleccionados
+        if (e.Files.Count() + basePathDeep.Length > maxFiles)
+        {
+            // Si se supera el límite, muestra un mensaje de error y no permite la subida de más archivos
+            // Aquí puedes mostrar un mensaje de error al usuario o realizar cualquier otra acción necesaria
+            _notificationService.Notify(NotificationSeverity.Warning, "On Limit", $"You can upload a maximum of {maxFiles} files.", 4000);
+            // Limita los archivos a la cantidad máxima permitida
+            e.Files = e.Files.Take(maxFiles).ToList();
+            await upload.ClearFiles();
+        }
+
+        // Aquí puedes continuar con cualquier otra lógica que necesites para manejar los archivos seleccionados
+    }
+
+    async Task OnSubmit()
+    {
+        if (!_onActionRequest)
+        {
+
+            if (!ValidateDates(model.ReservationDateStart, model.ReservationDateEnd))
+            {
+                _notificationService.Notify(NotificationSeverity.Warning, "Invalid Dates", "End Date most be greatest than start date", 4000);
+                return;
+
+            }
+            _onActionRequest = true;
+
+            _readOnlyMode = false;
+            InvokeAsync(async () =>
+                {
+                    bool hasSucess = await UpdateAppointmentValue(model);
+                    if (!hasSucess)
+                    {
+                        DialogService.Close();
+                        _onActionRequest = false;
+
+                        StateHasChanged();
+
+                        return;
+                    }
+
+                    _notificationService.Notify(NotificationSeverity.Success, "Completed", "Success Operation", 4000);
+                    int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
+                    stateService.SetGlobalCountSolicited(countSolicitedAppointment);
+
+
+                    // Close the dialog
+                    DialogService.Close();
+                    _onActionRequest = false;
+
+                    StateHasChanged();
+                });
+
+            await BusyDialog();
+            DialogService.Close(model);
+        }
+    }
+
+    private bool ValidateDates(DateTime? startDate, DateTime? endDate)
+    {
+        if (startDate == null || endDate == null)
+        {
+            return false; 
+        }
+
+        return endDate > startDate;
+    }
+
+    private async Task ShowDialogZoomImage(object args, string imagePath)
+    {
+        if (_dialogOpen)
+        {
+            return;
+        }
+
+        _dialogOpen = true;
+
+        try
+        {
+            await ShowNewDialog<ImageZoomDialog>(args, new DialogHeaders()
+                {
+                    dialogParams = new Dictionary<string, object>() {
+                {"_imagePath",  imagePath}
+            }
+                }, "100vw!important", "zoom-up");
+        }
+    finally
+        {
+            _dialogOpen = false;
+        }
+    }
+
+    //**********************Dialog Generic***************
+
+    private async Task ShowNewDialog<T>(object arg, DialogHeaders dialogHeaders, string width = "780px", string cssClass = "") where T : ComponentBase
+    {
+        using (var dialogBuilder = DialogHelper.CreateDialog<T>(DialogService))
+        {
+            await dialogBuilder
+                .WithOptions(new DialogOptions() { CloseDialogOnOverlayClick = false, Width = width, CssClass = cssClass })
+                .WithHeaderParams(dialogHeaders)
+                .OnClose(async (args) =>
+                {
+                    if (stateService.GlobalIsSuccessDialogRequest || stateService.GlobalIsPartialSuccessDialogRequest)
+                    {
+                        await InvokeAsync(async () =>
+                        {
+                            _notificationService.Notify(new NotificationMessage
+                                {
+                                    Severity = stateService.GlobalIsPartialSuccessDialogRequest ? NotificationSeverity.Error : NotificationSeverity.Success,
+                                    Detail = stateService.GlobalDialogRequestMessage,
+                                    Duration = 4000
+                                });
+                            stateService.GlobalIsSuccessDialogRequest = false;
+                            stateService.GlobalIsPartialSuccessDialogRequest = false;
+                            StateHasChanged();
+                        });
+                    }
+
+                })
+                .ShowAsync();
+        }
+    }
+
+    async Task CompleteEvent(ReservationDto appointment)
+    {
+        InvokeAsync(async () =>
+            {
+                appointment.CurrentStateType = Models.Forms.Enum.AppoitmentStateType.Confirmed;
+                bool hasSucess = await UpdateAppointmentValue(appointment);
+                if (!hasSucess)
+                {
+                    return;
+                }
+                _notificationService.Notify(NotificationSeverity.Success, "Completed", "Success Operation", 4000);
+                int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
+                stateService.SetGlobalCountSolicited(countSolicitedAppointment);
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+        await BusyDialog();
+        DialogService.Close(model);
+
+        StateHasChanged();
+    }
+
+    async Task CancelEvent(ReservationDto appointment)
+    {
+        InvokeAsync(async () =>
+            {
+                appointment.CurrentStateType = Models.Forms.Enum.AppoitmentStateType.Canceled;
+
+                bool hasSucess = await UpdateAppointmentValue(appointment);
+                if (!hasSucess)
+                {
+                    return;
+                }
+                _notificationService.Notify(NotificationSeverity.Success, "Canceled", "Success Operation", 4000);
+                int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
+                stateService.SetGlobalCountSolicited(countSolicitedAppointment);
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+        await BusyDialog();
+        DialogService.Close(model);
+
+        StateHasChanged();
+    }
+
+    protected async Task<bool> UpdateAppointmentValue(ReservationDto appointment)
+    {
+
+        var response = await _reservationService.UpdateReservationAsync(appointment);
+        var InsertedConfigValue = response.Data as ConfigValueDto;
+        if (response.IsSuccess && (InsertedConfigValue != null))
+        {
+            //_ConfigValuesData.Remove(ConfigValue);
+        }
+
+        return HasSuccessResponse(response);
+    }
+
+    private bool HasSuccessResponse(ResponseAdapterDto response)
+    {
+        if (!response.IsSuccess)
+        {
+            _notificationService.Notify(NotificationSeverity.Error, "Error: ", response.ErrorMessage, 4000);
+            return false;
+        }
+        return true;
+    }
+
+    private async Task BusyDialog()
+    {
+        await DialogService.OpenAsync<BusyLoading>(
+            "",
+            null,
+            new DialogOptions()
+                {
+                    ShowTitle = false,
+                    Style = "display: contents;background-color: #ff000000 !important;border-radius: 50px 50px 50px 50px!important;min-height:auto;min-width:auto;width:auto",
+                    CloseDialogOnEsc = false
+                }
+        );
+    }
+}

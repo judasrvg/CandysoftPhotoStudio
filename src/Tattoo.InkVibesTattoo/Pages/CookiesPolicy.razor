@@ -1,0 +1,55 @@
+﻿@page "/privacy-policy"
+@using Tattoo.InkVibesTattoo.Helpers
+@inject LocalizationService LocalizationService
+
+<h2>@LocalizationService.GetString("PrivacyPolicy_Title")</h2>
+<p>@LocalizationService.GetString("PrivacyPolicy_Description")</p>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_LocalStorage_Title")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_LocalStorage_Description")</p>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_Usage_Title")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_Usage_Description")</p>
+<ul>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Usage_Language")</li>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Usage_InitialView")</li>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Usage_Favorites")</li>
+</ul>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_Disable_Title")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_Disable_Description")</p>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_Cloudflare_Title")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_Cloudflare_Description")</p>
+
+<h4>@LocalizationService.GetString("PrivacyPolicy_Cloudflare_Data_Title")</h4>
+<p>@LocalizationService.GetString("PrivacyPolicy_Cloudflare_Data_Description")</p>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_Rights_Title")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_Rights_Description")</p>
+<ul>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Rights_Access")</li>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Rights_Correction")</li>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Rights_Deletion")</li>
+    <li>@LocalizationService.GetString("PrivacyPolicy_Rights_Object")</li>
+</ul>
+<p>@LocalizationService.GetString("PrivacyPolicy_Contact")</p>
+
+<h3>@LocalizationService.GetString("PrivacyPolicy_MoreInfo")</h3>
+<p>@LocalizationService.GetString("PrivacyPolicy_MoreInfo")</p>
+@* <style>
+   h2,h3,h4,p,li{
+   color:floralwhite!important;
+   }
+</style> *@
+
+    @code{
+    
+    [Inject] private GlobalState stateService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        stateService.OnGlobalLanguageChanged += StateHasChanged;
+
+    }
+    }

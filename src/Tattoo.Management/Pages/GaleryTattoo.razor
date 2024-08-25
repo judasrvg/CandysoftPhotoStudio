@@ -1,0 +1,92 @@
+﻿@page "/galerytattoo"
+@using Microsoft.JSInterop
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Security
+@inherits LayoutComponentBase
+@* @inject TooltipService tooltipService; *@
+@inject IJSRuntime JSRuntime;
+@* @inject NotificationService _notificationService;
+@inject DialogService DialogService; *@
+@inject LazyAssemblyLoader loader;
+
+<NotranslateDirective>
+    <RadzenText class="main-header-layout mobile-only">
+        <h3>
+            Tattoos
+        </h3>
+    </RadzenText>
+
+    <RadzenText class="main-header-layout desktop-only">
+        <h3>
+            Galery Tattoos
+        </h3>
+    </RadzenText>
+
+    <RadzenRow class="mobile-only">
+        <RadzenColumn class="text-start mobile-only">
+            <RadzenStack Style="width:6rem;float:inline-start;">
+                <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen mobile-only">
+                    <ChildContent>
+                        <RadzenDropDown @bind-Value="_formFilterGetTattoos.TattooStyleId" class="dropdown-layout" AllowClear=true Change=OnChangeStyle Data="@_tattooStylesData" TextProperty="Value" ValueProperty="Id" TValue=long? />
+                    </ChildContent>
+                </RadzenFormField>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn class="text-end mobile-only">
+            <RadzenStack Style="width:6rem;float:inline-end;">
+                <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end mobile-only">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" class="mobile-only" Style="border-radius:50%;" Icon="add_circle_outline" Text="" Click="@ShowDialogAddTattoo" />
+
+                </RadzenStack>
+
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <RadzenRow class="desktop-only">
+        <RadzenColumn class="text-start desktop-only">
+            <RadzenStack Style="width:10rem;float:inline-start;">
+                <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen desktop-only">
+                    <ChildContent>
+                        <RadzenDropDown @bind-Value="_formFilterGetTattoos.TattooStyleId" class="dropdown-layout desktop-only" AllowClear=true Change=OnChangeStyle Data="@_tattooStylesData" TextProperty="Value" ValueProperty="Id" TValue=long? />
+                    </ChildContent>
+                </RadzenFormField>
+            </RadzenStack>
+        </RadzenColumn>
+        <RadzenColumn class="text-end desktop-only">
+            <RadzenStack Style="width:10rem;float:inline-end;">
+
+                <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Create" Click="@ShowDialogAddTattoo" />
+
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <RadzenDataList  @ref="_GaleryTattoosDataGridRef" class="datalist-radzen data-list-products" Data="@_GaleryTattoosData" TItem="TattooDto" PageSize="25" WrapItems="true" AllowPaging="true">
+        <Template Context="tattoo">
+            <div class="image-container">
+                <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" class="badge-priority" @bind-Value="@tattoo.Order" Change="@(args=>OnChangeTattooOrder(args,tattoo.Id))"
+                                AllowFiltering="false" AllowClear="false" Data="@(Enumerable.Range(1, _GaleryTattoosData.Count()).ToList())"  />
+
+                <RadzenImage Path="@(!string.IsNullOrWhiteSpace(tattoo.MiniatureImagePath) ? tattoo.MiniatureImagePath : !string.IsNullOrWhiteSpace(tattoo.ImagePath) ? tattoo.ImagePath :"/css/images/genericproduct.webp" )" class="tattoo-image image-thumbnail" AlternateText="@tattoo.TattooName" Click=@((args)=>ShowDialogZoomImage(args,tattoo.ImagePath)) />
+                <div class="image-overlay">
+                    <RadzenIcon Icon=@(tattoo.Rating == 0 ? "thumb_up_off_alt" : "thumb_up") class="icon-color-like"></RadzenIcon>
+                    <p class="icon-color-like">@(tattoo.Rating == 0 ? "" : tattoo.Rating.ToString())</p>
+
+                    <RadzenButton Style="background-color:rgb(0 0 0 / 0%); font-size:x-small" Click="@(args => ShowDialogEditTattoo(tattoo))" Text="@tattoo.TattooName" />
+                    <RadzenIcon Icon="remove_circle" class="icon-color-remove" @onclick="()=>ConfirmDelete(tattoo.Id)"></RadzenIcon>
+                </div>
+            </div>
+        </Template>
+    </RadzenDataList>
+</NotranslateDirective>
+
+
+        
+

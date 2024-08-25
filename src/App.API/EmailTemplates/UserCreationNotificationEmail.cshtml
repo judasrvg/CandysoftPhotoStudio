@@ -1,0 +1,53 @@
+﻿@model App.Application.DTOs.ReservationDto
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>New Appointment Notification</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            text-align: center;
+        }
+
+
+        .highlight {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>New Appointment Created for <span class="highlight">@Model.ReservationDateStart.ToString("MMMM dd, yyyy")</span> at <span class="highlight">@Model.ReservationDateStart.ToString("hh:mm tt")</span></h2>
+        <p>Dear Adrian,</p>
+        <p>A new appointment has been created for <span class="highlight">@Model.ReservationDateStart.ToString("MMMM dd, yyyy")</span> at <span class="highlight">@Model.ReservationDateStart.ToString("hh:mm tt")</span> at the studio. Please review the details below and contact the client if needed:</p>
+        <div class="contact-info">
+            <p><strong>Client Name:</strong> @Model.ClientName</p>
+            <p><strong>Client Email:</strong> @Model.ClientEmail</p>
+            <p><strong>Client Phone:</strong> @Model.ClientPhone</p>
+            <p><strong>Details:</strong> @Model.Details</p>
+        </div>
+        <p>Best regards,</p>
+        <p><strong>Ink Vibes Tattoo Studio</strong></p>
+        <div class="footer">
+            <p>This is an automated notification. Please do not reply to this email.</p>
+        </div>
+    </div>
+</body>
+</html>

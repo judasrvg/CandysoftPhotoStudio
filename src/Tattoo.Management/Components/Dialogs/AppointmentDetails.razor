@@ -1,0 +1,90 @@
+﻿@page "/appointment-details"
+@using Tattoo.Management.Models.Dialogs
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@inject DialogService DialogService
+
+<RadzenTemplateForm TItem="ReservationDto" Data="@model" Submit=@OnSubmit>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Client Name" />
+        </div>
+        <div class="col">
+            <RadzenTextBox @bind-Value="@model.ClientName" Name="ClientName" Disabled="@isEditing" />
+            <RadzenRequiredValidator Text="Client Name is required" Component="ClientName" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Start Date" />
+        </div>
+        <div class="col">
+            <RadzenDatePicker @bind-Value="@model.ReservationDateStart" Name="StartDate" ShowTime="true" Disabled="@isEditing" />
+            <RadzenRequiredValidator Text="Start Date is required" Component="StartDate" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="End Date" />
+        </div>
+        <div class="col">
+            <RadzenDatePicker @bind-Value="@model.ReservationDateEnd" Name="EndDate" ShowTime="true" Disabled="@isEditing" />
+            <RadzenRequiredValidator Component="EndDate" Text="End Date is required" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Is Cover Up" />
+        </div>
+        <div class="col">
+            <RadzenCheckBox @bind-Value="@model.IsCoverUp" Name="IsCoverUp" Disabled="@isEditing" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="Is With Color" />
+        </div>
+        <div class="col">
+            <RadzenCheckBox @bind-Value="@model.IsWithColor" Name="IsWithColor" Disabled="@isEditing" />
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 16px">
+        <div class="col-md-3">
+            <RadzenLabel Text="State" />
+        </div>
+        <div class="col">
+            <RadzenDropDown @bind-Value="@model.CurrentStateType" Data="@(Enum.GetValues(typeof(AppoitmentStateType)).Cast<AppoitmentStateType>())" 
+                            TextProperty="Description" ValueProperty="Value" Disabled="@isEditing" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col">
+            <RadzenButton ButtonType="ButtonType.Button" Text="Edit" Click="@EnableEditing" Disabled="@isEditing" />
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" Disabled="@isEditing" />
+        </div>
+    </div>
+</RadzenTemplateForm>
+
+@code {
+    [Parameter]
+    public ReservationDto Appointment { get; set; }
+
+    ReservationDto model = new ReservationDto();
+    bool isEditing = false;
+
+    protected override void OnParametersSet()
+    {
+        model = Appointment;
+    }
+
+    void EnableEditing()
+    {
+        isEditing = true;
+    }
+
+    void OnSubmit(ReservationDto model)
+    {
+        DialogService.Close(model);
+    }
+}

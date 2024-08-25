@@ -1,0 +1,30 @@
+﻿@page "/initview"
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="init-view">
+    <div class="logo-container">
+        <img src="css/images/InitView.svg" alt="InitView" class="logo" />
+    </div>
+    <div class="slide-in-blurred-bottom">
+        <h2 class="">INK YOUR STORY, OWN YOUR ART</h2>
+        <button @onclick="NavigateToMain" class="start-button pulsate-bck ">Let's START!</button>
+
+        @* <button @onclick="ShowCookiePolicy" class="cookie-policy-button">Cookie Policy</button> *@
+    </div>
+    
+</div>
+
+@code {
+    private void NavigateToMain()
+    {
+        JSRuntime.InvokeVoidAsync("localStorage.setItem", "hasSeenInitView", "true");
+        Navigation.NavigateTo("/");
+        StateHasChanged();
+    }
+
+    private void ShowCookiePolicy()
+    {
+        JSRuntime.InvokeVoidAsync("showCookiePolicy");
+    }
+}

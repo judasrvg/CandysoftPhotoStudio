@@ -1,0 +1,41 @@
+﻿@* @page "/faqtattoo" *@
+@using Microsoft.Extensions.Localization
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Models.Forms.Enum
+@using Tattoo.InkVibesTattoo.Models.Requests
+@using Tattoo.InkVibesTattoo.Security
+@inherits LayoutComponentBase
+@* @inject TooltipService tooltipService; *@
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject NavigationManager NavigationManager;
+@* @inject IStringLocalizer<Resources.Resource> Localizer *@
+@inject LocalizationService LocalizationService
+
+@page "/faq"
+@using Radzen
+
+<NotranslateDirective>
+
+    <h3>@LocalizationService.GetString("HeaderFAQ")</h3>
+
+    <div class="faq-container">
+        <RadzenAccordion>
+            <Items>
+                @foreach (var faq in _ConfigValuesData)
+                {
+                    <RadzenAccordionItem Text="@faq.Value">
+                        <p>@($"-{faq.ValueDescription}")</p>
+                    </RadzenAccordionItem>
+                }
+            </Items>
+            
+        </RadzenAccordion>
+    </div>
+</NotranslateDirective>
+
+

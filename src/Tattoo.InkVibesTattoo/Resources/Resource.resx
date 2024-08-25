@@ -1,0 +1,387 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to InkVibes Tattoo Studio</value>
+  </data>
+  <data name="WelcomeSubtitle" xml:space="preserve">
+    <value>Ink Your Story, Own Your Art</value>
+  </data>
+  <data name="WelcomeDescription" xml:space="preserve">
+    <value>Decorate your most precious temple with our art. We offer unique tattoos, quality, and safety with customer satisfaction as our priority. Trust us to make you happy with your new tattoo. Schedule your consultation and transform your vision into reality.</value>
+  </data>
+  <data name="FindUsButton" xml:space="preserve">
+    <value>Find us</value>
+  </data>
+  <data name="TheArtistTitle" xml:space="preserve">
+    <value>The Artist</value>
+  </data>
+  <data name="AdrianName" xml:space="preserve">
+    <value>Adrian</value>
+  </data>
+  <data name="DiverseStyles" xml:space="preserve">
+    <value>Diverse Styles</value>
+  </data>
+  <data name="AdrianBio" xml:space="preserve">
+    <value>I was born in Havana, Cuba, and from a young age, I was passionate about the visual arts, spending hours drawing. When I discovered tattooing, I knew I wanted to dedicate myself to this beautiful profession, starting my career in Cuba. After six years of perfecting and growing my skills, I emigrated to the United States. Here, I continue to deliver art and dedication to every client who trusts me to decorate their body, ensuring that each piece is unique and meaningful. My mission is to transform ideas into art that celebrates each person's individuality.</value>
+  </data>
+  <data name="MyWorkTitle" xml:space="preserve">
+    <value>My Work</value>
+  </data>
+  <data name="BookNowButton" xml:space="preserve">
+    <value>BOOK NOW</value>
+  </data>
+  <data name="ContactUsTitle" xml:space="preserve">
+    <value>Contact us</value>
+  </data>
+  <data name="EmailLabel" xml:space="preserve">
+    <value>EMAIL</value>
+  </data>
+  <data name="AddressLabel" xml:space="preserve">
+    <value>ADDRESS</value>
+  </data>
+  <data name="OpeningHoursLabel" xml:space="preserve">
+    <value>OPENING HOURS</value>
+  </data>
+  <data name="OpeningHours" xml:space="preserve">
+    <value>Monday - Sunday: 10am - 7pm</value>
+  </data>
+  <data name="FAQTitle" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="CommitmentTitle" xml:space="preserve">
+    <value>Our Commitment to Quality</value>
+  </data>
+  <data name="CommitmentDescription" xml:space="preserve">
+    <value>At our tattoo studio, cleanliness is our top priority. We take meticulous care to ensure a pristine and hygienic environment for our clients. Your safety and satisfaction are paramount to us, and our commitment to sanitation reflects our dedication to providing the best tattoo experience possible.</value>
+  </data>
+  <data name="OurNeedlesTitle" xml:space="preserve">
+    <value>Our Needles</value>
+  </data>
+  <data name="OurNeedlesDescription" xml:space="preserve">
+    <value>All tattoo needles used at InkVibes Tattoo are of the highest industry standards, pre-sterilized, and single-use.</value>
+  </data>
+  <data name="OurInkTitle" xml:space="preserve">
+    <value>Our Ink</value>
+  </data>
+  <data name="OurInkDescription" xml:space="preserve">
+    <value>All ink used at InkVibes Tattoo is of the highest industry standards, 100% vegan-friendly, and non-toxic.</value>
+  </data>
+  <data name="OurProcessTitle" xml:space="preserve">
+    <value>Our Process</value>
+  </data>
+  <data name="OurProcessDescription" xml:space="preserve">
+    <value>We adhere to the highest health and hygiene standards, assuring your safety and ours. All procedures are performed with single-use equipment.</value>
+  </data>
+  <data name="OurSafetyTitle" xml:space="preserve">
+    <value>Our Safety</value>
+  </data>
+  <data name="OurSafetyDescription" xml:space="preserve">
+    <value>All equipment and work areas used to perform procedures at InkVibes Tattoo are thoroughly sterilized and cleaned between clients, assuring you peace of mind.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Artist" xml:space="preserve">
+    <value>The Artist</value>
+  </data>
+  <data name="Gallery" xml:space="preserve">
+    <value>My Work</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="BookNow" xml:space="preserve">
+    <value>BOOK NOW</value>
+  </data>
+  <data name="InitViewTitle" xml:space="preserve">
+    <value>INK YOUR STORY, OWN YOUR ART</value>
+  </data>
+  <data name="InitViewButton" xml:space="preserve">
+    <value>Let's START!</value>
+  </data>
+  <data name="HeaderFAQ" xml:space="preserve">
+    <value>Frequently Asked Questions</value>
+  </data>
+  <data name="RightReserved" xml:space="preserve">
+    <value>All rights reserved</value>
+  </data>
+  <data name="ViewMoreButton" xml:space="preserve">
+    <value>VIEW MORE</value>
+  </data>
+  <data name="UploadDesign" xml:space="preserve">
+    <value>Share with us your prefered design</value>
+  </data>
+  <data name="YourName" xml:space="preserve">
+    <value>Your Name</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Required</value>
+  </data>
+  <data name="YourEmail" xml:space="preserve">
+    <value>Your Email</value>
+  </data>
+  <data name="Invalid" xml:space="preserve">
+    <value>Invalid</value>
+  </data>
+  <data name="YourPhone" xml:space="preserve">
+    <value>Your Phone</value>
+  </data>
+  <data name="PreferredDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="IsCoverUp" xml:space="preserve">
+    <value>Is this a CoverUp</value>
+  </data>
+  <data name="WithColor" xml:space="preserve">
+    <value>With Color</value>
+  </data>
+  <data name="BlackAndWhite" xml:space="preserve">
+    <value>Black / White</value>
+  </data>
+  <data name="OverAge" xml:space="preserve">
+    <value>I am over the age of 18</value>
+  </data>
+  <data name="AcceptConditions" xml:space="preserve">
+    <value>I agree to receive promotional messages sent via an autodialer and this agreement isn't a condition of any purchase.</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>SEND</value>
+  </data>
+  <data name="GetDirections" xml:space="preserve">
+    <value>Get Directions</value>
+  </data>
+  <data name="UploadChoose" xml:space="preserve">
+    <value>Choose</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="EndDateInvalid" xml:space="preserve">
+    <value>End Date most be greatest than start date</value>
+  </data>
+  <data name="InvalidDates" xml:space="preserve">
+    <value>Invalid Dates</value>
+  </data>
+  <data name="MaximunFiles" xml:space="preserve">
+    <value>You can upload a maximum of</value>
+  </data>
+  <data name="OnLimit" xml:space="preserve">
+    <value>On Limit</value>
+  </data>
+  <data name="OperationSuccess" xml:space="preserve">
+    <value>OperationSuccess</value>
+  </data>
+  <data name="TellUsLess" xml:space="preserve">
+    <value>Tell Us Less</value>
+  </data>
+  <data name="TellUsMore" xml:space="preserve">
+    <value>Tell Us More</value>
+  </data>
+  <data name="PrivacyPolicy_Title" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="PrivacyPolicy_Description" xml:space="preserve">
+    <value>This privacy policy explains what data we collect and how we use it. You should read this policy to understand what kind of data we store on your device and how that information is used.</value>
+  </data>
+  <data name="PrivacyPolicy_LocalStorage_Title" xml:space="preserve">
+    <value>What is local storage (localStorage)?</value>
+  </data>
+  <data name="PrivacyPolicy_LocalStorage_Description" xml:space="preserve">
+    <value>Local storage (localStorage) is an HTML5 feature that allows websites to store data in the user's browser. Unlike cookies, data stored in localStorage does not have an expiration date and remains in the browser until it is manually deleted.</value>
+  </data>
+  <data name="PrivacyPolicy_Usage_Title" xml:space="preserve">
+    <value>How do we use local storage?</value>
+  </data>
+  <data name="PrivacyPolicy_Usage_Description" xml:space="preserve">
+    <value>We use local storage to store information that improves the user's experience on our website. The information we store includes:</value>
+  </data>
+  <data name="PrivacyPolicy_Usage_Language" xml:space="preserve">
+    <value>Selected language: We store the user's preferred language to display content in that language on future visits.</value>
+  </data>
+  <data name="PrivacyPolicy_Usage_InitialView" xml:space="preserve">
+    <value>Initial view: We store whether the user has seen the initial view to avoid showing it again.</value>
+  </data>
+  <data name="PrivacyPolicy_Usage_Favorites" xml:space="preserve">
+    <value>Favorite tattoos: We store the tattoos that the user has marked as favorites to facilitate access on future visits.</value>
+  </data>
+  <data name="PrivacyPolicy_Disable_Title" xml:space="preserve">
+    <value>Disable local storage</value>
+  </data>
+  <data name="PrivacyPolicy_Disable_Description" xml:space="preserve">
+    <value>You can disable local storage by adjusting the settings in your browser (consult your browser's Help to learn how to do this). Note that disabling local storage will affect the functionality of this and many other websites you visit. Disabling local storage will generally result in also disabling certain functionalities and features of this site. Therefore, it is recommended not to disable local storage.</value>
+  </data>
+  <data name="PrivacyPolicy_Cloudflare_Title" xml:space="preserve">
+    <value>Use of Cloudflare CDN</value>
+  </data>
+  <data name="PrivacyPolicy_Cloudflare_Description" xml:space="preserve">
+    <value>We use Cloudflare CDN (Content Delivery Network) to improve the performance and security of our website. Cloudflare caches a copy of our site in multiple locations around the world, allowing users to access content more quickly from the server closest to them. Additionally, Cloudflare offers protection against DDoS attacks and other security threats.</value>
+  </data>
+  <data name="PrivacyPolicy_Cloudflare_Data_Title" xml:space="preserve">
+    <value>What data does Cloudflare collect?</value>
+  </data>
+  <data name="PrivacyPolicy_Cloudflare_Data_Description" xml:space="preserve">
+    <value>Cloudflare may collect information about the requests made to our website, including IP addresses, HTTP headers, and performance data. This information is used to improve the performance and security of the service. Cloudflare does not store personal data for tracking or marketing purposes.</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Title" xml:space="preserve">
+    <value>Your rights</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Description" xml:space="preserve">
+    <value>Depending on your location, you may have certain rights regarding your personal data, including:</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Access" xml:space="preserve">
+    <value>Right to access the personal data we store about you.</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Correction" xml:space="preserve">
+    <value>Right to request correction of inaccurate or incomplete personal data.</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Deletion" xml:space="preserve">
+    <value>Right to request deletion of your personal data.</value>
+  </data>
+  <data name="PrivacyPolicy_Rights_Object" xml:space="preserve">
+    <value>Right to object to the processing of your personal data.</value>
+  </data>
+  <data name="PrivacyPolicy_Contact" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PrivacyPolicy_MoreInfo" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CookieConsent_Message" xml:space="preserve">
+    <value>This website uses local storage to ensure you get the best experience.</value>
+  </data>
+  <data name="CookieConsent_Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="LearnMore" xml:space="preserve">
+    <value>Learn More</value>
+  </data>
+  <data name="PolicyNote" xml:space="preserve">
+    <value>By continuing, you accept our cookies policy.</value>
+  </data>
+  <data name="PreferredTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+</root>
