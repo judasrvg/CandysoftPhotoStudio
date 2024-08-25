@@ -18,9 +18,9 @@
     </NotFound>
 </Router>
 <NotranslateDirective>
-<RadzenDropDownDataGrid AllowSorting=false AllowFilteringByWord=false AllowColumnResize=false ShowSearch=false Data="@languageOptions" @bind-Value="selectedLanguage" TextProperty="Name" ValueProperty="Code" class="lang-layout" Change="@(args => ChangeLanguage((string)args))">
+@* <RadzenDropDownDataGrid AllowSorting=false  AllowFilteringByWord=false AllowColumnResize=false ShowSearch=false Data="@languageOptions" @bind-Value="selectedLanguage" TextProperty="Name" ValueProperty="Code" class="lang-layout" Change="@(args => ChangeLanguage((string)args))">
     <Columns>
-        <RadzenDropDownDataGridColumn Property="Name" Title="">
+        <RadzenDropDownDataGridColumn Property="Name" Title="" >
             <Template Context="data">
                 <NotranslateDirective>
                 
@@ -39,10 +39,10 @@
             }
         }
     </ValueTemplate>
-</RadzenDropDownDataGrid>
+</RadzenDropDownDataGrid> *@
 </NotranslateDirective>
 @code {
-    private string selectedLanguage = "en";
+    private string selectedLanguage = "es";
     private List<LanguageOption> languageOptions = new List<LanguageOption>
     {
         new LanguageOption { Code = "en", Name = "EN" },

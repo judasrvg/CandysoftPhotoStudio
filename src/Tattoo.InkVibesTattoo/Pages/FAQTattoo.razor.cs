@@ -61,7 +61,7 @@ namespace Tattoo.InkVibesTattoo.Pages
 
         DataGridEditMode editMode = DataGridEditMode.Single;
         private readonly CacheValueType _customValueType = CacheValueType.AskAnswerFAQ;
-        private string selectedLanguage = "en";
+        private string selectedLanguage = "es";
 
         ///End methods for inside grid edition
 

@@ -37,9 +37,9 @@ namespace App.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL8006.site4now.net;Initial Catalog=db_aaa3b0_tattoodev;User Id=db_aaa3b0_tattoodev_admin;Password=Tatoo99@;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
+            //optionsBuilder.UseSqlServer("Data Source=SQL8006.site4now.net;Initial Catalog=db_aaa3b0_tattoodev;User Id=db_aaa3b0_tattoodev_admin;Password=Tatoo99@;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
 
-            //optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=tattooDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
+            optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
         }
     }
 }

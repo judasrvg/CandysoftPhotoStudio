@@ -30,7 +30,7 @@ namespace Tattoo.InkVibesTattoo.Layout
                 var savedLanguage = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "selectedLanguage");
                 if (string.IsNullOrEmpty(savedLanguage))
                 {
-                    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", "en");
+                    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", "es");
                 }
 
                 var result = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "hasSeenInitView");

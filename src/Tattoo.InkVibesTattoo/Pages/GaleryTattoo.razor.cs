@@ -31,7 +31,7 @@ namespace Tattoo.InkVibesTattoo.Pages
         private string classRating= "";
         private bool ActiveRatingProcess= false;
         private bool isDataLoaded = false;
-        private string selectedLanguage = "en";
+        private string selectedLanguage = "es";
 
         protected override async Task OnInitializedAsync()
         {
