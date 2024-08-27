@@ -11,7 +11,7 @@ namespace Tattoo.InkVibesTattoo.Helpers
         public bool GlobalIsPartialSuccessDialogRequest { get; set; } = false;
         public string GlobalDialogRequestMessage { get; set; } = "";
         public bool GlobalIsEventDeletedDialog { get; set; } = false;
-        public string GlobalLanguage { get; set; } = "en";
+        public string GlobalLanguage { get; set; } = "es";
 
         public event Action OnGlobalBasicValuesChanged;
         public event Action OnGlobalCountSolicitedChanged;

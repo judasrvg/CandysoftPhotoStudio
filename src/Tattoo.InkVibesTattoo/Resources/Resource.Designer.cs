@@ -79,7 +79,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to I was born in Havana, Cuba, and from a young age, I was passionate about the visual arts, spending hours drawing. When I discovered tattooing, I knew I wanted to dedicate myself to this beautiful profession, starting my career in Cuba. After six years of perfecting and growing my skills, I emigrated to the United States. Here, I continue to deliver art and dedication to every client who trusts me to decorate their body, ensuring that each piece is unique and meaningful. My mission is to transform ideas into [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to We are a passionate and talented team, dedicated to the visual arts and creating unique experiences for our clients. With a strong background in various artistic disciplines, we blend creativity, technique, and a personalized approach to transform every idea into a work of art. From the initial sketches to the final execution, we work closely with our clients to ensure that each project reflects their individuality and style. Our commitment is to deliver high-quality, meaningful work that exceeds expectatio [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AdrianBio {
             get {
@@ -88,7 +88,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adrian.
+        ///   Looks up a localized string similar to CANDYSOFT Studio.
         /// </summary>
         public static string AdrianName {
             get {
@@ -97,7 +97,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Artist.
+        ///   Looks up a localized string similar to Studio.
         /// </summary>
         public static string Artist {
             get {
@@ -133,7 +133,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to At our tattoo studio, cleanliness is our top priority. We take meticulous care to ensure a pristine and hygienic environment for our clients. Your safety and satisfaction are paramount to us, and our commitment to sanitation reflects our dedication to providing the best tattoo experience possible..
+        ///   Looks up a localized string similar to At our photography studio, attention to detail is our top priority. We take meticulous care to create a clean, organized, and welcoming environment for our clients. Your comfort and satisfaction are paramount to us, and our commitment to a professional and pristine studio reflects our dedication to providing the best photography experience possible..
         /// </summary>
         public static string CommitmentDescription {
             get {
@@ -259,7 +259,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Work.
+        ///   Looks up a localized string similar to Destacados.
         /// </summary>
         public static string Gallery {
             get {
@@ -304,7 +304,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to INK YOUR STORY, OWN YOUR ART.
+        ///   Looks up a localized string similar to Tu historia en cada imagen, arte en cada detalle..
         /// </summary>
         public static string InitViewTitle {
             get {
@@ -358,7 +358,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Work.
+        ///   Looks up a localized string similar to Destacados.
         /// </summary>
         public static string MyWorkTitle {
             get {
@@ -745,6 +745,15 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paquetes.
+        /// </summary>
+        public static string Services {
+            get {
+                return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tell Us Less.
         /// </summary>
         public static string TellUsLess {
@@ -763,7 +772,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Artist.
+        ///   Looks up a localized string similar to Studio.
         /// </summary>
         public static string TheArtistTitle {
             get {
@@ -799,7 +808,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decorate your most precious temple with our art. We offer unique tattoos, quality, and safety with customer satisfaction as our priority. Trust us to make you happy with your new tattoo. Schedule your consultation and transform your vision into reality..
+        ///   Looks up a localized string similar to Welcome to Candysoft Studio, your premier destination for high-quality photography. Our team of expert photographers is dedicated to turning your vision into reality with unmatched creativity. We are committed to excellence in every shot, ensuring a unique and personalized experience. Discover the difference at Candysoft Studio, where art meets precision in a first-class environment..
         /// </summary>
         public static string WelcomeDescription {
             get {
@@ -808,7 +817,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ink Your Story, Own Your Art.
+        ///   Looks up a localized string similar to Tu historia en cada imagen, arte en cada detalle..
         /// </summary>
         public static string WelcomeSubtitle {
             get {
@@ -817,7 +826,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to InkVibes Tattoo Studio.
+        ///   Looks up a localized string similar to Welcome to Candysoft Studio.
         /// </summary>
         public static string WelcomeTitle {
             get {

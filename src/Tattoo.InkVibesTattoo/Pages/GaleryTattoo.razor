@@ -1,6 +1,7 @@
 ﻿@* @page "/galerytattoo" *@
 @using Microsoft.Extensions.Localization
 @using Radzen.Blazor
+@using BlazorStrap
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @using Radzen.Blazor.Rendering
 @using System.Text.Json
@@ -16,26 +17,17 @@
 @* @inject IStringLocalizer<Resources.Resource> Localizer *@
 
 <NotranslateDirective>
-   
-    <RadzenDataList @ref="_GaleryTattoosDataGridRef" class="datalist-radzen data-list-products" Data="@_GaleryTattoosData" TItem="TattooDto" PageSize=200 WrapItems="true" AllowPaging="false">
-        <Template Context="tattoo">
-            <div class="image-container">
-                <RadzenImage Path="@(!string.IsNullOrWhiteSpace(tattoo.MiniatureImagePath) ? tattoo.MiniatureImagePath : !string.IsNullOrWhiteSpace(tattoo.ImagePath) ? tattoo.ImagePath :"/css/images/genericproduct.webp" )" class="tattoo-image image-thumbnail" AlternateText="@tattoo.TattooName" Click=@((args)=>ShowDialogZoomImage(args,tattoo.ImagePath)) />
-                <div class="image-overlay">
-                    <div @onclick="()=>OnClickIncrementRating(tattoo.Id)">
-                        <RadzenIcon @onclick="()=>OnClickIncrementRating(tattoo.Id)" Icon=@(!tattoo.IsFavorite ? "thumb_up_off_alt" : "thumb_up") class=@(tattoo.IsFavorite?"icon-color-like puff-in-top":"icon-color-like")></RadzenIcon>
-                        <p class="icon-color-like">@(tattoo.Rating == 0 ? "" : tattoo.Rating.ToString())</p>
-                    </div>
-                    
-
+    <BSCarousel HasControls="false" IsDark="true" Class="full-width-carousel">
+        @foreach (var tattoo in _GaleryTattoosData)
+        {
+            <BSCarouselItem>
+                <div class="carousel-image-wrapper">
+                    <img src="@tattoo.ImagePath" alt="@tattoo.TattooName" class="carousel-image-layout" />
                 </div>
-            </div>
-        </Template>
-    </RadzenDataList>
-    <RadzenStack class="text-center" Style="align-items: center !important;">
-        <RadzenButton class="w-80 book-now-layout" Style="background-color: rgb(0 0 0 / 0%) !important;" ButtonStyle="ButtonStyle.Light" Variant="Variant.Text" Text="@LocalizationService.GetString("ViewMoreButton")" Click=@(args=>OnClickViewMore()) />
+            </BSCarouselItem>
+        }
+    </BSCarousel>
 
-    </RadzenStack>
 </NotranslateDirective>
 
 

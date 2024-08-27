@@ -35,7 +35,7 @@
         var savedLanguage = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "selectedLanguage");
         if (string.IsNullOrEmpty(savedLanguage))
         {
-            savedLanguage = "en";
+            savedLanguage = "es";
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", savedLanguage);
         }
 

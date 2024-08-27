@@ -14,7 +14,7 @@
 <RadzenDialog />
 <RadzenNotification />
 <RadzenTooltip />
-
+<BSCore />
 <NotranslateDirective>
     @if (!hasSeenInitView)
     {
@@ -38,10 +38,10 @@
         <div class="main-layout">
             <div class="menu desktop-only">
                 <div class="social-links desktop-only">
-                    <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
-                    <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
-                    <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
-                    <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
+                    <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="css/images/facebook-new.png" alt="Facebook" /></a>
+                   @*  <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="css/images/tiktok.png" alt="TikTok" /></a>
+                    <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="css/images/instagram-new.png" alt="Instagram" /></a> *@
+                    <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="css/images/phone.png" alt="Phone Icon" /></a>
                 </div>
                 <nav class="desktop-only">
                     <ul>
@@ -71,7 +71,7 @@
                     <RadzenColumn Size="2" class="mobile-only">
                         <RadzenStack class="stack-book-now mobile-only">
                             <div class="social-links mobile-only">
-                                <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
+                                <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="css/images/phone.png" alt="Phone Icon" /></a>
                             </div>
                         </RadzenStack>
                     </RadzenColumn>

@@ -118,31 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WelcomeTitle" xml:space="preserve">
-    <value>Welcome to InkVibes Tattoo Studio</value>
+    <value>Welcome to Candysoft Studio</value>
   </data>
   <data name="WelcomeSubtitle" xml:space="preserve">
-    <value>Ink Your Story, Own Your Art</value>
+    <value>Tu historia en cada imagen, arte en cada detalle.</value>
   </data>
   <data name="WelcomeDescription" xml:space="preserve">
-    <value>Decorate your most precious temple with our art. We offer unique tattoos, quality, and safety with customer satisfaction as our priority. Trust us to make you happy with your new tattoo. Schedule your consultation and transform your vision into reality.</value>
+    <value>Welcome to Candysoft Studio, your premier destination for high-quality photography. Our team of expert photographers is dedicated to turning your vision into reality with unmatched creativity. We are committed to excellence in every shot, ensuring a unique and personalized experience. Discover the difference at Candysoft Studio, where art meets precision in a first-class environment.</value>
   </data>
   <data name="FindUsButton" xml:space="preserve">
     <value>Find us</value>
   </data>
   <data name="TheArtistTitle" xml:space="preserve">
-    <value>The Artist</value>
+    <value>Studio</value>
   </data>
   <data name="AdrianName" xml:space="preserve">
-    <value>Adrian</value>
+    <value>CANDYSOFT Studio</value>
   </data>
   <data name="DiverseStyles" xml:space="preserve">
     <value>Diverse Styles</value>
   </data>
   <data name="AdrianBio" xml:space="preserve">
-    <value>I was born in Havana, Cuba, and from a young age, I was passionate about the visual arts, spending hours drawing. When I discovered tattooing, I knew I wanted to dedicate myself to this beautiful profession, starting my career in Cuba. After six years of perfecting and growing my skills, I emigrated to the United States. Here, I continue to deliver art and dedication to every client who trusts me to decorate their body, ensuring that each piece is unique and meaningful. My mission is to transform ideas into art that celebrates each person's individuality.</value>
+    <value>We are a passionate and talented team, dedicated to the visual arts and creating unique experiences for our clients. With a strong background in various artistic disciplines, we blend creativity, technique, and a personalized approach to transform every idea into a work of art. From the initial sketches to the final execution, we work closely with our clients to ensure that each project reflects their individuality and style. Our commitment is to deliver high-quality, meaningful work that exceeds expectations and celebrates the unique essence of each person.</value>
   </data>
   <data name="MyWorkTitle" xml:space="preserve">
-    <value>My Work</value>
+    <value>Destacados</value>
   </data>
   <data name="BookNowButton" xml:space="preserve">
     <value>BOOK NOW</value>
@@ -169,7 +169,7 @@
     <value>Our Commitment to Quality</value>
   </data>
   <data name="CommitmentDescription" xml:space="preserve">
-    <value>At our tattoo studio, cleanliness is our top priority. We take meticulous care to ensure a pristine and hygienic environment for our clients. Your safety and satisfaction are paramount to us, and our commitment to sanitation reflects our dedication to providing the best tattoo experience possible.</value>
+    <value>At our photography studio, attention to detail is our top priority. We take meticulous care to create a clean, organized, and welcoming environment for our clients. Your comfort and satisfaction are paramount to us, and our commitment to a professional and pristine studio reflects our dedication to providing the best photography experience possible.</value>
   </data>
   <data name="OurNeedlesTitle" xml:space="preserve">
     <value>Our Needles</value>
@@ -199,10 +199,10 @@
     <value>Home</value>
   </data>
   <data name="Artist" xml:space="preserve">
-    <value>The Artist</value>
+    <value>Studio</value>
   </data>
   <data name="Gallery" xml:space="preserve">
-    <value>My Work</value>
+    <value>Destacados</value>
   </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
@@ -214,7 +214,7 @@
     <value>BOOK NOW</value>
   </data>
   <data name="InitViewTitle" xml:space="preserve">
-    <value>INK YOUR STORY, OWN YOUR ART</value>
+    <value>Tu historia en cada imagen, arte en cada detalle.</value>
   </data>
   <data name="InitViewButton" xml:space="preserve">
     <value>Let's START!</value>
@@ -383,5 +383,8 @@
   </data>
   <data name="PreferredTime" xml:space="preserve">
     <value>Time</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Paquetes</value>
   </data>
 </root>

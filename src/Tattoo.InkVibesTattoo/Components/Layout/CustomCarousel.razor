@@ -1,0 +1,48 @@
+﻿@using Tattoo.InkVibesTattoo.Models.Forms
+<div class="custom-carousel">
+    <div class="carousel-inner">
+        @foreach (var item in Items)
+        {
+            <div class="carousel-item" style="display: @(CurrentIndex == Items.IndexOf(item) ? "block" : "none");">
+                <div class="offer-card @((item.IsHighlighted ? "highlight" : ""))">
+                    <div class="offer-icon">
+                        <span class="material-icons">@item.Icon</span>
+                    </div>
+                    <h3>@item.Name</h3>
+                    <div class="price">@($"${item.Price:N0}")</div>
+                    <ul class="offer-features">
+                        @foreach (var feature in item.Features)
+                        {
+                            <li>@feature</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+    <button @onclick="PreviousSlide" class="carousel-control-prev">❮</button>
+    <button @onclick="NextSlide" class="carousel-control-next">❯</button>
+</div>
+
+@code {
+    [Parameter] public List<Offer> Items { get; set; } = new List<Offer>();
+
+    private int CurrentIndex { get; set; } = 0;
+
+    private void NextSlide()
+    {
+        if (Items != null && Items.Count > 0)
+        {
+            CurrentIndex = (CurrentIndex + 1) % Items.Count;
+        }
+    }
+
+    private void PreviousSlide()
+    {
+        if (Items != null && Items.Count > 0)
+        {
+            CurrentIndex = (CurrentIndex - 1 + Items.Count) % Items.Count;
+        }
+    }
+}

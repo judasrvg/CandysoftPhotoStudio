@@ -23,10 +23,15 @@
 @inject LocalizationService LocalizationService;
 @* @inject IStringLocalizer<Resources.Resource> Localizer *@
 
+
 <div id="section0">
-    <RadzenRow class="text-center p-4">
+    <GaleryTattoo />
+
+    <RadzenRow class="text-center p-0 row-home-presentation">
         <RadzenColumn class="home-presentation-layout">
+
             <h1>@LocalizationService.GetString("WelcomeTitle")</h1>
+
             <p>@LocalizationService.GetString("WelcomeSubtitle")</p>
             <p>@LocalizationService.GetString("WelcomeDescription")</p>
             <RadzenButton ButtonStyle="ButtonStyle.Warning" Style="font-family: 'MaterialCustom'; font-weight: 600; margin-bottom: 11px;" Variant="Variant.Filled" class="" Text="@LocalizationService.GetString("FindUsButton")" Click="@(() => ScrollToSection("section4"))" />
@@ -34,9 +39,7 @@
                 <RadzenColumn class="mobile-only">
                     <RadzenStack class="mobile-only">
                         <div class="social-links-footer mobile-only">
-                            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
-                            <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
-                            <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+                            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="css/images/facebook-new.png" alt="Facebook" /></a>
                         </div>
                     </RadzenStack>
                 </RadzenColumn>
@@ -57,10 +60,11 @@
     </RadzenStack>
 </div>
 
+
+
 <div id="section3" class="section">
-    <h1>@LocalizationService.GetString("MyWorkTitle")</h1>
-    <GaleryTattoo />
-    <RadzenButton ButtonStyle="ButtonStyle.Warning" Style="font-family: 'MaterialCustom'; font-weight: 600;" Variant="Variant.Filled" class="mt-4" Text="@LocalizationService.GetString("BookNowButton")" Click="OnClickBookNow" />
+    <h1>@LocalizationService.GetString("Services")</h1>
+    <ServicesPackage />
 </div>
 
 <div id="section4" class="section">
@@ -89,17 +93,16 @@
     <div class="container-fluid">
         <div class="row pt-4">
             <div class="col">
-                <div id="map" style="height: 32rem;"></div>
+                @* <RadzenImage Path="/css/Images/studiointerior.webp" class="" /> *@
+
+                @* <div id="map" style="height: 32rem;"></div> *@
             </div>
         </div>
     </div>
     <div class="social-links-integrated">
-        <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
-        <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
-        <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
-        <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /></a>
-        <a href="https://www.google.com/maps/dir/?api=1&origin=current+location&destination=@lat.ToString("F8", System.Globalization.CultureInfo.InvariantCulture),@lng.ToString("F8", System.Globalization.CultureInfo.InvariantCulture)" class="button button-icon map-button" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/map-pin.png" alt="Map Icon" /> @LocalizationService.GetString("GetDirections")</a>
-    </div>
+        <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="css/images/facebook-new.png" alt="Facebook" /></a>
+        <a href=@($"tel:{stateService.GlobalphoneFacebook.Value}") class="button button-icon"><img src="css/images/phone.png" alt="Phone Icon" /></a>
+           </div>
 
 </div>
 
@@ -114,22 +117,22 @@
 
     <div class="service-items">
         <div class="service-item">
-            <i class="material-icons">health_and_safety</i>
+            <i class="material-icons">camera_alt</i>
             <h3>@LocalizationService.GetString("OurNeedlesTitle")</h3>
             <p>@LocalizationService.GetString("OurNeedlesDescription")</p>
         </div>
         <div class="service-item">
-            <i class="material-icons">palette</i>
+            <i class="material-icons">flash_on </i>
             <h3>@LocalizationService.GetString("OurInkTitle")</h3>
             <p>@LocalizationService.GetString("OurInkDescription")</p>
         </div>
         <div class="service-item">
-            <i class="material-icons">handyman</i>
+            <i class="material-icons">edit</i>
             <h3>@LocalizationService.GetString("OurProcessTitle")</h3>
             <p>@LocalizationService.GetString("OurProcessDescription")</p>
         </div>
         <div class="service-item">
-            <i class="material-icons">cleaning_services</i>
+            <i class="material-icons">verified</i>
             <h3>@LocalizationService.GetString("OurSafetyTitle")</h3>
             <p>@LocalizationService.GetString("OurSafetyDescription")</p>
         </div>
@@ -141,18 +144,16 @@
         <p>Powered by <b>CANDISOFT</b></p>
     </RadzenColumn>
     <RadzenColumn Size="4" class="desktop-only">
-        <p style="font-size: 14px;" class="desktop-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Ink Vibes Tattoo Studio</b></p>
+        <p style="font-size: 14px;" class="desktop-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Candysoft Studio</b></p>
         @* <p><a @onclick="ShowPolicies">Cookies policy</a></p> *@
 
     </RadzenColumn>
     <RadzenColumn Size="8" class="mobile-only">
-        <p style="font-size: 12px;" class="mobile-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Ink Vibes Studio</b></p>
+        <p style="font-size: 12px;" class="mobile-only">© 2024 @LocalizationService.GetString("RightReserved") | <b>Candysoft Studio</b></p>
     </RadzenColumn>
     <RadzenColumn Size="4">
         <div class="social-links-footer">
-            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" /></a>
-            <a href="@stateService.GlobaltiktokInstagram.Value" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" /></a>
-            <a href="@stateService.GlobaltiktokInstagram.ValueDescription" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" /></a>
+            <a href="@stateService.GlobalphoneFacebook.ValueDescription" target="_blank"><img src="css/images/facebook-new.png" alt="Facebook" /></a>
         </div>
     </RadzenColumn>
 </RadzenRow>
@@ -197,13 +198,13 @@
         }
 
         // Inicializar el mapa con las coordenadas
-        await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
+        // await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
 
         // Agregar marcador si hay coordenadas guardadas
-        if (!string.IsNullOrEmpty(@stateService.GlobalLocation.Value))
-        {
-            await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, $"Ink Vibes Tattoo");
-        }
+        // if (!string.IsNullOrEmpty(@stateService.GlobalLocation.Value))
+        // {
+        //     await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, $"Candysoft Studio");
+        // }
     }
 
 

@@ -1,0 +1,97 @@
+﻿@using Microsoft.Extensions.Localization
+@using Radzen.Blazor
+@using BlazorStrap
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Security
+@using System.Collections.Generic
+@inject IJSRuntime JSRuntime
+
+@if (Items != null && Items.Any())
+{
+    <div class="offer-cards-container desktop-only">
+        @foreach (var offer in Items)
+        {
+            <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
+                <div class="offer-icon">
+                    <span class="material-icons">@offer.Icon</span>
+                </div>
+                <h3>@offer.Name</h3>
+                <div class="price">@($"${offer.Price:N0}")</div>
+                <ul class="offer-features">
+                    @foreach (var feature in offer.Features)
+                    {
+                        <li>@feature</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <div class="offer-cards-container mobile-only p-0">
+        <div class="custom-offer-carousel">
+            <div class="custom-carousel-inner">
+                @foreach (var offer in Items)
+                {
+                    <div class="custom-carousel-item @(CurrentIndex == Items.IndexOf(offer) ? "active" : "")">
+                        <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
+                            <div class="offer-icon">
+                                <span class="material-icons">@offer.Icon</span>
+                            </div>
+                            <h3>@offer.Name</h3>
+                            <div class="price">@($"${offer.Price:N0}")</div>
+                            <ul class="offer-features">
+                                @foreach (var feature in offer.Features)
+                                {
+                                    <li>@feature</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <button @onclick="PreviousSlide" class="custom-carousel-control-prev">❮</button>
+            <button @onclick="NextSlide" class="custom-carousel-control-next">❯</button>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public List<Offer> Items { get; set; } = new List<Offer>();
+    private int CurrentIndex { get; set; } = 0;
+
+    private void NextSlide()
+    {
+        if (Items != null && Items.Count > 0)
+        {
+            CurrentIndex = (CurrentIndex + 1) % Items.Count;
+        }
+    }
+
+    private void PreviousSlide()
+    {
+        if (Items != null && Items.Count > 0)
+        {
+            CurrentIndex = (CurrentIndex - 1 + Items.Count) % Items.Count;
+        }
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        StateHasChanged();
+        return base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            // Invocar el script para reiniciar el carrusel
+            await JSRuntime.InvokeVoidAsync("restartCarousel");
+        }
+    }
+}

@@ -42,6 +42,78 @@
 
 
 @media screen and (max-width: 600px) {
+    /****************************Caroucel***********************************/
+    .custom-offer-carousel {
+        position: relative;
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+        /*border: 1px solid #ddd;*/
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-carousel-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .custom-carousel-item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .custom-carousel-item.active {
+            opacity: 1;
+            z-index: 1;
+            position: relative;
+        }
+
+    .custom-carousel-control-prev,
+    .custom-carousel-control-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        padding: 10px;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 2;
+    }
+
+    .custom-carousel-control-prev {
+        left: 10px;
+    }
+
+    .custom-carousel-control-next {
+        right: 10px;
+    }
+
+        .custom-carousel-control-prev:hover,
+        .custom-carousel-control-next:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+
+    /****************************ENDCaroucel***********************************/
+
+    .offer-features>li {
+        font-size:14px!important;
+    }
+
     .rz-dropdown-panel > .rz-lookup-panel > .rz-lookup-search {
         display: none !important;
     }

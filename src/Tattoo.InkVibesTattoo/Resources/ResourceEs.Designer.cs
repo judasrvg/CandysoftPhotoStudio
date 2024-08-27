@@ -79,7 +79,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nací en La Habana, Cuba, y desde pequeño me apasionaron las artes plásticas, pasando horas dibujando. Al descubrir el tatuaje, supe que quería dedicarme a esta bella profesión, comenzando mi carrera en Cuba. Después de seis años de perfeccionamiento y crecimiento, emigré a los Estados Unidos. Aquí, sigo entregando arte y dedicación a cada cliente que confía en mí para decorar su cuerpo, asegurándome de que cada pieza sea única y significativa. Mi misión es transformar ideas en arte que celebre la individual [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Somos un equipo apasionado y talentoso, dedicado a las artes visuales y a la creación de experiencias únicas para nuestros clientes. Con una sólida formación en diferentes disciplinas artísticas, combinamos creatividad, técnica y un enfoque personalizado para transformar cada idea en una obra de arte. Desde los primeros bocetos hasta la ejecución final, trabajamos en estrecha colaboración con nuestros clientes para asegurarnos de que cada proyecto refleje su individualidad y estilo. Nuestro compromiso es en [rest of string was truncated]&quot;;.
         /// </summary>
         public static string AdrianBio {
             get {
@@ -88,7 +88,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adrián.
+        ///   Looks up a localized string similar to CANDYSOFT Studio.
         /// </summary>
         public static string AdrianName {
             get {
@@ -97,7 +97,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to El Artista.
+        ///   Looks up a localized string similar to Estudio.
         /// </summary>
         public static string Artist {
             get {
@@ -133,7 +133,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to En nuestro estudio de tatuajes, la limpieza es nuestra principal prioridad. Nos ocupamos meticulosamente de garantizar un entorno prístino e higiénico para nuestros clientes. Tu seguridad y satisfacción son primordiales para nosotros, y nuestro compromiso con la sanidad refleja nuestra dedicación a brindar la mejor experiencia de tatuaje posible..
+        ///   Looks up a localized string similar to En nuestro estudio fotográfico, la atención al detalle es nuestra principal prioridad. Nos esforzamos meticulosamente por crear un entorno limpio, organizado y acogedor para nuestros clientes. Su comodidad y satisfacción son fundamentales para nosotros, y nuestro compromiso con un estudio profesional y en perfecto estado refleja nuestra dedicación a ofrecer la mejor experiencia fotográfica posible..
         /// </summary>
         public static string CommitmentDescription {
             get {
@@ -259,7 +259,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mi Trabajo.
+        ///   Looks up a localized string similar to Destacados.
         /// </summary>
         public static string Gallery {
             get {
@@ -304,7 +304,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TATÚA TU HISTORIA, POSEE TU ARTE.
+        ///   Looks up a localized string similar to Tu historia en cada imagen, arte en cada detalle..
         /// </summary>
         public static string InitViewTitle {
             get {
@@ -358,7 +358,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mi Trabajo.
+        ///   Looks up a localized string similar to Destacados.
         /// </summary>
         public static string MyWorkTitle {
             get {
@@ -403,7 +403,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Toda la tinta utilizada en InkVibes Tattoo cumple con los más altos estándares de la industria, es 100% vegana y no tóxica..
+        ///   Looks up a localized string similar to Utilizamos sistemas de iluminación de última generación que garantizan la perfecta captación de cada detalle, adaptándonos a las necesidades específicas de cada sesión..
         /// </summary>
         public static string OurInkDescription {
             get {
@@ -412,7 +412,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nuestra Tinta.
+        ///   Looks up a localized string similar to Nuestra Iluminación.
         /// </summary>
         public static string OurInkTitle {
             get {
@@ -421,7 +421,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Todas las agujas de tatuaje utilizadas en InkVibes Tattoo cumplen con los más altos estándares de la industria, son preesterilizadas y de un solo uso..
+        ///   Looks up a localized string similar to Seguimos un riguroso proceso de edición y postproducción para que cada fotografía refleje la visión y estilo único de nuestros clientes, asegurando un acabado profesional en cada proyecto..
         /// </summary>
         public static string OurNeedlesDescription {
             get {
@@ -430,7 +430,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nuestras Agujas.
+        ///   Looks up a localized string similar to Nuestro Proceso.
         /// </summary>
         public static string OurNeedlesTitle {
             get {
@@ -439,7 +439,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Adherimos a los más altos estándares de salud e higiene, asegurando tu seguridad y la nuestra. Todos los procedimientos se realizan con equipos de un solo uso..
+        ///   Looks up a localized string similar to Todas las cámaras y equipos utilizados en Candysoft Studio cumplen con los más altos estándares de la industria, asegurando la máxima calidad en cada imagen..
         /// </summary>
         public static string OurProcessDescription {
             get {
@@ -448,7 +448,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nuestro Proceso.
+        ///   Looks up a localized string similar to Nuestro Equipo.
         /// </summary>
         public static string OurProcessTitle {
             get {
@@ -457,7 +457,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Todo el equipo y las áreas de trabajo utilizadas para realizar procedimientos en InkVibes Tattoo se esterilizan y limpian a fondo entre clientes, asegurándote tranquilidad..
+        ///   Looks up a localized string similar to Todo el equipo y las áreas de trabajo en Candysoft Studio se mantienen impecablemente organizados y esterilizados para ofrecer un entorno seguro y cómodo para nuestros clientes..
         /// </summary>
         public static string OurSafetyDescription {
             get {
@@ -745,6 +745,15 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paquetes.
+        /// </summary>
+        public static string Services {
+            get {
+                return ResourceManager.GetString("Services", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cuéntanos menos.
         /// </summary>
         public static string TellUsLess {
@@ -763,7 +772,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to El Artista.
+        ///   Looks up a localized string similar to Estudio.
         /// </summary>
         public static string TheArtistTitle {
             get {
@@ -799,7 +808,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Decora tu templo más preciado, con nuestro arte. Ofrecemos tatuajes únicos, calidad y seguridad con la satisfacción del cliente como prioridad. Confía en nosotros para hacerte feliz con tu nuevo tatuaje. Agenda tu consulta y transforma tu visión en realidad..
+        ///   Looks up a localized string similar to Fotografía de alta calidad. Nuestro equipo de fotógrafos expertos se dedica a convertir tu visión en realidad con una creatividad inigualable. Estamos comprometidos con la excelencia en cada toma, asegurando una experiencia única y personalizada..
         /// </summary>
         public static string WelcomeDescription {
             get {
@@ -808,7 +817,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tatúa tu historia, posee tu arte.
+        ///   Looks up a localized string similar to Tu historia en cada imagen, arte en cada detalle..
         /// </summary>
         public static string WelcomeSubtitle {
             get {
@@ -817,7 +826,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bienvenido a InkVibes Tattoo Studio.
+        ///   Looks up a localized string similar to Bienvenido a CandysoftStudio.
         /// </summary>
         public static string WelcomeTitle {
             get {

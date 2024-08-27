@@ -160,13 +160,13 @@
         }
 
         // Inicializar el mapa con las coordenadas
-        await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
+        // await JSRuntime.InvokeVoidAsync("initializeMap", lat, lng, zoom);
 
-        // Agregar marcador si hay coordenadas guardadas
-        if (!string.IsNullOrEmpty(_ConfigValue.Value))
-        {
-            await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, "Stored Location");
-        }
+        // // Agregar marcador si hay coordenadas guardadas
+        // if (!string.IsNullOrEmpty(_ConfigValue.Value))
+        // {
+        //     await JSRuntime.InvokeVoidAsync("addMarker", lat, lng, "Stored Location");
+        // }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

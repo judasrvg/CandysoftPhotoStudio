@@ -5,6 +5,20 @@ function hideCookieConsent() {
     document.getElementById('cookieConsent').style.display = 'none';
 }
 
+window.restartCarousel = function () {
+    let carousels = document.querySelectorAll('.carousel');
+    carousels.forEach(carousel => {
+        let activeElement = carousel.querySelector('.carousel-item.active');
+        if (activeElement) {
+            activeElement.classList.remove('active');
+            carousel.querySelector('.carousel-item').classList.add('active');
+        }
+        let controls = carousel.querySelectorAll('.carousel-control-prev, .carousel-control-next');
+        controls.forEach(control => {
+            control.removeAttribute('aria-hidden');
+        });
+    });
+}
 //document.addEventListener('DOMContentLoaded', function () {
 //    const sections = document.querySelectorAll('.section');
 //    const menuItems = document.querySelectorAll('.menu ul li');

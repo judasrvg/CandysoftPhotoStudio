@@ -1,5 +1,56 @@
 /*****************Fonts*********************************************************/
+@font-face {
+    font-family: 'MaterialIcons';
+    src: url('/css/Fonts/MaterialIcons-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
+.material-icons {
+    font-family: 'MaterialIcons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Puedes ajustar el tamaño del ícono */
+    line-height: 1;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.full-width-carousel {
+    width: 100%;
+    height: 95vh; /* 50% de la altura del viewport */
+    position: relative;
+    overflow: hidden; /* Asegura que el contenido no desborde el contenedor */
+    z-index: 1; /* Asegura que el carrusel no se superponga a otros elementos que puedan estar en capas superiores */
+}
+
+.carousel-image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Evita que cualquier contenido se desborde */
+}
+
+.carousel-image-layout {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: fill; /* Cubre el contenedor, recortando la imagen si es necesario */
+    object-position: center; /* Centra la imagen dentro del contenedor */
+    display: block;
+}
+
+.row-home-presentation {
+    margin-top: -30rem;
+    z-index: 3;
+    position: relative;
+    background-color: rgb(0 0 0 / 39%);
+}
 
 .policy-note {
     margin-top: 20px;
@@ -98,8 +149,11 @@ img {
     border-radius: 50%;
 }
 @media (min-width: 951px) {
-    
 
+    .carousel-image-layout {
+        
+        margin-top: -30rem;
+    }
 
     .rz-dropdown-panel > .rz-lookup-panel > .rz-lookup-search {
         display: none !important;
@@ -562,7 +616,7 @@ img {
 
 
     .desktop-only {
-        display: block !important;
+        display: flex !important;
     }
 
     .mobile-only {
@@ -1140,7 +1194,112 @@ img {
         padding-top: 1.5rem !important;
     }
 
+
+
+   
 }
+
+/***************************************************Package ***************************************/
+.offer-cards-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.offer-card {
+    width: 23%;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+    .offer-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .offer-card.highlight {
+        background-color: #0288D1;
+        color: white;
+    }
+
+.offer-icon {
+    /*margin-bottom: 15px;
+    font-size: 3rem;*/
+    color: #FF5722; /* Color del icono */
+}
+
+.offer-card.highlight .offer-icon {
+    color: #FFD700; /* Color dorado para la tarjeta destacada */
+}
+
+.offer-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.offer-card .price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #4CAF50; /* Color del precio */
+}
+
+.offer-card.highlight .price {
+    color: #FFD700; /* Color del precio en la tarjeta destacada */
+}
+
+.offer-features {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+    .offer-features li {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+.reserve-button {
+    background-color: #FF5722 !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .reserve-button:hover {
+        background-color: #E64A19 !important;
+    }
+
+@media (max-width: 768px) {
+    .offer-card {
+        width: 100%;
+    }
+
+    .offer-cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+/***************************************************ENDPackage ***************************************/
+
 
 /*.front-body {
     background-color: #3f474e!important;*/

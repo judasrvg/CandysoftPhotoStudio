@@ -55,7 +55,7 @@ namespace App.Application.Abstractions.Implementations
                     ClientName = reservation.ClientName,
                     ReservationDate = reservation.ReservationDateStart,
                     Description = reservation.Details,
-                    ProviderName = "Ink Vibes Tattoo Studio", // Replace with the real provider name
+                    ProviderName = "Candysoft Studio", // Replace with the real provider name
                     Address = emailAddress?.ValueDescription ?? "Unknown Address",
                     PhoneNumber = phoneFacebook?.Value ?? "Unknown Phone",
                     Facebook = phoneFacebook?.ValueDescription ?? "Unknown Facebook",

@@ -2,6 +2,15 @@
 
 namespace Tattoo.InkVibesTattoo.Models.Forms
 {
+    public class Offer
+    {
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public List<string> Features { get; set; }
+        public string Icon { get; set; } // Para el ícono de Material Design
+        public bool IsHighlighted { get; set; } // Para destacar la tarjeta "Estándar"
+    }
+
     public class LanguageOption
     {
         public string Code { get; set; }

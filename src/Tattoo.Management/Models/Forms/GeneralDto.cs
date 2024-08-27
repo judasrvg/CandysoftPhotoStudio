@@ -49,7 +49,7 @@ namespace Tattoo.Management.Models.Forms
         public AppoitmentStateType CurrentStateType { get; set; }
         public string Details { get; set; } = string.Empty;
 
-        public string Lang { get; set; } = "en";
+        public string Lang { get; set; } = "es";
 
     }
 

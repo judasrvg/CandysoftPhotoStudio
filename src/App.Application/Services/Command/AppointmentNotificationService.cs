@@ -75,7 +75,7 @@ namespace App.Application.Services
                             ClientName = reservation.ClientName,
                             ReservationDate = reservation.ReservationDateStart,
                             Description = reservation.Details,
-                            ProviderName = "Ink Vibes Tattoo Studio", // Agrega el nombre real del proveedor aquí
+                            ProviderName = "Candysoft Studio", // Agrega el nombre real del proveedor aquí
                             Address = emailAdress.ValueDescription,
                             PhoneNumber = phoneFacebook.Value,
                             Facebook = phoneFacebook.ValueDescription,

@@ -24,7 +24,7 @@ namespace App.Application.Services
             try
             {
                 var message = new MimeMessage();
-                message.From.Add(new MailboxAddress("Ink Vibes Tattoo Studio", _configuration["Smtp:Username"]));
+                message.From.Add(new MailboxAddress("Candysoft Studio", _configuration["Smtp:Username"]));
                 message.To.Add(MailboxAddress.Parse(emailRequest.To));
                 message.Subject = emailRequest.Subject;
 

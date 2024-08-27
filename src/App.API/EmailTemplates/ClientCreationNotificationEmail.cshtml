@@ -114,12 +114,11 @@
         <p>Thank you for choosing us, and we can’t wait to see you soon!</p>
         <p>Best regards,</p>
         <p><strong>@Model.ProviderName</strong></p>
-        <a href="tel:@Model.PhoneNumber" class="button button-icon"><img src="https://img.icons8.com/ios-filled/24/ffffff/phone.png" alt="Phone Icon" /> Call Us</a>
-        <a href="https://www.google.com/maps/dir/?api=1&origin=current+location&destination=@Model.Latitude.ToString("F8", System.Globalization.CultureInfo.InvariantCulture),@Model.Longitude.ToString("F8", System.Globalization.CultureInfo.InvariantCulture)" class="button button-icon map-button" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/map-pin.png" alt="Map Icon" /> Get Directions</a>
+        <a href="tel:@Model.PhoneNumber" class="button button-icon"><img src="css/images/phone.png" alt="Phone Icon" /> Call Us</a>
         <div class="social-icons">
-            <a href="@Model.Facebook" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook Icon" /></a>
-            <a href="@Model.TikTok" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok Icon" /></a>
-            <a href="@Model.Instagram" target="_blank"><img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram Icon" /></a>
+            <a href="@Model.Facebook" target="_blank"><img src="css/images/facebook-new.png" alt="Facebook Icon" /></a>
+            @* <a href="@Model.TikTok" target="_blank"><img src="css/images/tiktok.png" alt="TikTok Icon" /></a>
+            <a href="@Model.Instagram" target="_blank"><img src="css/images/instagram-new.png" alt="Instagram Icon" /></a> *@
         </div>
         <div class="footer">
             <p>If you have any questions, please contact us at the information provided above.</p>

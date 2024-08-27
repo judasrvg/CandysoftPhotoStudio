@@ -118,31 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WelcomeTitle" xml:space="preserve">
-    <value>Bienvenido a InkVibes Tattoo Studio</value>
+    <value>Bienvenido a CandysoftStudio</value>
   </data>
   <data name="WelcomeSubtitle" xml:space="preserve">
-    <value>Tatua tu historia, posee tu arte</value>
+    <value>Tu historia en cada imagen, arte en cada detalle.</value>
   </data>
   <data name="WelcomeDescription" xml:space="preserve">
-    <value>Bienvenido, el destino principal para tatuajes de alta calidad. Nuestro equipo de artistas expertos se dedica a convertir tu visión en realidad con una artesanía inigualable. Estamos comprometidos con la excelencia en cada pieza, asegurando una experiencia única y personalizada. Descubre la diferencia en InkVibes Tattoo, donde el arte se encuentra con la precisión en un entorno de primera clase.</value>
+    <value>Fotografía de alta calidad. Nuestro equipo de fotógrafos expertos se dedica a convertir tu visión en realidad con una creatividad inigualable. Estamos comprometidos con la excelencia en cada toma, asegurando una experiencia única y personalizada. </value>
   </data>
   <data name="FindUsButton" xml:space="preserve">
     <value>Encuéntranos</value>
   </data>
   <data name="TheArtistTitle" xml:space="preserve">
-    <value>El Artista</value>
+    <value>Estudio</value>
   </data>
   <data name="AdrianName" xml:space="preserve">
-    <value>Adrián</value>
+    <value>CANDYSOFT Studio</value>
   </data>
   <data name="DiverseStyles" xml:space="preserve">
     <value>Estilos Diversos</value>
   </data>
   <data name="AdrianBio" xml:space="preserve">
-    <value>Procedente de La Habana, Cuba, Adrián comenzó a tatuar a los 16 años. A pesar de que obtener suministros siempre fue un desafío, y que los materiales básicos de tatuaje tardaban meses en llegar, nunca dejó que eso le impidiera perseguir sus sueños. Después de tatuar en Cuba durante más de 7 años, a finales del '22, Adrián se mudó a Florida. Tras conocer a los propietarios de Emphasis, demostró rápidamente que pertenecía al talentoso equipo de artistas del estudio. Adrián tiene una habilidad diversa y ningún proyecto es demasiado grande o pequeño para nuestra nueva adición al equipo.</value>
+    <value>Somos un equipo apasionado y talentoso, dedicado a las artes visuales y a la creación de experiencias únicas para nuestros clientes. Con una sólida formación en diferentes disciplinas artísticas, combinamos creatividad, técnica y un enfoque personalizado para transformar cada idea en una obra de arte. Desde los primeros bocetos hasta la ejecución final, trabajamos en estrecha colaboración con nuestros clientes para asegurarnos de que cada proyecto refleje su individualidad y estilo. Nuestro compromiso es entregar trabajos de alta calidad, cargados de significado, que superen las expectativas y celebren la esencia única de cada persona.</value>
   </data>
   <data name="MyWorkTitle" xml:space="preserve">
-    <value>Mi Trabajo</value>
+    <value>Destacados</value>
   </data>
   <data name="BookNowButton" xml:space="preserve">
     <value>RESERVA YA!</value>
@@ -172,40 +172,40 @@
     <value>Nuestro Compromiso con la Calidad</value>
   </data>
   <data name="CommitmentDescription" xml:space="preserve">
-    <value>En nuestro estudio de tatuajes, la limpieza es nuestra principal prioridad. Nos ocupamos meticulosamente de garantizar un entorno prístino e higiénico para nuestros clientes. Tu seguridad y satisfacción son primordiales para nosotros, y nuestro compromiso con la sanidad refleja nuestra dedicación a brindar la mejor experiencia de tatuaje posible.</value>
+    <value>En nuestro estudio fotográfico, la atención al detalle es nuestra principal prioridad. Nos esforzamos meticulosamente por crear un entorno limpio, organizado y acogedor para nuestros clientes. Su comodidad y satisfacción son fundamentales para nosotros, y nuestro compromiso con un estudio profesional y en perfecto estado refleja nuestra dedicación a ofrecer la mejor experiencia fotográfica posible.</value>
   </data>
   <data name="OurNeedlesTitle" xml:space="preserve">
-    <value>Nuestras Agujas</value>
-  </data>
-  <data name="OurNeedlesDescription" xml:space="preserve">
-    <value>Todas las agujas de tatuaje utilizadas en InkVibes Tattoo cumplen con los más altos estándares de la industria, son preesterilizadas y de un solo uso.</value>
-  </data>
-  <data name="OurInkTitle" xml:space="preserve">
-    <value>Nuestra Tinta</value>
-  </data>
-  <data name="OurInkDescription" xml:space="preserve">
-    <value>Toda la tinta utilizada en InkVibes Tattoo cumple con los más altos estándares de la industria, es 100% vegana y no tóxica.</value>
-  </data>
-  <data name="OurProcessTitle" xml:space="preserve">
     <value>Nuestro Proceso</value>
   </data>
+  <data name="OurNeedlesDescription" xml:space="preserve">
+    <value>Seguimos un riguroso proceso de edición y postproducción para que cada fotografía refleje la visión y estilo único de nuestros clientes, asegurando un acabado profesional en cada proyecto.</value>
+  </data>
+  <data name="OurInkTitle" xml:space="preserve">
+    <value>Nuestra Iluminación</value>
+  </data>
+  <data name="OurInkDescription" xml:space="preserve">
+    <value>Utilizamos sistemas de iluminación de última generación que garantizan la perfecta captación de cada detalle, adaptándonos a las necesidades específicas de cada sesión.</value>
+  </data>
+  <data name="OurProcessTitle" xml:space="preserve">
+    <value>Nuestro Equipo</value>
+  </data>
   <data name="OurProcessDescription" xml:space="preserve">
-    <value>Adherimos a los más altos estándares de salud e higiene, asegurando tu seguridad y la nuestra. Todos los procedimientos se realizan con equipos de un solo uso.</value>
+    <value>Todas las cámaras y equipos utilizados en Candysoft Studio cumplen con los más altos estándares de la industria, asegurando la máxima calidad en cada imagen.</value>
   </data>
   <data name="OurSafetyTitle" xml:space="preserve">
     <value>Nuestra Seguridad</value>
   </data>
   <data name="OurSafetyDescription" xml:space="preserve">
-    <value>Todo el equipo y las áreas de trabajo utilizadas para realizar procedimientos en InkVibes Tattoo se esterilizan y limpian a fondo entre clientes, asegurándote tranquilidad.</value>
+    <value>Todo el equipo y las áreas de trabajo en Candysoft Studio se mantienen impecablemente organizados y esterilizados para ofrecer un entorno seguro y cómodo para nuestros clientes.</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Inicio</value>
   </data>
   <data name="Artist" xml:space="preserve">
-    <value>El Artista</value>
+    <value>Estudio</value>
   </data>
   <data name="Gallery" xml:space="preserve">
-    <value>Mi Trabajo</value>
+    <value>Destacados</value>
   </data>
   <data name="Contact" xml:space="preserve">
     <value>Contacto</value>
@@ -214,7 +214,7 @@
     <value>Preguntas Frecuentes</value>
   </data>
   <data name="InitViewTitle" xml:space="preserve">
-    <value>TATUA TU HISTORIA, POSEE TU ARTE</value>
+    <value>Tu historia en cada imagen, arte en cada detalle.</value>
   </data>
   <data name="InitViewButton" xml:space="preserve">
     <value>¡Vamos a EMPEZAR!</value>
@@ -299,5 +299,8 @@
   </data>
   <data name="TellUsMore" xml:space="preserve">
     <value>Cuéntanos más</value>
+  </data>
+  <data name="Services" xml:space="preserve">
+    <value>Paquetes</value>
   </data>
 </root>

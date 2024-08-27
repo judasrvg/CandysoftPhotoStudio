@@ -1,0 +1,39 @@
+﻿@* @page "/offers" *@
+@using Microsoft.Extensions.Localization
+@using Radzen.Blazor
+@using BlazorStrap
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.InkVibesTattoo.Models.Forms
+@using Tattoo.InkVibesTattoo.Security
+@using System.Collections.Generic
+
+<NotranslateDirective>
+    <RadzenTabs TabPosition="TabPosition.Right" RenderMode="TabRenderMode.Client" Change=@OnChange>
+        <Tabs >
+            <RadzenTabsItem Text="Niño" class="text-white-50">
+                <Tattoo.InkVibesTattoo.Components.Dialogs.OfferCard Items="@NinosOffers" />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Embarazada" class="text-white-50">
+                <Tattoo.InkVibesTattoo.Components.Dialogs.OfferCard Items="@EmbarazadasOffers" />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Cumples" class="text-white-50">
+                <Tattoo.InkVibesTattoo.Components.Dialogs.OfferCard Items="@QuinceanerasOffers" />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Boda" class="text-white-50">
+                <Tattoo.InkVibesTattoo.Components.Dialogs.OfferCard Items="@BodasOffers" />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Casual" class="text-white-50">
+                <Tattoo.InkVibesTattoo.Components.Dialogs.OfferCard Items="@CasualOffers" />
+            </RadzenTabsItem>
+        </Tabs>
+
+       
+    </RadzenTabs>
+
+</NotranslateDirective>
+
+
+
+
