@@ -27,7 +27,7 @@
 
         @* Badges con etiquetas IsEsto IsAquello *@
         <RadzenColumn class="text-start">
-            <RadzenText Text="Appointment Details"></RadzenText>
+            <RadzenText Text="Detalles de la Cita"></RadzenText>
 
         </RadzenColumn>
         @* @if (model.BudgetAmount > 0)
@@ -43,7 +43,7 @@
     <RadzenRow>
         <RadzenColumn>
             <RadzenCard>
-                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your tattoo image</RadzenText>
+                <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your image</RadzenText>
                 @*  <RadzenUpload @ref="upload" Auto="false" Multiple="true" Url="upload/multiple" Change=@(args => OnChange(args, "Manual Upload")) InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
                 Progress=@(args => OnProgress(args, "Manual Upload")) class="w-100" /> *@
                 <RadzenUpload @ref="upload" Change="OnChange" Complete=@OnComplete MaxFileCount=3 Auto="false" Multiple="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/Uploadimagesclient")" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
@@ -70,8 +70,7 @@
                     </RadzenFormField>
                 </RadzenColumn>
             </RadzenRow>
-            <RadzenRow class="pt-2">
-                @* Email *@
+            @* <RadzenRow class="pt-2">
                 <RadzenColumn>
                     <RadzenFormField Text="Client Email" class="w-100">
                         <ChildContent>
@@ -80,7 +79,7 @@
                         </ChildContent>
                     </RadzenFormField>
                 </RadzenColumn>
-            </RadzenRow>
+            </RadzenRow> *@
             
         </RadzenColumn>
     </RadzenRow>
@@ -145,7 +144,7 @@
             </RadzenFormField>
         </RadzenColumn>
     </RadzenRow>
-    <RadzenRow class="pt-2 text-center">
+   @*  <RadzenRow class="pt-2 text-center">
         
             <RadzenColumn Size="6">
             <RadzenCheckBox @bind-Value=@model.IsCoverUp Name="CheckBox1" />
@@ -158,7 +157,7 @@
         </RadzenColumn>
         
        
-    </RadzenRow>
+    </RadzenRow> *@
     @* Statebuttons *@
         <RadzenRow class="pt-2 text-center">
             <RadzenColumn>

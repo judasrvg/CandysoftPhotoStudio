@@ -51,17 +51,6 @@
                         </RadzenFormField>
                     </RadzenColumn>
                 </RadzenRow>
-                <RadzenRow class="pt-2">
-                    @* Email *@
-                    <RadzenColumn>
-                        <RadzenFormField Text="@LocalizationService.GetString("YourEmail")" class="w-100">
-                            <ChildContent>
-                                <RadzenTextBox Name="ClientEmail" @bind-Value="@model.ClientEmail" class="" Disabled=_readOnlyMode />
-                                <RadzenEmailValidator Component="ClientEmail" Text="@LocalizationService.GetString("Invalid")" Popup=false></RadzenEmailValidator>
-                            </ChildContent>
-                        </RadzenFormField>
-                    </RadzenColumn>
-                </RadzenRow>
             </RadzenColumn>
         </RadzenRow>
         <RadzenRow class="pt-3">

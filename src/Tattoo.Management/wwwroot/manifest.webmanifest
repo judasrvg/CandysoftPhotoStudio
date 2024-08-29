@@ -1,6 +1,6 @@
 {
-  "name": "Tattoo.Management",
-  "short_name": "Tattoo.Management",
+  "name": "Management",
+  "short_name": "Management",
   "id": "./",
   "start_url": "./",
   "display": "standalone",

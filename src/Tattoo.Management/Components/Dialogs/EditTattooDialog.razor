@@ -32,13 +32,13 @@
     <div class="justify-content-center">
         <RadzenRow>
             <RadzenColumn>
-                <RadzenFormField Text="Tattoo Name" Style="width: 100%;">
-                    <RadzenTextBox Name="c" @bind-Value="_creationForm.TattooName" class="" Placeholder="Type a name for the tattoo" />
+                <RadzenFormField Text="Name" Style="width: 100%;">
+                    <RadzenTextBox Name="c" @bind-Value="_creationForm.TattooName" class="" Placeholder="Type a name" />
                     <RadzenRequiredValidator Text="Name is required" Component="Name" Popup="true" />
                 </RadzenFormField>
             </RadzenColumn>
         </RadzenRow>
-        <RadzenRow>
+        @* <RadzenRow>
             <RadzenColumn class="text-start desktop-only">
                 <RadzenStack Style="width:10rem;float:inline-start;">
                     <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen desktop-only">
@@ -48,11 +48,11 @@
                     </RadzenFormField>
                 </RadzenStack>
             </RadzenColumn>
-        </RadzenRow>
+        </RadzenRow> *@
         <RadzenRow>
             <RadzenColumn>
                 <RadzenCard>
-                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your tattoo image</RadzenText>
+                    <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your image</RadzenText>
                     <RadzenUpload @ref="upload" Complete=@OnComplete Auto="false" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/uploadSingle")" Change="OnChange" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
                                   Progress="OnProgress" class="w-100 upload-custom" />
                 </RadzenCard>

@@ -19,7 +19,7 @@
         <RadzenHeader Class="header-background">
             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
                 <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
-                <RadzenLabel Text="ADRIAN-TATTOO" /><p>Management</p>
+                <RadzenLabel Text="CANDYSOFT STUDIO" /><p>Management</p>
             </RadzenStack>
         </RadzenHeader>
         <RadzenSidebar Responsive="false" class=@(!sidebarExpanded ? "sidebarHided" : "") Style="width: max-content">
@@ -28,8 +28,8 @@
                 <RadzenPanelMenuItem title="Appoitment" Text="Appoitment" Path="" Icon="free_cancellation" Match="NavLinkMatch.All" />
                 <RadzenPanelMenuItem title="Galery" Text="Galery" Path="/GaleryTattoo" Icon="collections" />
                 @* <RadzenPanelMenuItem title="Location" Text="Location" Icon="dashboard" Path="/leafletmap" /> *@
-                <RadzenPanelMenuItem title="Tattoo Style" Text="Style" Path="/TattooStyle" Icon="palette" />
-                <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattoo" Icon="question_answer" />
+                @* <RadzenPanelMenuItem title="Tattoo Style" Text="Style" Path="/TattooStyle" Icon="palette" /> *@
+                @* <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattoo" Icon="question_answer" /> *@
                 <RadzenPanelMenuItem title="FAQ ES" Text="FAQ ES" Path="/FAQTattooSpanish" Icon="question_answer" />
             </RadzenPanelMenu>
         </RadzenSidebar>

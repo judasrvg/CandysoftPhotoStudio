@@ -14,7 +14,7 @@
         
         @* Badges con etiquetas IsEsto IsAquello *@
         <RadzenColumn class="text-start">
-            <RadzenText Text="Appointment Details"></RadzenText>
+            <RadzenText Text="Detalles de la Cita"></RadzenText>
 
         </RadzenColumn>
         <RadzenColumn  class="text-end">
@@ -165,7 +165,7 @@
             </RadzenFormField>
         </RadzenColumn>
     </RadzenRow >
-    <RadzenRow class="pt-4 pb-4">
+    @* <RadzenRow class="pt-4 pb-4">
         <RadzenColumn Size="6">
             <RadzenCheckBox @bind-Value=@model.IsCoverUp Name="CheckBox1" Disabled=@_readOnlyMode />
             <RadzenLabel Text="Is CoverUp" Component="IsCoverUp" Style="margin-left: 8px; vertical-align: middle;" />
@@ -175,7 +175,7 @@
             <RadzenToggleButton Click=@(args => model.IsWithColor = !model.IsWithColor) Text=@(model.IsWithColor?"With Color":"Black & White") ButtonStyle="@(_isBaseWithColor ?ButtonStyle.Secondary:ButtonStyle.Dark)" ToggleButtonStyle="@(_isBaseWithColor ?ButtonStyle.Dark:ButtonStyle.Secondary)"
                                 Disabled=@_readOnlyMode InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "Light button" }})" />
         </RadzenColumn>
-    </RadzenRow>
+    </RadzenRow> *@
     
     @* Statebuttons *@
     @if (_readOnlyMode)

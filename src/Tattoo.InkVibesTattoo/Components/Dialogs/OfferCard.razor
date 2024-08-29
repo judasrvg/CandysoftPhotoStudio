@@ -11,13 +11,14 @@
 
 @if (Items != null && Items.Any())
 {
+    <!-- Versión para escritorio -->
     <div class="offer-cards-container desktop-only-flex">
         @foreach (var offer in Items)
         {
             <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
-                <div class="offer-icon">
+                @* <div class="offer-icon">
                     <span class="material-icons">@offer.Icon</span>
-                </div>
+                </div> *@
                 <h3>@offer.Name</h3>
                 <div class="price">@($"${offer.Price:N0}")</div>
                 <ul class="offer-features">
@@ -30,6 +31,7 @@
         }
     </div>
 
+    <!-- Versión para móviles -->
     <div class="offer-cards-container mobile-only p-0">
         <div class="custom-offer-carousel">
             <div class="custom-carousel-inner">
@@ -37,9 +39,9 @@
                 {
                     <div class="custom-carousel-item @(CurrentIndex == Items.IndexOf(offer) ? "active" : "")">
                         <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
-                            <div class="offer-icon">
+                            @* <div class="offer-icon">
                                 <span class="material-icons">@offer.Icon</span>
-                            </div>
+                            </div> *@
                             <h3>@offer.Name</h3>
                             <div class="price">@($"${offer.Price:N0}")</div>
                             <ul class="offer-features">
@@ -53,8 +55,9 @@
                 }
             </div>
 
-            <button @onclick="PreviousSlide" class="custom-carousel-control-prev">❮</button>
-            <button @onclick="NextSlide" class="custom-carousel-control-next">❯</button>
+            <!-- Controles del carrusel -->
+            <button @onclick="PreviousSlide" class="custom-carousel-control-prev" aria-label="Previous slide">❮</button>
+            <button @onclick="NextSlide" class="custom-carousel-control-next" aria-label="Next slide">❯</button>
         </div>
     </div>
 }

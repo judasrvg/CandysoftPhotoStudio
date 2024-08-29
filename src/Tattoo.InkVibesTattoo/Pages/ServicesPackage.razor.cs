@@ -23,7 +23,7 @@ namespace Tattoo.InkVibesTattoo.Pages
     {
         private List<Offer> NinosOffers = new List<Offer>
     {
-        new Offer { Name = "Mínimo", Price = 7500, Icon = "child_care", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
             {
                 "·5 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -33,7 +33,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Básico", Price = 12500, Icon = "child_friendly", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
             {
                 "·10 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -44,7 +44,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Estándar", Price = 16500, Icon = "toys", IsHighlighted = true, Features = new List<string>
+        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
             {
                 "·15 fotos impresas de 8x12",
                 "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
@@ -55,7 +55,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Premium", Price = 24500, Icon = "baby_changing_station", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
             {
                 "·20 fotos impresas en Photobook de 8x12",
                 "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
@@ -71,7 +71,7 @@ namespace Tattoo.InkVibesTattoo.Pages
 
         private List<Offer> EmbarazadasOffers = new List<Offer>
     {
-        new Offer { Name = "Mínimo", Price = 7500, Icon = "pregnant_woman", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
             {
                 "·5 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -81,7 +81,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Básico", Price = 12500, Icon = "local_hospital", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
             {
                 "·10 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -92,7 +92,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Estándar", Price = 16500, Icon = "family_restroom", IsHighlighted = true, Features = new List<string>
+        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
             {
                 "·15 fotos impresas de 8x12",
                 "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
@@ -103,7 +103,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Premium", Price = 24500, Icon = "baby", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
             {
                 "·20 fotos impresas en Photobook de 8x12",
                 "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
@@ -119,7 +119,7 @@ namespace Tattoo.InkVibesTattoo.Pages
 
         private List<Offer> QuinceanerasOffers = new List<Offer>
     {
-        new Offer { Name = "Mínimo", Price = 7500, Icon = "cake", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
             {
                 "·5 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -129,7 +129,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Básico", Price = 12500, Icon = "favorite", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
             {
                 "·10 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -140,7 +140,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Estándar", Price = 16500, Icon = "event", IsHighlighted = true, Features = new List<string>
+        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
             {
                 "·15 fotos impresas de 8x12",
                 "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
@@ -151,7 +151,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Premium", Price = 24500, Icon = "local_florist", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
             {
                 "·20 fotos impresas en Photobook de 8x12",
                 "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
@@ -167,7 +167,7 @@ namespace Tattoo.InkVibesTattoo.Pages
 
         private List<Offer> BodasOffers = new List<Offer>
     {
-        new Offer { Name = "Mínimo", Price = 7500, Icon = "ring_volume", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
             {
                 "·5 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -177,7 +177,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Básico", Price = 12500, Icon = "group", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
             {
                 "·10 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -188,7 +188,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Estándar", Price = 16500, Icon = "emoji_people", IsHighlighted = true, Features = new List<string>
+        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
             {
                 "·15 fotos impresas de 8x12",
                 "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
@@ -199,7 +199,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Premium", Price = 24500, Icon = "mood", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
             {
                 "·20 fotos impresas en Photobook de 8x12",
                 "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
@@ -215,7 +215,7 @@ namespace Tattoo.InkVibesTattoo.Pages
 
         private List<Offer> CasualOffers = new List<Offer>
     {
-        new Offer { Name = "Mínimo", Price = 7500, Icon = "weekend", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
             {
                 "·5 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -225,7 +225,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Básico", Price = 12500, Icon = "local_dining", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
             {
                 "·10 fotos impresas de 8x10",
                 "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
@@ -236,7 +236,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Estándar", Price = 16500, Icon = "loyalty", IsHighlighted = false, Features = new List<string>
+        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = false, Features = new List<string>
             {
                 "·15 fotos impresas de 8x12",
                 "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
@@ -247,7 +247,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                 "·DVD con las fotos digitales (editadas digitales)"
             }
         },
-        new Offer { Name = "Premium", Price = 24500, Icon = "star", IsHighlighted = true, Features = new List<string>
+        new Offer { Name = "Premium", Price = 24500, IsHighlighted = true, Features = new List<string>
             {
                 "·20 fotos impresas en Photobook de 8x12",
                 "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
