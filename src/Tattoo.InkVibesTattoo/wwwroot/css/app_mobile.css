@@ -111,7 +111,7 @@
     /****************************ENDCaroucel***********************************/
 
     .offer-features>li {
-        font-size:14px!important;
+        font-size:12px!important;
     }
 
     .rz-dropdown-panel > .rz-lookup-panel > .rz-lookup-search {
@@ -232,7 +232,10 @@
     .rz-body::-webkit-scrollbar {
         display: none;
     }*/
-
+    .custom-tab-item > a > span {
+        color:white!important;
+        font-size:12px!important;
+    }
     /**Styles BYID*/
     #section1 {
         background-color: rgba(213, 213, 213, 0.878);
@@ -555,6 +558,10 @@
     /*------------------------------------------------------------------------------*/
 
     .desktop-only {
+        display: none !important;
+    }
+
+    .desktop-only-flex {
         display: none !important;
     }
 

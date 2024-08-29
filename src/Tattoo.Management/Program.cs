@@ -8,7 +8,11 @@ using Tattoo.Management.Services;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
+var ImagesBaseUrl = builder.Configuration.GetSection("ImagesBaseUrl").Get<string>();
+if (ImagesBaseUrl != null)
+{
+    builder.Services.AddSingleton(ImagesBaseUrl);
+}
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddScoped<ITattooService, TattooService>();

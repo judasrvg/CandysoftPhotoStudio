@@ -616,6 +616,10 @@ img {
 
 
     .desktop-only {
+        display: block !important;
+    }
+
+    .desktop-only-flex {
         display: flex !important;
     }
 

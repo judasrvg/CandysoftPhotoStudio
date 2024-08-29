@@ -14,6 +14,7 @@
 @inject DialogService DialogService; *@
 @inject LazyAssemblyLoader loader;
 @inject LocalizationService LocalizationService
+
 @* @inject IStringLocalizer<Resources.Resource> Localizer *@
 
 <NotranslateDirective>
@@ -22,7 +23,7 @@
         {
             <BSCarouselItem>
                 <div class="carousel-image-wrapper">
-                    <img src="@tattoo.ImagePath" alt="@tattoo.TattooName" class="carousel-image-layout" />
+                    <img src="@(tattoo.ImagePath)" alt="@tattoo.TattooName" class="carousel-image-layout" />
                 </div>
             </BSCarouselItem>
         }

@@ -28,6 +28,8 @@ namespace Tattoo.InkVibesTattoo.Pages
         [Inject] private NavigationManager? NavigationManager { get; set; }
         [Inject] private GlobalState stateService { get; set; }
         [Inject] private DialogHelper DialogHelper { get; set; }
+        [Inject] private string? ImagesBaseUrl { get; set; }
+
         private string classRating= "";
         private bool ActiveRatingProcess= false;
         private bool isDataLoaded = false;
@@ -138,7 +140,7 @@ namespace Tattoo.InkVibesTattoo.Pages
                     _GaleryTattoosData = parsedResponse?.ToHashSet() ?? new();
                     if (_GaleryTattoosData.Any())
                     {
-                        _GaleryTattoosData = _GaleryTattoosData.Select(t=> { var fav = t; fav.IsFavorite = _favorites.Contains(t.Id); return fav; }).OrderBy(x => x.Order).ToHashSet();
+                        _GaleryTattoosData = _GaleryTattoosData.Select(t=> { var fav = t; fav.IsFavorite = _favorites.Contains(t.Id);fav.MiniatureImagePath =$"{ImagesBaseUrl}{fav.MiniatureImagePath}"; fav.ImagePath = $"{ImagesBaseUrl}{fav.ImagePath}"; return fav; }).OrderBy(x => x.Order).ToHashSet();
 
                     }
 

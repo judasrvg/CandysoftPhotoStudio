@@ -16,18 +16,18 @@
 <NotranslateDirective>
     <RadzenText class="main-header-layout mobile-only">
         <h3>
-            Tattoos
+            Fotos
         </h3>
     </RadzenText>
 
     <RadzenText class="main-header-layout desktop-only">
         <h3>
-            Galery Tattoos
+            Fotos
         </h3>
     </RadzenText>
 
     <RadzenRow class="mobile-only">
-        <RadzenColumn class="text-start mobile-only">
+        @* <RadzenColumn class="text-start mobile-only">
             <RadzenStack Style="width:6rem;float:inline-start;">
                 <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen mobile-only">
                     <ChildContent>
@@ -35,7 +35,7 @@
                     </ChildContent>
                 </RadzenFormField>
             </RadzenStack>
-        </RadzenColumn>
+        </RadzenColumn> *@
         <RadzenColumn class="text-end mobile-only">
             <RadzenStack Style="width:6rem;float:inline-end;">
                 <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end mobile-only">
@@ -48,7 +48,7 @@
     </RadzenRow>
 
     <RadzenRow class="desktop-only">
-        <RadzenColumn class="text-start desktop-only">
+        @* <RadzenColumn class="text-start desktop-only">
             <RadzenStack Style="width:10rem;float:inline-start;">
                 <RadzenFormField Text="Tattoo Style" class="text-end dropdown-gen desktop-only">
                     <ChildContent>
@@ -56,7 +56,7 @@
                     </ChildContent>
                 </RadzenFormField>
             </RadzenStack>
-        </RadzenColumn>
+        </RadzenColumn> *@
         <RadzenColumn class="text-end desktop-only">
             <RadzenStack Style="width:10rem;float:inline-end;">
 
@@ -74,7 +74,7 @@
                 <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" class="badge-priority" @bind-Value="@tattoo.Order" Change="@(args=>OnChangeTattooOrder(args,tattoo.Id))"
                                 AllowFiltering="false" AllowClear="false" Data="@(Enumerable.Range(1, _GaleryTattoosData.Count()).ToList())"  />
 
-                <RadzenImage Path="@(!string.IsNullOrWhiteSpace(tattoo.MiniatureImagePath) ? tattoo.MiniatureImagePath : !string.IsNullOrWhiteSpace(tattoo.ImagePath) ? tattoo.ImagePath :"/css/images/genericproduct.webp" )" class="tattoo-image image-thumbnail" AlternateText="@tattoo.TattooName" Click=@((args)=>ShowDialogZoomImage(args,tattoo.ImagePath)) />
+                <RadzenImage Path="@(!string.IsNullOrWhiteSpace(tattoo.MiniatureImagePath) ? $"{ImagesBaseUrl}{tattoo.MiniatureImagePath}" : !string.IsNullOrWhiteSpace(tattoo.ImagePath) ? $"{ImagesBaseUrl}{tattoo.ImagePath}" :"/css/images/genericproduct.webp" )" class="tattoo-image image-thumbnail" AlternateText="@tattoo.TattooName" Click=@((args)=>ShowDialogZoomImage(args,$"{ImagesBaseUrl}{tattoo.ImagePath}")) />
                 <div class="image-overlay">
                     <RadzenIcon Icon=@(tattoo.Rating == 0 ? "thumb_up_off_alt" : "thumb_up") class="icon-color-like"></RadzenIcon>
                     <p class="icon-color-like">@(tattoo.Rating == 0 ? "" : tattoo.Rating.ToString())</p>

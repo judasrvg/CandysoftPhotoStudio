@@ -26,6 +26,7 @@ namespace Tattoo.Management.Pages
         [Inject] private NavigationManager? NavigationManager { get; set; }
         [Inject] private GlobalState stateService { get; set; }
         [Inject] private DialogHelper DialogHelper { get; set; }
+        [Inject] private string? ImagesBaseUrl { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -90,17 +91,17 @@ namespace Tattoo.Management.Pages
 
         private async Task LoadTattooStyles()
         {
-            var response = await _configValueService.GetConfigValueAsync(CacheValueType.TattooStyle);
+            //var response = await _configValueService.GetConfigValueAsync(CacheValueType.TattooStyle);
 
-            if (response.IsSuccess)
-            {
-                var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
-                _tattooStylesData = parsedResponse?.ToHashSet() ?? new();
-            }
-            else
-            {
-                _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
-            }
+            //if (response.IsSuccess)
+            //{
+            //    var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
+            //    _tattooStylesData = parsedResponse?.ToHashSet() ?? new();
+            //}
+            //else
+            //{
+            //    _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+            //}
         }
 
         protected async Task<bool> AddGaleryTattoo(TattooDto GaleryTattoo)

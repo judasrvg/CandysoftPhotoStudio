@@ -259,7 +259,7 @@ namespace Tattoo.InkVibesTattoo.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Destacados.
+        ///   Looks up a localized string similar to Paquetes.
         /// </summary>
         public static string Gallery {
             get {

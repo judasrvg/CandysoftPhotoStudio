@@ -11,7 +11,7 @@
 
 @if (Items != null && Items.Any())
 {
-    <div class="offer-cards-container desktop-only">
+    <div class="offer-cards-container desktop-only-flex">
         @foreach (var offer in Items)
         {
             <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
