@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,25 @@ namespace Tattoo.Management.Models.Forms.Enum
         EmailAddress,
         PhoneFacebook,
         TikTokInstagram,
-        AskAnswerFAQEspannol
+        AskAnswerFAQEspannol,
+        OfferChild,
+        OfferWedding,
+        Offer15,
+        OfferPegnant,
+        OfferCasual,
+        OfferIndividual
     }
+
+    public enum CacheValueTypeWithDescript : int
+    {
+        OfferChild = 11,
+        OfferWedding = 12,
+        OfferQuinceanera = 13,
+        OfferPregnant = 14,
+        OfferCasual = 15,
+        OfferIndividual = 16
+    }
+
+
 
 }

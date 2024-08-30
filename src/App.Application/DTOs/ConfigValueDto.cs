@@ -14,7 +14,8 @@ namespace App.Application.DTOs
         public CacheValueType ValueType { get; set; }
         public string Value { get; set; } = string.Empty;
         public string ValueDescription { get; set; } = string.Empty;
-
+        public bool IsSpecialValue { get; set; }
+        public decimal PriceValue { get; set; }
         public ConfigValueDto DeepClone()
         {
             return new ConfigValueDto
@@ -22,7 +23,9 @@ namespace App.Application.DTOs
                 Id = this.Id,
                 ValueType = this.ValueType,
                 Value = this.Value,
-                ValueDescription = this.ValueDescription    
+                ValueDescription = this.ValueDescription,
+                PriceValue = this.PriceValue,
+                IsSpecialValue = this.IsSpecialValue
             };
         }
     }

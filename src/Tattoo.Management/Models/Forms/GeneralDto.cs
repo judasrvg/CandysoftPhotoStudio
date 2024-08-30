@@ -50,7 +50,9 @@ namespace Tattoo.Management.Models.Forms
         public string Details { get; set; } = string.Empty;
 
         public string Lang { get; set; } = "es";
+        public List<ConfigValueDto> Offers { get; set; } = new List<ConfigValueDto>();
 
+        public decimal TotalAmount { get; set; }
     }
 
     public class ConfigValueDto 
@@ -68,15 +70,18 @@ namespace Tattoo.Management.Models.Forms
             public CacheValueType ValueType { get; set; }
             public string Value { get; set; } = string.Empty;
             public string ValueDescription { get; set; } = string.Empty;
-
-            public ConfigValueDto DeepClone()
+            public bool IsSpecialValue { get; set; }
+            public decimal PriceValue { get; set; }
+        public ConfigValueDto DeepClone()
             {
                 return new ConfigValueDto
                 {
                     Id = this.Id,
                     ValueType = this.ValueType,
                     Value = this.Value,
-                    ValueDescription = this.ValueDescription
+                    ValueDescription = this.ValueDescription,
+                    IsSpecialValue = this.IsSpecialValue,
+                    PriceValue = this.PriceValue
                 };
             }
         

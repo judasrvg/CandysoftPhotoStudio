@@ -18,12 +18,15 @@ namespace App.Application.DTOs
         public bool IsCoverUp { get; set; }
         public DateTime ReservationDateStart { get; set; }
         public DateTime ReservationDateEnd { get; set; }
-        public string[] ImagePaths { get; set; } = [];
+        public string[] ImagePaths { get; set; } = Array.Empty<string>();
         public AppoitmentStateType CurrentStateType { get; set; }
         public string Details { get; set; } = string.Empty;
         public bool Notified { get; set; }
         public string Lang { get; set; } = "es";
 
+        public List<ConfigValueDto> Offers { get; set; } = new List<ConfigValueDto>();
 
+        public decimal TotalAmount { get; set; }
     }
+
 }

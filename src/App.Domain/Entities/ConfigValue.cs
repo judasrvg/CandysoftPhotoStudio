@@ -17,7 +17,8 @@ namespace App.Domain.Entities
         public CacheValueType ValueType { get; set; } 
         public string Value { get; set; } = string.Empty;
         public string ValueDescription { get; set; } = string.Empty;
-
+        public bool IsSpecialValue{ get; set; }
+        public decimal PriceValue{ get; set; }
     }
 
 }

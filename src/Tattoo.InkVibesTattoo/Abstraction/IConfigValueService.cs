@@ -18,6 +18,7 @@ namespace Tattoo.InkVibesTattoo.Services
     public interface IConfigValueService
     {
         Task<ResponseAdapterDto> GetBasicsConfigValuesAsync();
+        Task<ResponseAdapterDto> GetOfferConfigValuesAsync();
         Task<ResponseAdapterDto> GetConfigValueAsync(CacheValueType configType);
         Task<ResponseAdapterDto> AddConfigValueAsync(ConfigValueDto configValue);
         Task<ResponseAdapterDto> UpdateConfigValueAsync(ConfigValueDto configValue);

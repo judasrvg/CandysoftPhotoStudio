@@ -21,245 +21,16 @@ namespace Tattoo.InkVibesTattoo.Pages
 
     public partial class ServicesPackage
     {
-        private List<Offer> NinosOffers = new List<Offer>
-    {
-        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
-            {
-                "·5 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Estilista (maquillaje y peinado)",
-                "·2 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
-            {
-                "·10 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x10 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·3 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
-            {
-                "·15 fotos impresas de 8x12",
-                "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x12 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·4 o 5 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
-            {
-                "·20 fotos impresas en Photobook de 8x12",
-                "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Cofre para Photobook",
-                "·Estilista (maquillaje y peinado)",
-                "·6 escenografías (vestuarios y accesorios)",
-                "·Vestuarios Familiar en Combinación",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        }
-    };
+        private List<ConfigValueDto> NinosOffers = new List<ConfigValueDto>();
 
-        private List<Offer> EmbarazadasOffers = new List<Offer>
-    {
-        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
-            {
-                "·5 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Estilista (maquillaje y peinado)",
-                "·2 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
-            {
-                "·10 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x10 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·3 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
-            {
-                "·15 fotos impresas de 8x12",
-                "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x12 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·4 o 5 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
-            {
-                "·20 fotos impresas en Photobook de 8x12",
-                "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Cofre para Photobook",
-                "·Estilista (maquillaje y peinado)",
-                "·6 escenografías (vestuarios y accesorios)",
-                "·Vestuarios Familiar en Combinación",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        }
-    };
+        private List<ConfigValueDto> EmbarazadasOffers = new List<ConfigValueDto>();
 
-        private List<Offer> QuinceanerasOffers = new List<Offer>
-    {
-        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
-            {
-                "·5 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Estilista (maquillaje y peinado)",
-                "·2 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
-            {
-                "·10 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x10 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·3 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
-            {
-                "·15 fotos impresas de 8x12",
-                "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x12 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·4 o 5 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
-            {
-                "·20 fotos impresas en Photobook de 8x12",
-                "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Cofre para Photobook",
-                "·Estilista (maquillaje y peinado)",
-                "·6 escenografías (vestuarios y accesorios)",
-                "·Vestuarios Familiar en Combinación",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        }
-    };
+        private List<ConfigValueDto> QuinceanerasOffers = new List<ConfigValueDto>();
 
-        private List<Offer> BodasOffers = new List<Offer>
-    {
-        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
-            {
-                "·5 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Estilista (maquillaje y peinado)",
-                "·2 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
-            {
-                "·10 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x10 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·3 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = true, Features = new List<string>
-            {
-                "·15 fotos impresas de 8x12",
-                "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x12 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·4 o 5 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Premium", Price = 24500, IsHighlighted = false, Features = new List<string>
-            {
-                "·20 fotos impresas en Photobook de 8x12",
-                "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Cofre para Photobook",
-                "·Estilista (maquillaje y peinado)",
-                "·6 escenografías (vestuarios y accesorios)",
-                "·Vestuarios Familiar en Combinación",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        }
-    };
+        private List<ConfigValueDto> BodasOffers = new List<ConfigValueDto>();
 
-        private List<Offer> CasualOffers = new List<Offer>
-    {
-        new Offer { Name = "Mínimo", Price = 7500, IsHighlighted = false, Features = new List<string>
-            {
-                "·5 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Estilista (maquillaje y peinado)",
-                "·2 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Básico", Price = 12500, IsHighlighted = false, Features = new List<string>
-            {
-                "·10 fotos impresas de 8x10",
-                "·Lienzo 40 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x10 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·3 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Estándar", Price = 16500, IsHighlighted = false, Features = new List<string>
-            {
-                "·15 fotos impresas de 8x12",
-                "·Lienzo 50 x 75 cm (Impresión de lona sobre bastidor)",
-                "·Álbum personalizado de 8x12 (o revista personalizada)",
-                "·Estilista (maquillaje y peinado)",
-                "·4 o 5 escenografías (vestuarios y accesorios)",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        },
-        new Offer { Name = "Premium", Price = 24500, IsHighlighted = true, Features = new List<string>
-            {
-                "·20 fotos impresas en Photobook de 8x12",
-                "·Lienzo 100 x 60 cm (Impresión de lona sobre bastidor)",
-                "·Cofre para Photobook",
-                "·Estilista (maquillaje y peinado)",
-                "·6 escenografías (vestuarios y accesorios)",
-                "·Vestuarios Familiar en Combinación",
-                "·Edición profesional",
-                "·DVD con las fotos digitales (editadas digitales)"
-            }
-        }
-    };
+        private List<ConfigValueDto> CasualOffers = new List<ConfigValueDto>();
+        private List<ConfigValueDto> IndividualOffers = new List<ConfigValueDto>();
 
         [Inject] private ITattooService _Serviceservice { get; set; }
         [Inject] private IConfigValueService _configValueService { get; set; }
@@ -282,49 +53,80 @@ namespace Tattoo.InkVibesTattoo.Pages
             {
                 selectedLanguage = savedLanguage;
             }
-
-            //var favoritesJson = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "inkfavorites_tattoos") ?? "";
-            //var favorites = new HashSet<long>();
-            //if (!string.IsNullOrWhiteSpace(favoritesJson))
-            //{
-            //    favorites = JsonSerializer.Deserialize<HashSet<long>>(favoritesJson) ?? new HashSet<long>();
-            //    _favorites = favorites;
-            //}
-
-            //await LoadServices();
-            //await LoadTattooStyles();
-
-            // Iniciar el temporizador para establecer isDataLoaded a true después de 6 segundos
-            //var timer = new System.Timers.Timer(6000);
-            //timer.Elapsed += (sender, e) => SetDataLoaded();
-            //timer.AutoReset = false;
-            //timer.Start();
+            await LoadConfigValues();
+            
         }
 
         private void HandleLanguageChanged()
         {
             var savedLanguage = stateService.GlobalLanguage;
-
-            //var savedLanguage = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "selectedLanguage");
-            //if (string.IsNullOrEmpty(savedLanguage))
-            //{
-            //    savedLanguage = "en";
-            //    await JSRuntime.InvokeVoidAsync("localStorage.setItem", "selectedLanguage", savedLanguage);
-            //}
-
-            //selectedLanguage = NormalizeLanguage(savedLanguage);
-
-
-            //if (!string.IsNullOrEmpty(savedLanguage))
-            //{
-            //    selectedLanguage = savedLanguage;
-            //    LocalizationService.SetCultureAsync(selectedLanguage);
-            //}
-            //isDataLoaded = false;
-            //StateHasChanged();
-            //isDataLoaded = true;
-
+                        
         }
+
+        private async Task LoadConfigValues()
+        {
+            InvokeAsync(async () =>
+            {
+                var response = await _configValueService.GetOfferConfigValuesAsync();
+                if (response.IsSuccess)
+                {
+                    var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
+                    var _ConfigValuesData = parsedResponse?.ToHashSet() ?? new HashSet<ConfigValueDto>();
+
+                    if (_ConfigValuesData != null)
+                    {
+                        // Limpiar listas antes de llenarlas
+                        NinosOffers.Clear();
+                        EmbarazadasOffers.Clear();
+                        QuinceanerasOffers.Clear();
+                        BodasOffers.Clear();
+                        CasualOffers.Clear();
+                        IndividualOffers.Clear();
+
+                        // Llenar las listas de acuerdo al tipo de oferta
+                        foreach (var data in _ConfigValuesData)
+                        {
+                            switch (data.ValueType)
+                            {
+                                case CacheValueType.OfferChild:
+                                    NinosOffers.Add(data);
+                                    break;
+                                case CacheValueType.OfferPegnant:
+                                    EmbarazadasOffers.Add(data);
+                                    break;
+                                case CacheValueType.Offer15:
+                                    QuinceanerasOffers.Add(data);
+                                    break;
+                                case CacheValueType.OfferWedding:
+                                    BodasOffers.Add(data);
+                                    break;
+                                case CacheValueType.OfferCasual:
+                                    CasualOffers.Add(data);
+                                    break;
+                                case CacheValueType.OfferIndividual:
+                                    IndividualOffers.Add(data);
+                                    break;
+                                default:
+                                    // Manejo de casos no esperados si es necesario
+                                    break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+                }
+
+                // Close the dialog
+                DialogService.Close();
+                StateHasChanged();
+            });
+
+            await BusyDialog();
+            StateHasChanged();
+        }
+
 
         //private void SetDataLoaded()
         //{
@@ -368,37 +170,7 @@ namespace Tattoo.InkVibesTattoo.Pages
         /// <summary>
         /// Data Load and Actions
         /// </summary>
-        private async Task LoadServices()
-        {
-            InvokeAsync(async () =>
-            {
-                var response = await _Serviceservice.GetPrioritizedTattoosAsync(_formFilterGetTattoos);
-                if (response.IsSuccess)
-                {
-                    var parsedResponse = response?.Data as IEnumerable<TattooDto>;
-                    _ServicesData = parsedResponse?.ToHashSet() ?? new();
-                    if (_ServicesData.Any())
-                    {
-                        _ServicesData = _ServicesData.Select(t => { var fav = t; fav.IsFavorite = _favorites.Contains(t.Id); return fav; }).OrderBy(x => x.Order).ToHashSet();
-
-                    }
-
-                }
-                else
-                {
-                    _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
-                }
-
-                // Close the dialog
-                DialogService.Close();
-                StateHasChanged();
-            });
-
-            await BusyDialog();
-            StateHasChanged();
-
-        }
-
+        
         private bool _dialogOpen = false;
 
         public void Dispose()

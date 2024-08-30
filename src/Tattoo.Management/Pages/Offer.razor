@@ -1,0 +1,171 @@
+﻿@page "/offer"
+@using Radzen.Blazor
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using Radzen.Blazor.Rendering
+@using System.Text.Json
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Security
+@inherits LayoutComponentBase
+@* @inject TooltipService tooltipService; *@
+@inject IJSRuntime JSRuntime;
+@inject LazyAssemblyLoader loader;
+@inject NavigationManager NavigationManager;
+
+<NotranslateDirective>
+   <RadzenText class="main-header-layout mobile-only">
+    <h3>
+        Ofertas
+    </h3>
+</RadzenText>
+
+<RadzenText class="main-header-layout desktop-only">
+    <h3>
+            Ofertas
+    </h3>
+</RadzenText>
+
+   
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
+    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Crear" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && ConfigValuesToInsert.Count() > 0)" />
+
+</RadzenStack>
+    <RadzenStack AlignItems="AlignItems.Start" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
+        <RadzenDropDown Placeholder="Select" Change="OnChangeType" Data="@(Enum.GetValues(typeof(CacheValueType)).Cast<CacheValueType>().Where(e => e.ToString().StartsWith("Offer")))"
+                        TValue="CacheValueType" />
+    </RadzenStack>
+<RadzenDataGrid class="datagrid-layout desktop-only" @ref="_ConfigValuesDataGridRef" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="false" PageSize="15" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                    Data="@_ConfigValuesDataFiltered" TItem="ConfigValueDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" Page="@Reset" Filter="@Reset">
+    <Columns>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Property="Value" Title="Nombre">
+            <EditTemplate Context="configValue">
+                <RadzenTextBox MaxLength="200" @bind-Value="configValue.Value" Name="configValue_name" Style="width:100%; display: block;" />
+                <RadzenRequiredValidator Text="Nombre de oferta es requerido" Component="configValue_name" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Property="ValueDescription" Title="Detalles">
+            <EditTemplate Context="configValue">
+                <RadzenTextArea MaxLength="500" @bind-Value="configValue.ValueDescription" Name="configValue_description" Style="width:100%; display: block;" />
+                    <RadzenRequiredValidator Text="Detalles de oferta es requerido" Component="configValue_description" Popup="true" />
+
+            </EditTemplate>
+        </RadzenDataGridColumn>
+            <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Property="PriceValue" Title="Valor">
+                <EditTemplate Context="configValue">
+                    <RadzenNumeric Max=99999 @bind-Value="configValue.PriceValue" Name="configValue_price" Style="width:100%; display: block;" />
+
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            
+            <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Property="ValueType" Title="Tipo">
+                <EditTemplate Context="configValue">
+                    <RadzenDropDown @bind-Value="configValue.ValueType" Data="@(Enum.GetValues(typeof(CacheValueType)).Cast<CacheValueType>().Where(e => e.ToString().StartsWith("Offer")))"
+                                    TValue="CacheValueType" />
+
+                </EditTemplate>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Property="IsSpecialValue" Title="Especial">
+                <EditTemplate Context="configValue">
+                    <RadzenCheckBox @bind-Value="configValue.IsSpecialValue" Name="configValue_special" Style=" display: block;" />
+
+                </EditTemplate>
+            </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ConfigValueDto" Context="configValue" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="25%">
+            <Template Context="configValue">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(configValue))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(configValue))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="configValue">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(configValue))">
+                </RadzenButton>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(configValue))">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(configValue))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end mobile-only">
+    <RadzenButton class="mobile-only" ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="Add" Click="@InsertRowMobile" Disabled="@(editMode == DataGridEditMode.Single && ConfigValuesToInsert.Count() > 0)" />
+
+</RadzenStack>
+
+    <RadzenDataGrid class="datagrid-layout datagrid-mobile mobile-only" @ref="_ConfigValuesDataGridRefMobile" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="8" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                    Data="@_ConfigValuesDataFiltered" TItem="ConfigValueDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" Page="@Reset" Filter="@Reset">
+        <Columns>
+            <RadzenDataGridColumn CssClass="text-center" HeaderCssClass="display-none-column" TItem="ConfigValueDto" Property="Value">
+                <EditTemplate Context="configValue">
+                    <div class="rz-cell">
+                        <span>Nombre:</span>
+                        <RadzenTextBox MaxLength="200" @bind-Value="configValue.Value" Name="configValue_name" Style="width:100%; display: block;" />
+                        <RadzenRequiredValidator Text="Nombre de oferta es requerido" Component="configValue_name" Popup="true" />
+                    </div>
+                    <div class="rz-cell">
+                        <span>Detalles:</span>
+                        <RadzenTextArea MaxLength="500" @bind-Value="configValue.ValueDescription" Name="configValue_description" Style="width:100%; display: block;" />
+                        <RadzenRequiredValidator Text="Detalles de oferta es requerido" Component="configValue_description" Popup="true" />
+                    </div>
+                    <div class="rz-cell">
+                        <span>Valor:</span>
+                        <RadzenNumeric Max=99999 @bind-Value="configValue.PriceValue" Name="configValue_price" Style="width:100%; display: block;" />
+                    </div>
+                    <div class="rz-cell">
+                        <span>Tipo:</span>
+                        <RadzenDropDown @bind-Value="configValue.ValueType" Data="@(Enum.GetValues(typeof(CacheValueType)).Cast<CacheValueType>().Where(e => e.ToString().StartsWith("Offer")))"
+                                        TValue="CacheValueType" />
+                    </div>
+                    <div class="rz-cell">
+                        <span>Especial:</span>
+                        <RadzenCheckBox @bind-Value="configValue.IsSpecialValue" Name="configValue_special" Style="display: block;" />
+                    </div>
+                    <div class="rz-cell action-buttons">
+                        <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRowMobile(configValue))">
+                        </RadzenButton>
+                        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEditMobile(configValue))">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRowMobile(configValue))">
+                        </RadzenButton>
+                    </div>
+                </EditTemplate>
+                <Template Context="configValue">
+                    <div class="rz-cell">
+                        <span style="font-weight:600;line-height: 33px;">Nombre:</span>
+                        <div>@configValue.Value</div>
+                    </div>
+                    <div class="rz-cell">
+                        <span style="font-weight:600;line-height: 33px;">Detalles:</span>
+                        <div>@configValue.ValueDescription</div>
+                    </div>
+                    <div class="rz-cell">
+                        <span style="font-weight:600;line-height: 33px;">Valor:</span>
+                        <div>@configValue.PriceValue</div>
+                    </div>
+                    <div class="rz-cell">
+                        <span style="font-weight:600;line-height: 33px;">Tipo:</span>
+                        <div>@configValue.ValueType</div>
+                    </div>
+                    <div class="rz-cell">
+                        <span style="font-weight:600;line-height: 33px;">Especial:</span>
+                        <div>@configValue.IsSpecialValue</div>
+                    </div>
+                    <div class="rz-cell action-buttons">
+                        <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRowMobile(configValue))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRowMobile(configValue))" @onclick:stopPropagation="true">
+                        </RadzenButton>
+                    </div>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+
+</NotranslateDirective>
+
+
+
+

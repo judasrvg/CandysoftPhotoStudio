@@ -96,7 +96,7 @@
 
         if (args.View.Text != "Year")
         {
-            ReservationDto data = await DialogService.OpenAsync<AddAppointmentPage>("Add Appointment",
+            ReservationDto data = await DialogService.OpenAsync<AddAppointmentPage>("Crear cita",
                 new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 
             if (data != null)
@@ -111,7 +111,7 @@
 
     async void OnAppointmentMouseEnter(SchedulerAppointmentMouseEventArgs<ReservationDto> args)
     {
-        var data = await DialogService.OpenAsync<AppointmentDetails>("Appointment Details", new Dictionary<string, object> { { "Appointment", args.Data } });
+        var data = await DialogService.OpenAsync<AppointmentDetails>("Detalles de Cita", new Dictionary<string, object> { { "Appointment", args.Data } });
 
         if (data != null)
         {
@@ -209,7 +209,7 @@
                 IsWithColor = args.Data.IsWithColor
             };
 
-        var data = await DialogService.OpenAsync<EditAppointmentPage>("Edit", new Dictionary<string, object> { { "Appointment", copy } });
+        var data = await DialogService.OpenAsync<EditAppointmentPage>("Editar", new Dictionary<string, object> { { "Appointment", copy } });
 
         if (data != null)
         {

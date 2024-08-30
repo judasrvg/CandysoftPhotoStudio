@@ -1,0 +1,158 @@
+﻿@* @page "/offer-selection" *@
+@using Radzen
+@using Radzen.Blazor
+@using System.Collections.Generic
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+@inject IJSRuntime JSRuntime
+
+<NotranslateDirective>
+
+<RadzenRow class="pt-4">
+        <RadzenColumn>
+            <RadzenTree AllowCheckBoxes="true"  Visible="@_readOnlyMode" @bind-CheckedValues="@CheckedValues" Style="width: 100%; height: 100%;" Data="@CategoryOptions" 
+                        ItemRender="@TreeItemRender">
+                <RadzenTreeLevel TextProperty="@nameof(CategoryOption.Name)" ChildrenProperty="Offers" />
+                <RadzenTreeLevel TextProperty="@nameof(ConfigValueDto.Value)" HasChildren="@(offer => false)" />
+            </RadzenTree>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenCard>
+                <RadzenDataList Data="@SelectedOffers" PageSize="5" Style="max-height: 30rem; overflow:auto;">
+                    <Template Context="offer">
+                        <RadzenCard Variant=Variant.Outlined class="" @onclick="()=>OnClickViewMore(offer.Id)" Style="cursor:pointer;">
+                            <RadzenText TextStyle="TextStyle.H6" Style="color: darkgray; text-wrap: nowrap;" class="rz-display-flex rz-mt-2 rz-my-0">@offer.Value</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1" Style="font-size: 1.5rem;font-weight: bold;color: #2d9f3c;"><b>@($"${offer.PriceValue:N0}")</b></RadzenText>
+                            @* <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Company</RadzenText> *@
+                            <RadzenText TextStyle="TextStyle.Body1" Visible=@(OffersVisible[offer.Id])>
+                                <ul class="offer-features">
+                                    @foreach (var sentence in offer.ValueDescription.Split('+'))
+                                    {
+                                        @if (!string.IsNullOrWhiteSpace(sentence))
+                                        {
+                                            <li>@sentence.Trim()<br /></li>
+                                        }
+                                    }
+                                </ul>
+                            </RadzenText>
+                        </RadzenCard>
+
+                    </Template>
+                </RadzenDataList>
+            </RadzenCard>
+        </RadzenColumn>
+</RadzenRow>
+        
+    </NotranslateDirective>
+
+@code {
+    [Parameter]
+    public bool _readOnlyMode { get; set; }
+    [Inject] private IConfigValueService _configValueService { get; set; }
+        [Inject] private NotificationService _notificationService { get; set; }
+        [Inject] private DialogService DialogService { get; set; }
+    private List<CategoryOption> CategoryOptions = new List<CategoryOption>();
+    private List<ConfigValueDto> SelectedOffers = new List<ConfigValueDto>();
+    private IEnumerable<object> checkedValues;
+    private Dictionary<long,bool> OffersVisible = new Dictionary<long, bool>();
+
+    IEnumerable<object> CheckedValues
+    {
+        get => checkedValues;
+        set
+        {
+            checkedValues = value;
+            UpdateSelectedOffers();
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadConfigValues();
+    }
+
+    private async Task LoadConfigValues()
+    {
+        // Simula la carga de valores de configuración
+        var response = await _configValueService.GetOfferConfigValuesAsync();
+        if (response.IsSuccess)
+        {
+            var _ConfigValuesData = (response.Data as IEnumerable<ConfigValueDto>).ToList();
+            if (_ConfigValuesData != null && _ConfigValuesData.Any())
+            {
+                var groupedOffers = _ConfigValuesData.GroupBy(o => o.ValueType).ToList();
+
+                OffersVisible = _ConfigValuesData.ToDictionary(x => x.Id, x => false);
+                foreach (var group in groupedOffers)
+                {
+                    CategoryOptions.Add(new CategoryOption
+                        {
+                            Name = GetCategoryName(group.Key),
+                            Offers = group.ToList()
+                        });
+                }
+            }
+
+        }
+        else
+        {
+            // Manejo de error en la carga de datos
+            _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+        }
+    }
+
+    private async Task OnClickViewMore(long id)
+    {
+        foreach (var offerx in OffersVisible)
+        {
+            if (offerx.Key != id)
+                OffersVisible[offerx.Key] = false;
+
+        }
+        OffersVisible[id] = !OffersVisible[id];
+    }
+
+    private void UpdateSelectedOffers()
+    {
+        SelectedOffers.Clear();
+        if (CheckedValues != null)
+        {
+            foreach (var value in CheckedValues)
+            {
+                if (value is ConfigValueDto offer)
+                {
+                    SelectedOffers.Add(offer);
+                }
+            }
+
+        }
+        
+    }
+
+    void TreeItemRender(TreeItemRenderEventArgs args)
+    {
+        // Puedes personalizar cómo se renderiza cada elemento del árbol aquí si es necesario.
+    }
+
+    private string GetCategoryName(CacheValueType valueType)
+    {
+        return valueType switch
+        {
+            CacheValueType.OfferChild => "Niños",
+            CacheValueType.OfferPegnant => "Embarazo",
+            CacheValueType.Offer15 => "15 Años",
+            CacheValueType.OfferWedding => "Bodas",
+            CacheValueType.OfferCasual => "Casual",
+            CacheValueType.OfferIndividual => "Individual",
+            _ => "Desconocido"
+        };
+    }
+
+    public class CategoryOption
+    {
+        public string Name { get; set; } = string.Empty;
+        public List<ConfigValueDto> Offers { get; set; } = new List<ConfigValueDto>();
+    }
+}

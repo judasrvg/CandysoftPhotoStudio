@@ -14,7 +14,7 @@
 <NotranslateDirective>
    <RadzenText class="main-header-layout mobile-only">
     <h3>
-        FAQ ES.
+        FAQ
     </h3>
 </RadzenText>
 
@@ -25,7 +25,7 @@
 </RadzenText>
 
 <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
-    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Add FAQ in Spanish" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && ConfigValuesToInsert.Count() > 0)" />
+    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Crear" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && ConfigValuesToInsert.Count() > 0)" />
 
 </RadzenStack>
 

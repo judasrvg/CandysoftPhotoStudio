@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 using App.Domain.Enum;
 using App.Domain.Interfases;
 using App.Domain.State;
-using Newtonsoft.Json;
 
 namespace App.Domain.Entities
 {
@@ -20,7 +17,7 @@ namespace App.Domain.Entities
         public string ClientName { get; set; } = string.Empty;
         public string ClientEmail { get; set; } = string.Empty;
         public string ClientPhone { get; set; } = string.Empty;
-        public int BudgetAmount { get; set; } 
+        public int BudgetAmount { get; set; }
         public bool IsWithColor { get; set; }
         public bool IsCoverUp { get; set; }
         public DateTime ReservationDateStart { get; set; }
@@ -28,6 +25,13 @@ namespace App.Domain.Entities
         public string ImagePathsJson { get; set; } = "[]";
         public string Lang { get; set; } = "en";
 
+        // Nueva propiedad para almacenar las ofertas en formato JSON
+        public string OffersJson { get; set; } = "[]";
+
+        // Nueva propiedad para almacenar el total de la reserva
+        public decimal TotalAmount { get; set; }
+
+        // Propiedad no mapeada para manejar las rutas de las imágenes
         [NotMapped]
         public List<string> ImagePaths
         {
@@ -35,14 +39,18 @@ namespace App.Domain.Entities
             set => ImagePathsJson = JsonConvert.SerializeObject(value);
         }
 
-        //public Tattoo? Tattoo { get; set; } = new Tattoo();
+        // Propiedad no mapeada para manejar las ofertas en una lista
+        [NotMapped]
+        public List<ConfigValue> Offers
+        {
+            get => JsonConvert.DeserializeObject<List<ConfigValue>>(OffersJson);
+            set => OffersJson = JsonConvert.SerializeObject(value);
+        }
 
-        // Campo privado para almacenar el estado actual
         private IReservationState _currentState;
         public string Details { get; set; } = string.Empty;
-
         public bool Notified { get; set; }
-        // Propiedad pública para acceder al estado actual. No se mapea a la base de datos.
+
         [NotMapped]
         public IReservationState CurrentState
         {
@@ -54,7 +62,6 @@ namespace App.Domain.Entities
             }
         }
 
-        // Propiedad para almacenar el tipo de estado actual
         public AppoitmentStateType CurrentStateType { get; private set; }
 
         public Reservation()
@@ -76,7 +83,7 @@ namespace App.Domain.Entities
 
         public void JumpToState(IReservationState state)
         {
-            CurrentState.JumpToState(this, state);
+            CurrentState = state;
         }
 
         // Método para establecer estados específicos internamente
@@ -84,8 +91,15 @@ namespace App.Domain.Entities
         {
             CurrentState = state;
         }
+
+        // Método para calcular el total de la reserva en base a las ofertas
+        public void CalculateTotalAmount()
+        {
+            if (Offers != null)
+            {
+                TotalAmount = Offers.Sum(offer => offer.PriceValue);
+            }
+        }
     }
-
-
 
 }

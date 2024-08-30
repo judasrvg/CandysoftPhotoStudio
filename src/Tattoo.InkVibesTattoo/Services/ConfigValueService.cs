@@ -10,7 +10,12 @@ namespace Tattoo.InkVibesTattoo.Services
     public class ConfigValueService : BaseApiService, IConfigValueService
     {
         public ConfigValueService(IHttpClientFactory http) : base(http) { }
-
+        public async Task<ResponseAdapterDto> GetOfferConfigValuesAsync()
+        {
+            var client = _http.CreateClient("ConfigValueHttpClient");
+            var response = await client.GetAsync($"GetOfferConfigTypes");
+            return await HandleResponseAsync<List<ConfigValueDto>>(response);
+        }
         public async Task<ResponseAdapterDto> GetBasicsConfigValuesAsync()
         {
             var client = _http.CreateClient("ConfigValueHttpClient");

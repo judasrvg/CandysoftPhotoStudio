@@ -83,15 +83,18 @@ namespace Tattoo.InkVibesTattoo.Models.Forms
             public CacheValueType ValueType { get; set; }
             public string Value { get; set; } = string.Empty;
             public string ValueDescription { get; set; } = string.Empty;
-
-            public ConfigValueDto DeepClone()
+        public bool IsSpecialValue { get; set; }
+        public decimal PriceValue { get; set; }
+        public ConfigValueDto DeepClone()
             {
                 return new ConfigValueDto
                 {
                     Id = this.Id,
                     ValueType = this.ValueType,
                     Value = this.Value,
-                    ValueDescription = this.ValueDescription
+                    ValueDescription = this.ValueDescription,
+                    PriceValue = this.PriceValue,
+                     IsSpecialValue = this.IsSpecialValue
                 };
             }
         

@@ -18,7 +18,13 @@ namespace Tattoo.InkVibesTattoo.Models.Forms.Enum
         EmailAddress,
         PhoneFacebook,
         TikTokInstagram,
-        AskAnswerFAQEspannol
+        AskAnswerFAQEspannol,
+        OfferChild,
+        OfferWedding,
+        Offer15,
+        OfferPegnant,
+        OfferCasual,
+        OfferIndividual
 
     }
 

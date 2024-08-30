@@ -34,7 +34,7 @@ namespace App.Application.Abstractions.Implementations
                 var basicConfigurations = await configValueQueryService.GetBasicsConfigValuesAsync();
                 var emailAddress = basicConfigurations?.FirstOrDefault(cv => cv.ValueType == CacheValueType.EmailAddress) ?? new ConfigValueDto();
                 var phoneFacebook = basicConfigurations?.FirstOrDefault(cv => cv.ValueType == CacheValueType.PhoneFacebook) ?? new ConfigValueDto();
-                var tiktokInstagram = basicConfigurations?.FirstOrDefault(cv => cv.ValueType == CacheValueType.TikTokInstagram) ?? new ConfigValueDto();
+                //var tiktokInstagram = basicConfigurations?.FirstOrDefault(cv => cv.ValueType == CacheValueType.TikTokInstagram) ?? new ConfigValueDto();
                 var location = basicConfigurations?.FirstOrDefault(cv => cv.ValueType == CacheValueType.StudioLocation) ?? new ConfigValueDto();
 
                 double lat = 27.99819074; // Default value
@@ -59,8 +59,8 @@ namespace App.Application.Abstractions.Implementations
                     Address = emailAddress?.ValueDescription ?? "Unknown Address",
                     PhoneNumber = phoneFacebook?.Value ?? "Unknown Phone",
                     Facebook = phoneFacebook?.ValueDescription ?? "Unknown Facebook",
-                    Instagram = tiktokInstagram?.ValueDescription ?? "Unknown Instagram",
-                    TikTok = tiktokInstagram?.Value ?? "Unknown Tiktok",
+                    //Instagram = tiktokInstagram?.ValueDescription ?? "Unknown Instagram",
+                    //TikTok = tiktokInstagram?.Value ?? "Unknown Tiktok",
                     Latitude = lat,
                     Longitude = lng
                 };

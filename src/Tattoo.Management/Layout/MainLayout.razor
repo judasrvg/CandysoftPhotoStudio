@@ -13,6 +13,9 @@
 <RadzenDialog />
 <RadzenNotification />
 <RadzenTooltip />
+@* <RadzenComponents />
+<RadzenContextMenu /> *@
+
 
 <NotranslateDirective>
     <RadzenLayout>
@@ -25,12 +28,12 @@
         <RadzenSidebar Responsive="false" class=@(!sidebarExpanded ? "sidebarHided" : "") Style="width: max-content">
             <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
                 <RadzenBadge Style="position: absolute;margin-left: 30px !important;background-color:#4dabf5;margin-top: 4px;" BadgeStyle="BadgeStyle.Secondary" IsPill="@true" Text=@(stateService.GlobalCountSolicited.ToString()) class="rz-ml-2" />
-                <RadzenPanelMenuItem title="Appoitment" Text="Appoitment" Path="" Icon="free_cancellation" Match="NavLinkMatch.All" />
-                <RadzenPanelMenuItem title="Galery" Text="Galery" Path="/GaleryTattoo" Icon="collections" />
-                @* <RadzenPanelMenuItem title="Location" Text="Location" Icon="dashboard" Path="/leafletmap" /> *@
+                <RadzenPanelMenuItem title="Citas" Text="Citas" Path="" Icon="free_cancellation" Match="NavLinkMatch.All" />
+                <RadzenPanelMenuItem title="Galeria" Text="Galeria" Path="/GaleryTattoo" Icon="collections" />
+                <RadzenPanelMenuItem title="Ofertas" Text="Ofertas" Icon="dashboard" Path="/offer" />
                 @* <RadzenPanelMenuItem title="Tattoo Style" Text="Style" Path="/TattooStyle" Icon="palette" /> *@
                 @* <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattoo" Icon="question_answer" /> *@
-                <RadzenPanelMenuItem title="FAQ ES" Text="FAQ ES" Path="/FAQTattooSpanish" Icon="question_answer" />
+                <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattooSpanish" Icon="question_answer" />
             </RadzenPanelMenu>
         </RadzenSidebar>
         <RadzenBody class="w-100">

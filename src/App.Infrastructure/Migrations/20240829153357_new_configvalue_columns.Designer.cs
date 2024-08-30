@@ -4,6 +4,7 @@ using App.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace App.Infrastructure.Migrations
 {
     [DbContext(typeof(SQLSDBContext))]
-    partial class SQLSDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240829153357_new_configvalue_columns")]
+    partial class new_configvalue_columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,10 +102,6 @@ namespace App.Infrastructure.Migrations
                     b.Property<bool>("Notified")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OffersJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ReservationDateEnd")
                         .HasColumnType("datetime2");
 
@@ -111,9 +110,6 @@ namespace App.Infrastructure.Migrations
 
                     b.Property<long?>("TattooId")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

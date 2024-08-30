@@ -31,6 +31,15 @@ namespace App.API.Controllers
             _ConfigValueQueryService = ConfigValueQueryService;
         }
 
+        [HttpGet("GetOfferConfigTypes")]
+        public async Task<IActionResult> GetOfferConfigTypes()
+        {
+            var ConfigValue = await _ConfigValueQueryService.GetOfferConfigValuesAsync();
+            if (ConfigValue == null || !ConfigValue.Any())
+                return NotFound();
+            return Ok(ConfigValue);
+        }
+
         [HttpGet("GetBasicsConfigTypes")]
         public async Task<IActionResult> GetBasicsConfigTypes()
         {

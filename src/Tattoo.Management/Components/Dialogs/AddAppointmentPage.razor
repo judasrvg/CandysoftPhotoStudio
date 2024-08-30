@@ -6,6 +6,7 @@
 @using Tattoo.Management.Models.Forms
 @using Tattoo.Management.Models.Forms.Enum
 @using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Pages
 @using Tattoo.Management.Services
 @inject IJSRuntime JSRuntime
 
@@ -26,10 +27,10 @@
     <RadzenRow>
 
         @* Badges con etiquetas IsEsto IsAquello *@
-        <RadzenColumn class="text-start">
+        @* <RadzenColumn class="text-start">
             <RadzenText Text="Detalles de la Cita"></RadzenText>
 
-        </RadzenColumn>
+        </RadzenColumn> *@
         @* @if (model.BudgetAmount > 0)
         {
         <RadzenColumn>
@@ -40,21 +41,18 @@
 
 
     @* Personal Data and Image *@
-    <RadzenRow>
+    @* <RadzenRow>
         <RadzenColumn>
             <RadzenCard>
                 <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Upload your image</RadzenText>
-                @*  <RadzenUpload @ref="upload" Auto="false" Multiple="true" Url="upload/multiple" Change=@(args => OnChange(args, "Manual Upload")) InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
-                Progress=@(args => OnProgress(args, "Manual Upload")) class="w-100" /> *@
                 <RadzenUpload @ref="upload" Change="OnChange" Complete=@OnComplete MaxFileCount=3 Auto="false" Multiple="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/Uploadimagesclient")" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
                               class="w-100" />
                 <RadzenProgressBarCircular ShowValue="true" Mode="ProgressBarMode.Indeterminate" Size="ProgressBarCircularSize.Medium" Visible=@showProgress>
                     <Template>Wait</Template>
                 </RadzenProgressBarCircular>
-                @* <RadzenButton Text="Upload" Click=@(args => uploadDD.Upload()) class="d-block mt-4" /> *@
             </RadzenCard>
         </RadzenColumn>
-    </RadzenRow>
+    </RadzenRow> *@
     <RadzenRow class="pt-3">
         
         <RadzenColumn>
@@ -62,7 +60,7 @@
             <RadzenRow>
                 @* nombre *@
                 <RadzenColumn>
-                    <RadzenFormField Text="Client Name" class="w-100">
+                    <RadzenFormField Text="Nombre" class="w-100">
                         <ChildContent>
                             <RadzenTextBox Name="ClientName" @bind-Value="@model.ClientName" class="" Disabled=_readOnlyMode />
                             <RadzenRequiredValidator Component="ClientName" Text="Required field" Popup=false></RadzenRequiredValidator>
@@ -89,16 +87,15 @@
             <RadzenRow class="pt-2">
                 @* Phone *@
                 <RadzenColumn Size="6">
-                    <RadzenFormField Text="Client Phone" class="w-100">
+                    <RadzenFormField Text="Teléfono" class="w-100">
                         <ChildContent>
                             <RadzenTextBox Name="ClientPhone" @bind-Value="@model.ClientPhone" class="" Disabled=_readOnlyMode />
-                            <RadzenMask Mask="(***) ***-****" CharacterPattern="[0-9]" Placeholder="(000) 000-0000" Name="Phone" @bind-Value=@model.ClientPhone Style="width: 100%;" aria-label="Phone" />
 
                         </ChildContent>
                     </RadzenFormField>
                 </RadzenColumn>
                 <RadzenColumn Size="6">
-                    <RadzenFormField Text="Appointment State" class="w-100">
+                    <RadzenFormField Text="Estado" class="w-100">
                         <ChildContent>
                             <RadzenDropDown FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Style="margin-bottom:0em;" @bind-Value="@model.CurrentStateType"
                                             AllowFiltering="true" AllowClear="true" Data="@(Enum.GetValues(typeof(AppoitmentStateType)).Cast<Enum>())" Disabled=_readOnlyMode />
@@ -112,10 +109,10 @@
     @* Dates *@
     <RadzenRow class="pt-2">
         <RadzenColumn>
-            <RadzenFormField Text="Start Date" class="w-100">
+            <RadzenFormField Text="Fecha Inicio" class="w-100">
                 <ChildContent>
                     <RadzenDatePicker Name="Start" @bind-Value="@model.ReservationDateStart" ShowTime="true" Disabled=_readOnlyMode />
-                    <RadzenRequiredValidator Component="Start" Text="StartDate is required" Popup=false />
+                    <RadzenRequiredValidator Component="Start" Text="Fecha Inicio es requerido" Popup=false />
 
                 </ChildContent>
             </RadzenFormField>
@@ -124,20 +121,23 @@
     </RadzenRow>
     <RadzenRow class="pt-2">
         <RadzenColumn>
-            <RadzenFormField Text="End" class="w-100">
+            <RadzenFormField Text="Fecha Fin" class="w-100">
                 <ChildContent>
                     <RadzenDatePicker Name="End" @bind-Value="@model.ReservationDateEnd" ShowTime="true" Disabled=_readOnlyMode />
-                    <RadzenRequiredValidator Component="End" Text="EndDate is required" Popup=false />
+                    <RadzenRequiredValidator Component="End" Text="Fecha Fin es requerido" Popup=false />
 
                 </ChildContent>
             </RadzenFormField>
 
         </RadzenColumn>
     </RadzenRow>
+
+    <OffersCP _readOnlyMode="true" />
+
     @* TattooInfoDetails *@
     <RadzenRow class="pt-2 w-100">
         <RadzenColumn Size="12">
-            <RadzenFormField Text="Details" class="w-100">
+            <RadzenFormField Text="Detalles" class="w-100">
                 <ChildContent>
                     <RadzenTextArea Name="ClientDetails" @bind-Value="@model.Details" class="" Disabled=_readOnlyMode />
                 </ChildContent>
@@ -161,7 +161,7 @@
     @* Statebuttons *@
         <RadzenRow class="pt-2 text-center">
             <RadzenColumn>
-                <RadzenButton ButtonType="ButtonType.Submit" Text="APPLY" />
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Aplicar" />
             </RadzenColumn>
         </RadzenRow>
     
@@ -193,7 +193,7 @@
     RadzenUpload uploadDD;
     List<(string FileName, string Url)> uploadedFilePaths = new List<(string, string)>();
     bool _isLoading = false;
-
+    List<ConfigValueDto> selectedOffers = new List<ConfigValueDto>();
     protected override void OnParametersSet()
     {
         model.ReservationDateStart = Start;
@@ -218,6 +218,13 @@
     {
         await base.OnInitializedAsync();
 
+    }
+
+    async Task OnOffersSelected(List<ConfigValueDto> offers)
+    {
+        selectedOffers = offers;
+        model.Offers = selectedOffers;
+        StateHasChanged();
     }
 
     async void OnComplete(UploadCompleteEventArgs args)

@@ -50,11 +50,11 @@ namespace App.Application.Services
                 {
                     var providersEmail = await configValueQueryService.GetConfigValuesByTypeAsync(CacheValueType.EmailAddress);
                     var providersphoneFacebook = await configValueQueryService.GetConfigValuesByTypeAsync(CacheValueType.PhoneFacebook);
-                    var providersTiktokInstagram = await configValueQueryService.GetConfigValuesByTypeAsync(CacheValueType.TikTokInstagram);
+                    //var providersTiktokInstagram = await configValueQueryService.GetConfigValuesByTypeAsync(CacheValueType.TikTokInstagram);
                     var providerLocation = await configValueQueryService.GetConfigValuesByTypeAsync(CacheValueType.StudioLocation);
                     var emailAdress = providersEmail?.FirstOrDefault();
                     var phoneFacebook = providersphoneFacebook?.FirstOrDefault();
-                    var tiktokInstagram = providersTiktokInstagram?.FirstOrDefault();
+                    //var tiktokInstagram = providersTiktokInstagram?.FirstOrDefault();
                     var location = providerLocation?.FirstOrDefault();
                     double lat = 27.99819074; // Valor por defecto
                     double lng = -82.49170303; // Valor por defecto
@@ -79,8 +79,8 @@ namespace App.Application.Services
                             Address = emailAdress.ValueDescription,
                             PhoneNumber = phoneFacebook.Value,
                             Facebook = phoneFacebook.ValueDescription,
-                            Instagram = tiktokInstagram.ValueDescription,
-                            TikTok = tiktokInstagram.Value,
+                            //Instagram = tiktokInstagram.ValueDescription,
+                            //TikTok = tiktokInstagram.Value,
                             Latitude = lat,
                             Longitude = lng
                         };

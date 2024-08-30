@@ -10,6 +10,7 @@ namespace App.Application.Abstractions
     {
         Task<IEnumerable<ConfigValueDto>?> GetConfigValuesByTypeAsync( CacheValueType configType);
         Task<IEnumerable<ConfigValueDto>?> GetBasicsConfigValuesAsync();
+        Task<IEnumerable<ConfigValueDto>?> GetOfferConfigValuesAsync();
     }
 
     public interface IConfigValueCommandService

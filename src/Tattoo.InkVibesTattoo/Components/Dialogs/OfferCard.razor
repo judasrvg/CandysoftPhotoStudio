@@ -15,16 +15,19 @@
     <div class="offer-cards-container desktop-only-flex">
         @foreach (var offer in Items)
         {
-            <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
+            <div class="offer-card @((offer.IsSpecialValue ? "highlight" : ""))">
                 @* <div class="offer-icon">
-                    <span class="material-icons">@offer.Icon</span>
-                </div> *@
-                <h3>@offer.Name</h3>
-                <div class="price">@($"${offer.Price:N0}")</div>
+        <span class="material-icons">@offer.Icon</span>
+        </div> *@
+                <h3>@offer.Value</h3>
+                <div class="price">@($"${offer.PriceValue:N0}")</div>
                 <ul class="offer-features">
-                    @foreach (var feature in offer.Features)
+                    @foreach (var sentence in offer.ValueDescription.Split('+'))
                     {
-                        <li>@feature</li>
+                        @if (!string.IsNullOrWhiteSpace(sentence))
+                        {
+                            <li>@sentence.Trim()<br /></li>
+                        }
                     }
                 </ul>
             </div>
@@ -38,16 +41,19 @@
                 @foreach (var offer in Items)
                 {
                     <div class="custom-carousel-item @(CurrentIndex == Items.IndexOf(offer) ? "active" : "")">
-                        <div class="offer-card @((offer.IsHighlighted ? "highlight" : ""))">
+                        <div class="offer-card @((offer.IsSpecialValue ? "highlight" : ""))">
                             @* <div class="offer-icon">
-                                <span class="material-icons">@offer.Icon</span>
-                            </div> *@
-                            <h3>@offer.Name</h3>
-                            <div class="price">@($"${offer.Price:N0}")</div>
+                    <span class="material-icons">@offer.Icon</span>
+                    </div> *@
+                            <h3>@offer.Value</h3>
+                            <div class="price">@($"${offer.PriceValue:N0}")</div>
                             <ul class="offer-features">
-                                @foreach (var feature in offer.Features)
+                                @foreach (var sentence in offer.ValueDescription.Split('+'))
                                 {
-                                    <li>@feature</li>
+                                    @if (!string.IsNullOrWhiteSpace(sentence))
+                                    {
+                                        <li>@sentence.Trim()<br /></li>
+                                    }
                                 }
                             </ul>
                         </div>
@@ -64,7 +70,7 @@
 
 
 @code {
-    [Parameter] public List<Offer> Items { get; set; } = new List<Offer>();
+    [Parameter] public List<ConfigValueDto> Items { get; set; } = new List<ConfigValueDto>();
     private int CurrentIndex { get; set; } = 0;
 
     private void NextSlide()
