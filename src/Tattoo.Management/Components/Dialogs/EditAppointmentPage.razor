@@ -152,7 +152,7 @@
 
         </RadzenColumn>
     </RadzenRow>
-    <OffersCP _readOnlyMode="@(!_readOnlyMode)" />
+    <OffersCP _readOnlyMode="@(!_readOnlyMode)" Appointment="@Appointment" OnOffersSelected="HandleOffersChanged" />
 
 
     @* TattooInfoDetails *@
@@ -245,6 +245,13 @@
 
         // reset cancel flag
         // cancelUpload = false;
+    }
+
+    private async Task HandleOffersChanged(List<ConfigValueDto> offers)
+    {
+        Console.WriteLine($"Category Changed");
+
+        model.Offers = offers;
     }
 
     protected async Task ConfirmDelete(string path)
@@ -350,7 +357,7 @@
 
                         return;
                     }
-
+                    model.Edited = true;
                     _notificationService.Notify(NotificationSeverity.Success, "Completed", "Success Operation", 4000);
                     int countSolicitedAppointment = await _reservationService.GetTotalSolicitedReservation();
                     stateService.SetGlobalCountSolicited(countSolicitedAppointment);

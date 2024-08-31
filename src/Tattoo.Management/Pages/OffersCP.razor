@@ -20,10 +20,10 @@
         </RadzenColumn>
         <RadzenColumn>
             <RadzenCard>
-                <RadzenDataList Data="@SelectedOffers" PageSize="5" Style="max-height: 30rem; overflow:auto;">
-                    <Template Context="offer">
-                        <RadzenCard Variant=Variant.Outlined class="" @onclick="()=>OnClickViewMore(offer.Id)" Style="cursor:pointer;">
-                            <RadzenText TextStyle="TextStyle.H6" Style="color: darkgray; text-wrap: nowrap;" class="rz-display-flex rz-mt-2 rz-my-0">@offer.Value</RadzenText>
+                <RadzenDataList Data="@SelectedOffers" PageSize="5" Style="max-height: 30rem; overflow:auto;" class="datalist-offers">
+                    <Template Context="offer" >
+                        <RadzenCard Variant=Variant.Outlined class="" @onclick="()=>OnClickViewMore(offer.Id)" Style="cursor:pointer;background-color: #545454ed;">
+                            <RadzenText TextStyle="TextStyle.H6" Style="color: darkgray; text-wrap: nowrap;justify-content: center;" class="rz-display-flex rz-mt-2 rz-my-0">@offer.Value</RadzenText>
                             <RadzenText TextStyle="TextStyle.Body1" Style="font-size: 1.5rem;font-weight: bold;color: #2d9f3c;"><b>@($"${offer.PriceValue:N0}")</b></RadzenText>
                             @* <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Company</RadzenText> *@
                             <RadzenText TextStyle="TextStyle.Body1" Visible=@(OffersVisible[offer.Id])>
@@ -32,7 +32,7 @@
                                     {
                                         @if (!string.IsNullOrWhiteSpace(sentence))
                                         {
-                                            <li>@sentence.Trim()<br /></li>
+                                            <li style="color:white;">@sentence.Trim()<br /></li>
                                         }
                                     }
                                 </ul>
@@ -50,13 +50,62 @@
 @code {
     [Parameter]
     public bool _readOnlyMode { get; set; }
+    [Parameter]
+    public ReservationDto Appointment { get; set; }
     [Inject] private IConfigValueService _configValueService { get; set; }
-        [Inject] private NotificationService _notificationService { get; set; }
-        [Inject] private DialogService DialogService { get; set; }
+    [Inject] private NotificationService _notificationService { get; set; }
+    [Inject] private DialogService DialogService { get; set; }
     private List<CategoryOption> CategoryOptions = new List<CategoryOption>();
     private List<ConfigValueDto> SelectedOffers = new List<ConfigValueDto>();
     private IEnumerable<object> checkedValues;
     private Dictionary<long,bool> OffersVisible = new Dictionary<long, bool>();
+    [Parameter] public EventCallback<List<ConfigValueDto>> OnOffersSelected { get; set; }
+    private bool _firstTime = false;
+    protected override void OnParametersSet()
+    {
+        if (Appointment != null && _firstTime==false)
+        {
+             SelectedOffers = Appointment.Offers;
+            _firstTime = true;
+            // CheckedValues = Appointment.Offers;
+            // UpdateSelectedOffers();
+            // StateHasChanged();
+        }
+    }
+    // private void OnCategoryChanged()
+    // {
+    //     SelectedOffers.Clear();
+
+    //     foreach (var categoryId in SelectedCategories)
+    //     {
+    //         switch (categoryId)
+    //         {
+    //             case 1:
+    //                 SelectedOffers.AddRange(NinosOffers);
+    //                 break;
+    //             case 2:
+    //                 SelectedOffers.AddRange(EmbarazadasOffers);
+    //                 break;
+    //             case 3:
+    //                 SelectedOffers.AddRange(QuinceanerasOffers);
+    //                 break;
+    //             case 4:
+    //                 SelectedOffers.AddRange(BodasOffers);
+    //                 break;
+    //             case 5:
+    //                 SelectedOffers.AddRange(CasualOffers);
+    //                 break;
+    //             case 6:
+    //                 SelectedOffers.AddRange(IndividualOffers);
+    //                 break;
+    //         }
+    //     }
+
+    //     // Invocar el callback para notificar a la página principal
+    //     OnOffersSelected.InvokeAsync(SelectedOffers);
+
+    //     StateHasChanged();
+    // }
 
     IEnumerable<object> CheckedValues
     {
@@ -126,7 +175,8 @@
                     SelectedOffers.Add(offer);
                 }
             }
-
+            //     // Invocar el callback para notificar a la página principal
+            OnOffersSelected.InvokeAsync(SelectedOffers);
         }
         
     }

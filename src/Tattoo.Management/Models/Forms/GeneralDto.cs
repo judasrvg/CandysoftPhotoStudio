@@ -53,6 +53,7 @@ namespace Tattoo.Management.Models.Forms
         public List<ConfigValueDto> Offers { get; set; } = new List<ConfigValueDto>();
 
         public decimal TotalAmount { get; set; }
+        public bool Edited{ get; set; }
     }
 
     public class ConfigValueDto 

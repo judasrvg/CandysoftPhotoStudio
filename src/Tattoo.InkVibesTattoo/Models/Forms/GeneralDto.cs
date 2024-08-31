@@ -64,7 +64,10 @@ namespace Tattoo.InkVibesTattoo.Models.Forms
         public AppoitmentStateType CurrentStateType { get; set; }
         public string Details { get; set; } = string.Empty;
         public string Lang { get; set; } = "en";
+        public List<ConfigValueDto> Offers { get; set; } = new List<ConfigValueDto>();
 
+        public decimal TotalAmount { get; set; }
+        public bool Edited { get; set; }
 
     }
 

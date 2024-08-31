@@ -37,10 +37,11 @@ namespace App.Application.Services.Command
             _eventPublisher = eventPublisher;
         }
 
-        public async Task AddOrUpdateReservationAsync(ReservationDto reservation)
+        public async Task<long> AddOrUpdateReservationAsync(ReservationDto reservation)
         {
             bool existKey = true;
             var existingConfig = new Reservation();
+            //var result = new Reservation();
             if (reservation.Id == 0)
             {
                 existKey = false;
@@ -61,6 +62,16 @@ namespace App.Application.Services.Command
                 existingConfig.Details = reservation.Details;
                 //existingConfig.ImagePath = reservation.ImagePath;
                 existingConfig.ImagePathsJson = JsonConvert.SerializeObject(reservation.ImagePaths);
+                existingConfig.Offers = reservation.Offers.Select(x=>new ConfigValue 
+                {
+                    Id=x.Id,
+                    IsSpecialValue=x.IsSpecialValue,
+                    PriceValue=x.PriceValue ,
+                    Value=x.Value,
+                    ValueDescription=x.ValueDescription,
+                    ValueType=x.ValueType
+                }).ToList();
+                //existingConfig.TotalAmount = reservation.TotalAmount;
                 existingConfig.ReservationDateEnd = reservation.ReservationDateEnd;
                 existingConfig.ReservationDateStart = reservation.ReservationDateStart;
                 existingConfig.Lang = reservation.Lang;
@@ -88,7 +99,7 @@ namespace App.Application.Services.Command
             }
             else
             {
-                await _writeRepository.AddAsync(_mapper.Map<Reservation>(reservation));
+                existingConfig = await _writeRepository.AddAsync(_mapper.Map<Reservation>(reservation));
             }
 
             await _unitOfWork.CompleteAsync();
@@ -99,6 +110,8 @@ namespace App.Application.Services.Command
                 await _eventPublisher.Publish(new AppointmentCreatedEvent(reservation));
 
             }
+            return existingConfig?.Id ?? 0;
+
         }
 
         public async Task DeleteReservationAsync(long id)

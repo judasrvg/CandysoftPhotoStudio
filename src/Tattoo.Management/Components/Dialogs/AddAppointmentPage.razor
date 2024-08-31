@@ -132,7 +132,7 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <OffersCP _readOnlyMode="true" />
+    <OffersCP _readOnlyMode="true" OnOffersSelected="HandleOffersChanged" />
 
     @* TattooInfoDetails *@
     <RadzenRow class="pt-2 w-100">
@@ -293,6 +293,13 @@
         // Progress tracking code
     }
 
+    private async Task HandleOffersChanged(List<ConfigValueDto> offers)
+    {
+        Console.WriteLine($"Category Changed");
+
+        model.Offers = offers;
+    }
+
     async Task SubmitAppoitment()
     {
 
@@ -330,7 +337,7 @@
 
     async Task OnSubmit()
     {
-        _isLoading = true;
+        // _isLoading = true;
         if (!_onActionRequest)
         {
 
@@ -349,17 +356,19 @@
             // }
 
             // Ensure the files are uploaded first
-            if (upload.HasValue)
-            {
-                showProgress = true;
-                _isLoading = true;
+            await SubmitAppoitment();
 
-                await upload.Upload();
-            }
-            else
-            {
-                await SubmitAppoitment();
-            }
+            // if (upload.HasValue)
+            // {
+            //     showProgress = true;
+            //     _isLoading = true;
+
+            //     await upload.Upload();
+            // }
+            // else
+            // {
+            //     await SubmitAppoitment();
+            // }
 
         }
 

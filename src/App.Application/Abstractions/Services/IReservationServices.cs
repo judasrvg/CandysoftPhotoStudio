@@ -16,7 +16,7 @@ namespace App.Application.Abstractions
 
     public interface IReservationCommandService
     {
-        Task AddOrUpdateReservationAsync(ReservationDto Reservation);
+        Task<long> AddOrUpdateReservationAsync(ReservationDto Reservation);
         Task DeleteReservationAsync(long id);
     }
 

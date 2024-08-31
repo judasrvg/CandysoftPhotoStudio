@@ -51,17 +51,18 @@ namespace App.API.Controllers
         [HttpPost("AddReservation")]
         public async Task<IActionResult> AddReservation([FromBody] ReservationDto Reservation)
         {
-            await _ReservationCommandService.AddOrUpdateReservationAsync(Reservation);
-            return CreatedAtAction(nameof(Get), new { id = Reservation.Id}, Reservation);
+            var idResult = await _ReservationCommandService.AddOrUpdateReservationAsync(Reservation);
+            Reservation.Id = idResult;
+            return CreatedAtAction(nameof(Get), new { id = idResult }, Reservation);
         }
 
         [HttpPut("UpdateReservation")]
         public async Task<IActionResult> UpdateReservation([FromBody] ReservationDto Reservation)
         {
-            await _ReservationCommandService.AddOrUpdateReservationAsync(Reservation);
+            var idResult = await _ReservationCommandService.AddOrUpdateReservationAsync(Reservation);
             //await _emailService.SendEmailAsync(new Application.DTOs.EmailRequestDto { Body = "Mi First Email", Subject = "TestEmail", To = "candysoft.roya@gmail.com" });
-
-            return CreatedAtAction(nameof(Get), new { id = Reservation.Id }, Reservation);
+            Reservation.Id = idResult;
+            return CreatedAtAction(nameof(Get), new { id = idResult }, Reservation);
         }
 
         [HttpDelete("{id:long}")]

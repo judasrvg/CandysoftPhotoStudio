@@ -101,9 +101,10 @@
 
             if (data != null)
             {
-                appointments.Add(data);
-                // Either call the Reload method or reassign the Data property of the Scheduler
-                await scheduler.Reload();
+                await LoadReservations();
+                // appointments.Add(data);
+                // // Either call the Reload method or reassign the Data property of the Scheduler
+                // await scheduler.Reload();
             }
         }
     }
@@ -206,7 +207,9 @@
                 Lang = args.Data.Lang,
                 ImagePaths = args.Data.ImagePaths,
                 IsCoverUp = args.Data.IsCoverUp,
-                IsWithColor = args.Data.IsWithColor
+                IsWithColor = args.Data.IsWithColor,
+                Offers = args.Data.Offers,
+                TotalAmount =args.Data.TotalAmount
             };
 
         var data = await DialogService.OpenAsync<EditAppointmentPage>("Editar", new Dictionary<string, object> { { "Appointment", copy } });
@@ -225,7 +228,11 @@
             args.Data.ImagePaths = data.ImagePaths;
             args.Data.Lang = data.Lang;
             args.Data.IsCoverUp=data.IsCoverUp ;
-            args.Data.IsWithColor =data.IsWithColor ;        }
+            args.Data.IsWithColor =data.IsWithColor ;
+            args.Data.Offers = data.Offers;
+            args.Data.TotalAmount = data.TotalAmount;
+
+        }
 
         await scheduler.Reload();
     }

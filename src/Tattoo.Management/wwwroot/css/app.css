@@ -558,7 +558,10 @@ img {
 
 
 }
-
+.datalist-offers > ul > li {
+    background-color: darkgrey!important;
+    border-radius: 16px!important;
+}
 /*.front-body {
     background-color: #3f474e!important;*/
     /*background-blend-mode: multiply, multiply;*/

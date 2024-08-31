@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using App.Domain.Enum;
 using App.Domain.Interfases;
 using App.Domain.State;
+using Newtonsoft.Json.Linq;
 
 namespace App.Domain.Entities
 {
@@ -44,7 +45,7 @@ namespace App.Domain.Entities
         public List<ConfigValue> Offers
         {
             get => JsonConvert.DeserializeObject<List<ConfigValue>>(OffersJson);
-            set => OffersJson = JsonConvert.SerializeObject(value);
+            set =>  CalculateTotalAmount(value);
         }
 
         private IReservationState _currentState;
@@ -93,10 +94,11 @@ namespace App.Domain.Entities
         }
 
         // Método para calcular el total de la reserva en base a las ofertas
-        public void CalculateTotalAmount()
+        public void CalculateTotalAmount(List<ConfigValue> value)
         {
             if (Offers != null)
             {
+                OffersJson = JsonConvert.SerializeObject(value);
                 TotalAmount = Offers.Sum(offer => offer.PriceValue);
             }
         }
