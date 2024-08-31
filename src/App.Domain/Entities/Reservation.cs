@@ -64,7 +64,7 @@ namespace App.Domain.Entities
         }
 
         public AppoitmentStateType CurrentStateType { get; private set; }
-
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
         public Reservation()
         {
             // Inicializar el estado inicial de la orden
@@ -75,6 +75,7 @@ namespace App.Domain.Entities
         public void ProceedToNext()
         {
             CurrentState.ProceedToNext(this);
+            GenerateTransactionIfNeeded();
         }
 
         public void Cancel()
@@ -100,6 +101,31 @@ namespace App.Domain.Entities
             {
                 OffersJson = JsonConvert.SerializeObject(value);
                 TotalAmount = Offers.Sum(offer => offer.PriceValue);
+            }
+        }
+
+        private void GenerateTransactionIfNeeded()
+        {
+            if (CurrentStateType == AppoitmentStateType.Confirmed)
+            {
+                GenerateTransaction();
+            }
+        }
+
+        // Método para generar una transacción
+        private void GenerateTransaction()
+        {
+            if (TotalAmount > 0)
+            {
+                var transaction = new Transaction
+                {
+                    ReservationId = Id,
+                    TransactionDate = DateTime.UtcNow,
+                    Quantity = 1, // O el valor adecuado
+                    TransactionType = TransactionType.Income, // O Expense según sea el caso
+                    TotalAmount = TotalAmount
+                };
+                Transactions.Add(transaction);
             }
         }
     }

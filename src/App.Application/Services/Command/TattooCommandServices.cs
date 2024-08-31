@@ -62,14 +62,6 @@ namespace App.Application.Services.Command
 
             await _unitOfWork.CompleteAsync();
             return result?.Id ?? 0;
-            //Find tattoos and update on caching
-            //string cacheKey = KeyBuilder.BuildSimpleTypeBaseKey(CacheBaseKeyType.Tattoo, CacheValueType.Tattoo);
-            //var cachedData = await _cacheManager.GetAsync<IEnumerable<TattooDto>>(cacheKey);
-            ////Not Nescessary go to BD look on caching first
-            ////var tattoos = await _readRepository.FindAsync(t => t.TattooStyleId == tattoo.TattooStyleId);
-            //var cachedList= cachedData.ToList();
-            //cachedList.Add(tattoo);
-            //await _cacheManager.SetAsync(cacheKey, cachedList);
 
         }
 
@@ -82,21 +74,6 @@ namespace App.Application.Services.Command
                  _writeRepository.Delete(tattoo);
                  await _unitOfWork.CompleteAsync();
 
-                //Find tattoos and update on caching
-                //string cacheKey = KeyBuilder.BuildSimpleTypeBaseKey(CacheBaseKeyType.Tattoo, CacheValueType.Tattoo);
-                //var cachedData = await _cacheManager.GetAsync<IEnumerable<TattooDto>>(cacheKey);
-                ////Not Nescessary go to BD look on caching first
-                ////var tattoos = await _readRepository.FindAsync(t => t.TattooStyleId == tattoo.TattooStyleId);
-                //var cachedList = cachedData.ToList();
-                //var tattooDto = _mapper.Map<TattooDto>(tattoo);
-                //cachedList.Remove(tattooDto);
-                //// Almacenar cada grupo en Redis
-                //if (cachedList == null || !cachedList.Any())
-                // {
-                //     await _cacheManager.RemoveAsync(cacheKey);
-                //     return;
-                // }
-                //await _cacheManager.SetAsync(cacheKey, cachedList);
             }
 
         }
@@ -111,17 +88,6 @@ namespace App.Application.Services.Command
             _writeRepository.Update(tattoo);
             await _unitOfWork.CompleteAsync();
 
-            //Find tattoos and update on caching
-            //string cacheKey = KeyBuilder.BuildSimpleTypeBaseKey(CacheBaseKeyType.Tattoo, CacheValueType.Tattoo);
-            //var cachedData = await _cacheManager.GetAsync<IEnumerable<TattooDto>>(cacheKey);
-            ////Not Nescessary go to BD look on caching first
-            ////var tattoos = await _readRepository.FindAsync(t => t.TattooStyleId == tattoo.TattooStyleId);
-            //var cachedList = cachedData.ToList();
-            //var tattooDto = _mapper.Map<TattooDto>(tattoo);
-            //cachedList.RemoveAll(t=>t.Id==tattooDto.Id);
-            //cachedList.Add(tattooDto);
-
-            //await _cacheManager.SetAsync(cacheKey, cachedList);
         }
 
         public async Task<List<TattooDto>> ReorderTattooAsync(long tattooId, int newOrder)

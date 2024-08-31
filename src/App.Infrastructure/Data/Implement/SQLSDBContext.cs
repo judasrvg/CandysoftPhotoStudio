@@ -68,11 +68,22 @@ namespace App.Infrastructure
                 .WithOne(p => p.RawMaterial)
                 .HasForeignKey<RawMaterial>(rm => rm.ProductId);
 
+            // Configuración para Reservation
+            modelBuilder.Entity<Reservation>()
+                .HasMany(r => r.Transactions)
+                .WithOne(t => t.Reservation)
+                .HasForeignKey(t => t.ReservationId);
+
             // Configuración para Transaction
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Product)
                 .WithMany()
                 .HasForeignKey(t => t.ProductId);
+
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.Reservation)
+                .WithMany(r => r.Transactions)
+                .HasForeignKey(t => t.ReservationId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

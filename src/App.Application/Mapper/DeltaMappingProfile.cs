@@ -13,12 +13,20 @@ namespace App.Application.Mapper
             // Mapeos directos
             CreateMap<ConfigValue, ConfigValueDto>();
             CreateMap<Tattoo, TattooDto>();
-            //CreateMap<Reservation, ReservationDto>();
+            CreateMap<Product, ProductDto>();
+            CreateMap<FixedAsset, FixedAssetDto>();
+            CreateMap<Merchandise, MerchandiseDto>();
+            CreateMap<RawMaterial, RawMaterialDto>();
+            CreateMap<Transaction, TransactionDto>();
 
             // Mapeos inversos
             CreateMap<ConfigValueDto, ConfigValue>();
             CreateMap<TattooDto, Tattoo>();
-            //CreateMap<ReservationDto, Reservation>();
+            CreateMap<ProductDto, Product>();
+            CreateMap<FixedAssetDto, FixedAsset>();
+            CreateMap<MerchandiseDto, Merchandise>();
+            CreateMap<RawMaterialDto, RawMaterial>();
+            CreateMap<TransactionDto, Transaction>();
 
             // Mapeo de Reservation a ReservationDto
             CreateMap<Reservation, ReservationDto>()
