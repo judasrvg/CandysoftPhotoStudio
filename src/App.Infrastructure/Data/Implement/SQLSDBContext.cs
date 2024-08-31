@@ -1,4 +1,5 @@
 ﻿using App.Domain.Entities;
+using App.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Infrastructure
@@ -9,6 +10,12 @@ namespace App.Infrastructure
         public DbSet<ConfigValue> ConfigValue { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
 
+        //**************Inventary*************
+        public DbSet<Product> Products { get; set; }
+        public DbSet<FixedAsset> FixedAssets { get; set; }
+        public DbSet<Merchandise> Merchandises { get; set; }
+        public DbSet<RawMaterial> RawMaterials { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         //public SQLSDBContext() { }
         public SQLSDBContext(DbContextOptions<SQLSDBContext> options) : base(options) { }
@@ -33,6 +40,39 @@ namespace App.Infrastructure
                 .HasOne(t => t.TattooGenre)
                 .WithMany()
                 .HasForeignKey(t => t.TattooGenreId);
+
+
+            //*********Inventary*************
+            // Configuración para Product
+            modelBuilder.Entity<Product>()
+                .HasDiscriminator(p => p.ProductType)
+                .HasValue<FixedAsset>(ProductType.FixedAsset)
+                .HasValue<Merchandise>(ProductType.Merchandise)
+                .HasValue<RawMaterial>(ProductType.RawMaterial);
+
+            // Configuración para FixedAsset
+            modelBuilder.Entity<FixedAsset>()
+                .HasOne(fa => fa.Product)
+                .WithOne(p => p.FixedAsset)
+                .HasForeignKey<FixedAsset>(fa => fa.ProductId);
+
+            // Configuración para Merchandise
+            modelBuilder.Entity<Merchandise>()
+                .HasOne(m => m.Product)
+                .WithOne(p => p.Merchandise)
+                .HasForeignKey<Merchandise>(m => m.ProductId);
+
+            // Configuración para RawMaterial
+            modelBuilder.Entity<RawMaterial>()
+                .HasOne(rm => rm.Product)
+                .WithOne(p => p.RawMaterial)
+                .HasForeignKey<RawMaterial>(rm => rm.ProductId);
+
+            // Configuración para Transaction
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.Product)
+                .WithMany()
+                .HasForeignKey(t => t.ProductId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
