@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Entities
 {
-    public class Merchandise
+    public class Merchandise : Product
     {
-        public long ProductId { get; set; }
         public int StockQuantity { get; set; }
         public DateTime? LastRestockedDate { get; set; }
-
-        // Navigation property
-        public Product Product { get; set; } = null!;
     }
 
 }

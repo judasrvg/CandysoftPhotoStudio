@@ -10,26 +10,23 @@ namespace App.Infrastructure
         public DbSet<ConfigValue> ConfigValue { get; set; }
         public DbSet<Reservation> Reservation { get; set; }
 
-        //**************Inventary*************
+        //**************Inventario*************
         public DbSet<Product> Products { get; set; }
-        public DbSet<FixedAsset> FixedAssets { get; set; }
-        public DbSet<Merchandise> Merchandises { get; set; }
-        public DbSet<RawMaterial> RawMaterials { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
-        //public SQLSDBContext() { }
         public SQLSDBContext(DbContextOptions<SQLSDBContext> options) : base(options) { }
+
         public SQLSDBContext() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //// Relación entre Tattoo y Reservation (Uno a Muchos)
+            //********* Relación entre Tattoo y Reservation (Uno a Muchos) *********
             modelBuilder.Entity<Tattoo>()
-            .HasOne(t => t.TattooStyle)
-            .WithMany()
-            .HasForeignKey(t => t.TattooStyleId);
+                .HasOne(t => t.TattooStyle)
+                .WithMany()
+                .HasForeignKey(t => t.TattooStyleId);
 
             modelBuilder.Entity<Tattoo>()
                 .HasOne(t => t.TattooBodyPart)
@@ -41,40 +38,22 @@ namespace App.Infrastructure
                 .WithMany()
                 .HasForeignKey(t => t.TattooGenreId);
 
-
-            //*********Inventary*************
-            // Configuración para Product
+            //********* Configuración del Inventario *********
+            // Configuración para Product y herencia TPH (Table Per Hierarchy)
             modelBuilder.Entity<Product>()
-                .HasDiscriminator(p => p.ProductType)
-                .HasValue<FixedAsset>(ProductType.FixedAsset)
-                .HasValue<Merchandise>(ProductType.Merchandise)
-                .HasValue<RawMaterial>(ProductType.RawMaterial);
+                .HasDiscriminator<string>("ProductTypeDiscriminator")
+                .HasValue<Product>("Product")
+                .HasValue<Merchandise>("Merchandise")
+                .HasValue<FixedAsset>("FixedAsset")
+                .HasValue<RawMaterial>("RawMaterial");
 
-            // Configuración para FixedAsset
-            modelBuilder.Entity<FixedAsset>()
-                .HasOne(fa => fa.Product)
-                .WithOne(p => p.FixedAsset)
-                .HasForeignKey<FixedAsset>(fa => fa.ProductId);
-
-            // Configuración para Merchandise
-            modelBuilder.Entity<Merchandise>()
-                .HasOne(m => m.Product)
-                .WithOne(p => p.Merchandise)
-                .HasForeignKey<Merchandise>(m => m.ProductId);
-
-            // Configuración para RawMaterial
-            modelBuilder.Entity<RawMaterial>()
-                .HasOne(rm => rm.Product)
-                .WithOne(p => p.RawMaterial)
-                .HasForeignKey<RawMaterial>(rm => rm.ProductId);
-
-            // Configuración para Reservation
+            // Relación de Reservation con Transaction
             modelBuilder.Entity<Reservation>()
                 .HasMany(r => r.Transactions)
                 .WithOne(t => t.Reservation)
                 .HasForeignKey(t => t.ReservationId);
 
-            // Configuración para Transaction
+            // Configuración de Transaction relacionada con Product y Reservation
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.Product)
                 .WithMany()
@@ -88,8 +67,7 @@ namespace App.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Data Source=SQL8006.site4now.net;Initial Catalog=db_aaa3b0_tattoodev;User Id=db_aaa3b0_tattoodev_admin;Password=Tatoo99@;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
-
+            // Configuración de la base de datos (cambiar según sea necesario)
             optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
         }
     }

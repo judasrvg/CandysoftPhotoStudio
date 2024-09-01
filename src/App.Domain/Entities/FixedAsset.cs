@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace App.Domain.Entities
 {
-    public class FixedAsset
+    public class FixedAsset : Product
     {
-        public long ProductId { get; set; }
         public DateTime? PurchaseDate { get; set; }
         public DateTime? WarrantyExpiryDate { get; set; }
         public decimal? DepreciationRate { get; set; }
-
-        // Navigation property
-        public Product Product { get; set; } = null!;
     }
 
 }

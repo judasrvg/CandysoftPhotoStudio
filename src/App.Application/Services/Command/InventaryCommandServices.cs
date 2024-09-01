@@ -29,30 +29,31 @@ namespace App.Application.Services.Command
 
         public async Task<long> AddOrUpdateProductAsync(ProductDto productDto)
         {
-            var existingProduct = await _readRepository.GetByIdAsync(productDto.Id);
+            Product product;
 
-            if (existingProduct != null)
+            if (productDto.Id > 0)
             {
-                _mapper.Map(productDto, existingProduct);
+                // Actualización
+                product = await _readRepository.GetByIdAsync(productDto.Id);
+                if (product == null) throw new KeyNotFoundException("Product not found.");
 
-                // Actualizar el tipo específico
-                UpdateSpecificType(existingProduct, productDto);
+                // Mapea las propiedades comunes
+                _mapper.Map(productDto, product);
 
-                _writeRepository.Update(existingProduct);
+                // Maneja el tipo específico
+                product = CreateSpecificType(productDto);
             }
             else
             {
-                var newProduct = _mapper.Map<Product>(productDto);
-
-                // Crear el tipo específico
-                CreateSpecificType(newProduct, productDto);
-
-                await _writeRepository.AddAsync(newProduct);
+                // Creación
+                product = CreateSpecificType(productDto);
+                await _writeRepository.AddAsync(product);
             }
 
             await _unitOfWork.CompleteAsync();
-            return productDto.Id;
+            return product.Id;
         }
+
 
         public async Task DeleteProductAsync(long id)
         {
@@ -64,27 +65,26 @@ namespace App.Application.Services.Command
             }
         }
 
-        private void CreateSpecificType(Product product, ProductDto productDto)
+        private Product CreateSpecificType(ProductDto productDto)
         {
+            Product product;
             switch (productDto.ProductType)
             {
                 case ProductType.FixedAsset:
-                    var fixedAsset = _mapper.Map<FixedAsset>(productDto.FixedAssetDto);
-                    fixedAsset.ProductId = product.Id;
-                    product.FixedAsset = fixedAsset;
+                    product = _mapper.Map<FixedAsset>(productDto.FixedAssetDto);
                     break;
                 case ProductType.Merchandise:
-                    var merchandise = _mapper.Map<Merchandise>(productDto.MerchandiseDto);
-                    merchandise.ProductId = product.Id;
-                    product.Merchandise = merchandise;
+                    product = _mapper.Map<Merchandise>(productDto.MerchandiseDto);
                     break;
                 case ProductType.RawMaterial:
-                    var rawMaterial = _mapper.Map<RawMaterial>(productDto.RawMaterialDto);
-                    rawMaterial.ProductId = product.Id;
-                    product.RawMaterial = rawMaterial;
+                    product = _mapper.Map<RawMaterial>(productDto.RawMaterialDto);
                     break;
+                default:
+                    throw new InvalidOperationException("Unsupported product type.");
             }
+            return product;
         }
+
 
         private void UpdateSpecificType(Product product, ProductDto productDto)
         {

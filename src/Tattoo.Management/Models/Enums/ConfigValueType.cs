@@ -38,6 +38,16 @@ namespace Tattoo.Management.Models.Forms.Enum
         OfferIndividual = 16
     }
 
+    public enum ProductType
+    {
+        FixedAsset = 1,
+        Merchandise = 2,
+        RawMaterial = 3
+    }
 
-
+    public enum TransactionType
+    {
+        Expense = 1,
+        Income = 2
+    }
 }
