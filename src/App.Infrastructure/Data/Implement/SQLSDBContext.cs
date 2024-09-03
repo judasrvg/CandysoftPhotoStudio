@@ -44,8 +44,8 @@ namespace App.Infrastructure
                 .HasDiscriminator<string>("ProductTypeDiscriminator")
                 .HasValue<Product>("Product")
                 .HasValue<Merchandise>("Merchandise")
-                .HasValue<FixedAsset>("FixedAsset")
-                .HasValue<RawMaterial>("RawMaterial");
+                .HasValue<FixedAsset>("FixedAsset");
+                //.HasValue<RawMaterial>("RawMaterial");
 
             // Relación de Reservation con Transaction
             modelBuilder.Entity<Reservation>()

@@ -1,0 +1,67 @@
+﻿@page "/Adjuststockdialog"
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Services
+@inject IProductService ProductService
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+
+<div class="mb-3">
+    <RadzenLabel Text="Cantidad a ajustar:" />
+    <RadzenNumeric @bind-Value="StockAdjustment" Style="width:100%" Min="1" Max="9999" Step="1" Placeholder="Ingrese la cantidad de ajuste" />
+</div>
+<div class="mb-3">
+    <RadzenButton ButtonStyle="ButtonStyle.Success" Text="Incrementar" Click="@OnIncrement" />
+    <RadzenButton ButtonStyle="ButtonStyle.Warning" Text="Disminuir" Click="@OnDecrement" />
+    <RadzenButton ButtonStyle="ButtonStyle.Light" Text="Cancelar" Click="@OnCancel" />
+</div>
+
+@code {
+    [Parameter] public ProductDto Merchandise { get; set; }
+    private int StockAdjustment { get; set; }
+
+    async Task OnIncrement()
+    {
+        if (StockAdjustment <= 0)
+        {
+            NotificationService.Notify(NotificationSeverity.Warning, "Entrada Inválida", "La cantidad debe ser mayor que cero para incrementar el stock.", 4000);
+            return;
+        }
+
+        var response = await ProductService.IncrementStockAsync(Merchandise.Id, StockAdjustment, Merchandise.PurchaseCost);
+        if (response.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Stock Incrementado", "El stock ha sido incrementado correctamente.", 4000);
+            DialogService.Close(StockAdjustment);
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Error", "No se pudo incrementar el stock.", 4000);
+        }
+    }
+
+    async Task OnDecrement()
+    {
+        if (StockAdjustment <= 0)
+        {
+            NotificationService.Notify(NotificationSeverity.Warning, "Entrada Inválida", "La cantidad debe ser mayor que cero para disminuir el stock.", 4000);
+            return;
+        }
+
+        var response = await ProductService.AdjustStockAsync(Merchandise.Id, -StockAdjustment); // Pasamos un valor negativo para ajustar el stock
+        if (response.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Stock Disminuido", "El stock ha sido disminuido correctamente.", 4000);
+            DialogService.Close(StockAdjustment);
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Error", "No se pudo disminuir el stock.", 4000);
+        }
+    }
+
+    void OnCancel()
+    {
+        DialogService.Close(false);
+    }
+}

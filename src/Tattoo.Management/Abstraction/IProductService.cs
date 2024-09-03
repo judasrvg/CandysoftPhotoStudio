@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Tattoo.Management.Models.Forms;
 using Tattoo.Management.Models.Requests;
 
-namespace App.Client.Services
+namespace Tattoo.Management.Services
 {
     public interface IProductService
     {
@@ -13,6 +13,8 @@ namespace App.Client.Services
         Task<ResponseAdapterDto> AddProductAsync(ProductDto productDto);
         Task<ResponseAdapterDto> UpdateProductAsync(ProductDto productDto);
         Task<ResponseAdapterDto> DeleteProductAsync(long id);
-        Task<ResponseAdapterDto> UpdateStockAsync(long id, int quantity);
+        Task<ResponseAdapterDto> IncrementStockAsync(long productId, int quantity, decimal purchaseCost);
+        Task<ResponseAdapterDto> DecrementStockAsync(long productId, int quantity, decimal salePrice);
+        Task<ResponseAdapterDto> AdjustStockAsync(long productId, int quantityAdjustment);
     }
 }

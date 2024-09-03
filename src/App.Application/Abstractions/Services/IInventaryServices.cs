@@ -11,6 +11,7 @@ namespace App.Application.Abstractions.Services
     {
         Task<ProductDto?> GetProductAsync(long id);
         Task<IEnumerable<ProductDto>> GetProductsAsync();
+
     }
 
     public interface ITransactionQueryService
@@ -22,12 +23,18 @@ namespace App.Application.Abstractions.Services
     {
         Task<long> AddOrUpdateProductAsync(ProductDto product);
         Task DeleteProductAsync(long id);
+        Task AdjustStockAsync(long productId, int quantity, string reason);
+
     }
 
     public interface ITransactionCommandService
     {
         Task<long> AddTransactionAsync(TransactionDto transaction);
         Task DeleteTransactionAsync(long id);
+        Task DecrementStockAsync(long productId, int quantity, decimal purchaseCost);
+        Task IncrementStockAsync(long productId, int quantity, decimal salePrice);
     }
+
+   
 
 }

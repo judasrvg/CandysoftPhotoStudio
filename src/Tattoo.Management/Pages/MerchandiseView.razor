@@ -1,0 +1,356 @@
+﻿@page "/MerchandiseView"
+@using Radzen.Blazor
+@using Tattoo.Management.Components.Dialogs
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Services
+@inject IProductService _productService
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
+    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Crear" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && MerchandiseToInsert.Count() > 0)" />
+</RadzenStack>
+
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end mobile-only">
+    <RadzenButton class="mobile-only" ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="Crear" Click="@InsertRowMobile" Disabled="@(editMode == DataGridEditMode.Single && MerchandiseToInsert.Count() > 0)" />
+</RadzenStack>
+
+<!-- Vista de Escritorio -->
+<RadzenDataGrid class="datagrid-layout desktop-only" @ref="_MerchandiseDataGridRef" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="false" PageSize="15" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Name" Title="Nombre">
+            <EditTemplate Context="merchandise">
+                <RadzenTextBox @bind-Value="merchandise.Name" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Price" Title="Precio">
+            <EditTemplate Context="merchandise">
+                <RadzenNumeric @bind-Value="merchandise.Price" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="PurchaseCost" Title="Costo-invertido">
+            <EditTemplate Context="merchandise">
+                <RadzenNumeric @bind-Value="merchandise.PurchaseCost" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="MerchandiseDto.LastRestockedDate" Title="Última Reposición">
+            <EditTemplate Context="merchandise">
+                <RadzenDatePicker @bind-Value="merchandise.MerchandiseDto.LastRestockedDate" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="StockQuantity" Title="Cantidad">
+            <Template Context="merchandise">
+                <div>@merchandise.StockQuantity</div>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="TotalQuantity" Title="Acumulado">
+            <Template Context="merchandise">
+                <div>@merchandise.TotalQuantity</div>
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Title="Acciones">
+            <Template Context="merchandise">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => EditRow(merchandise))" @onclick:stopPropagation="true" />
+                <RadzenButton Icon="inventory" ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => OpenAdjustStockDialog(merchandise))" @onclick:stopPropagation="true" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteRow(merchandise))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="merchandise">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => SaveRow(merchandise))" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => CancelEdit(merchandise))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<!-- Vista Móvil -->
+<RadzenDataGrid class="datagrid-layout datagrid-mobile mobile-only" @ref="_MerchandiseDataGridRefMobile" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="true" PageSize="8" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRowMobile" RowCreate="@OnCreateRowMobile">
+    <Columns>
+        <RadzenDataGridColumn CssClass="text-center" HeaderCssClass="display-none-column" TItem="ProductDto" Property="Name">
+            <EditTemplate Context="merchandise">
+                <div class="rz-cell">
+                    <span>Nombre:</span>
+                    <RadzenTextBox MaxLength="200" @bind-Value="merchandise.Name" Name="merchandise_name" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Precio:</span>
+                    <RadzenNumeric @bind-Value="merchandise.Price" Name="merchandise_price" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Costo-Invertido:</span>
+                    <RadzenNumeric @bind-Value="merchandise.PurchaseCost" Name="merchandise_price" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Última Reposición:</span>
+                    <RadzenDatePicker @bind-Value="merchandise.MerchandiseDto.LastRestockedDate" Name="merchandise_restockedDate" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Cantidad:</span>
+                    <div>@merchandise.StockQuantity</div>
+                </div>
+                <div class="rz-cell">
+                    <span>Acumulado:</span>
+                    <div>@merchandise.TotalQuantity</div>
+                </div>
+                <div class="rz-cell action-buttons">
+                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(async () => await SaveRowMobile(merchandise))" />
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await CancelEditMobile(merchandise))" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await DeleteRowMobile(merchandise))" />
+                </div>
+            </EditTemplate>
+            <Template Context="merchandise">
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Nombre:</span>
+                    <div>@merchandise.Name</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Precio:</span>
+                    <div>@merchandise.Price</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Costo-Invertido:</span>
+                    <div>@merchandise.PurchaseCost</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Última Reposición:</span>
+                    <div>@merchandise.MerchandiseDto.LastRestockedDate?.ToString("dd/MM/yyyy")</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Cantidad:</span>
+                    <div>@merchandise.StockQuantity</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Acumulado:</span>
+                    <div>@merchandise.StockQuantity</div>
+                </div>
+                <div class="rz-cell action-buttons">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(async () => await EditRowMobile(merchandise))" @onclick:stopPropagation="true" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="inventory" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => OpenAdjustStockDialog(merchandise))" @onclick:stopPropagation="true" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await DeleteRowMobile(merchandise))" @onclick:stopPropagation="true" />
+                </div>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    RadzenDataGrid<ProductDto> _MerchandiseDataGridRef;
+    RadzenDataGrid<ProductDto> _MerchandiseDataGridRefMobile;
+    HashSet<ProductDto> _MerchandiseData = new HashSet<ProductDto>();
+
+    DataGridEditMode editMode = DataGridEditMode.Single;
+    List<ProductDto> MerchandiseToInsert = new List<ProductDto>();
+    List<ProductDto> MerchandiseToUpdate = new List<ProductDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMerchandise();
+    }
+
+    private async Task LoadMerchandise()
+    {
+        var response = await _productService.GetAllProductsAsync();
+        if (response.IsSuccess)
+        {
+            var products = response.Data as IEnumerable<ProductDto>;
+
+            _MerchandiseData = products?
+                .Where(p => p.ProductType == ProductType.Merchandise)
+                .ToHashSet() ?? new HashSet<ProductDto>();
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+        }
+
+        StateHasChanged();
+    }
+
+    void Reset()
+    {
+        MerchandiseToInsert.Clear();
+        MerchandiseToUpdate.Clear();
+    }
+
+    void Reset(ProductDto merchandise)
+    {
+        MerchandiseToInsert.Remove(merchandise);
+        MerchandiseToUpdate.Remove(merchandise);
+    }
+
+    async Task EditRow(ProductDto merchandise)
+    {
+        if (editMode == DataGridEditMode.Single && MerchandiseToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        MerchandiseToUpdate.Add(merchandise);
+        await _MerchandiseDataGridRef.EditRow(merchandise);
+    }
+
+    async Task OnUpdateRow(ProductDto merchandise)
+    {
+        Reset(merchandise);
+
+        var result = (ResponseAdapterDto)await _productService.UpdateProductAsync(merchandise);
+        if (result.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Actualización Exitosa", "El producto ha sido actualizado correctamente.", 4000);
+        }
+    }
+
+    async Task SaveRow(ProductDto merchandise)
+    {
+        await _MerchandiseDataGridRef.UpdateRow(merchandise);
+    }
+
+    void CancelEdit(ProductDto merchandise)
+    {
+        Reset(merchandise);
+
+        _MerchandiseDataGridRef.CancelEditRow(merchandise);
+    }
+
+    async Task DeleteRow(ProductDto merchandise)
+    {
+        Reset(merchandise);
+
+        bool hasSucess = await ConfirmDelete(merchandise.Id);
+        if (hasSucess)
+        {
+            _MerchandiseData.Remove(merchandise);
+            await _MerchandiseDataGridRef.Reload();
+        }
+    }
+
+    async Task InsertRow()
+    {
+        if (editMode == DataGridEditMode.Single)
+        {
+            Reset();
+        }
+
+        var newMerchandise = new ProductDto
+            {
+                ProductType = ProductType.Merchandise,
+                MerchandiseDto = new MerchandiseDto()
+            };
+
+        MerchandiseToInsert.Add(newMerchandise);
+        await _MerchandiseDataGridRef.InsertRow(newMerchandise);
+    }
+
+    async Task OnCreateRow(ProductDto merchandise)
+    {
+        merchandise.ProductType = ProductType.Merchandise;
+        var response = await _productService.AddProductAsync(merchandise);
+        if (response.IsSuccess)
+        {
+            MerchandiseToInsert.Remove(merchandise);
+            NotificationService.Notify(NotificationSeverity.Success, "Creación Exitosa", "El producto ha sido creado correctamente.", 4000);
+            await LoadMerchandise();
+            StateHasChanged();
+        }
+    }
+
+    protected async Task<bool> ConfirmDelete(long id)
+    {
+        var confirm = await DialogService.Confirm("¿Estás seguro de que quieres eliminar este producto?", "Confirmación", new ConfirmOptions { OkButtonText = "Sí", CancelButtonText = "No" });
+        if (confirm.HasValue && confirm.Value)
+        {
+            var result = (ResponseAdapterDto)await _productService.DeleteProductAsync(id);
+            return result.IsSuccess;
+        }
+        return false;
+    }
+
+    async Task OpenAdjustStockDialog(ProductDto merchandise)
+    {
+        var parameters = new Dictionary<string, object>() { { "Merchandise", merchandise } };
+        var countAdjusted = await DialogService.OpenAsync<AdjustStockDialog>("Ajustar Stock", parameters);
+        if (countAdjusted is int && countAdjusted>0)
+        {
+            await LoadMerchandise();
+        }
+    }
+
+    /*************************Mobile**************************/
+    async Task SaveRowMobile(ProductDto merchandise)
+    {
+        await _MerchandiseDataGridRefMobile.UpdateRow(merchandise);
+    }
+
+    async Task CancelEditMobile(ProductDto merchandise)
+    {
+        Reset(merchandise);
+        _MerchandiseDataGridRefMobile.CancelEditRow(merchandise);
+    }
+
+    async Task EditRowMobile(ProductDto merchandise)
+    {
+        if (editMode == DataGridEditMode.Single && MerchandiseToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        MerchandiseToUpdate.Add(merchandise);
+        await _MerchandiseDataGridRefMobile.EditRow(merchandise);
+    }
+
+    async Task DeleteRowMobile(ProductDto merchandise)
+    {
+        Reset(merchandise);
+
+        bool hasSuccess = await ConfirmDelete(merchandise.Id);
+        if (hasSuccess)
+        {
+            _MerchandiseData.Remove(merchandise);
+            await _MerchandiseDataGridRefMobile.Reload();
+        }
+    }
+
+    async Task InsertRowMobile()
+    {
+        if (editMode == DataGridEditMode.Single)
+        {
+            Reset();
+        }
+
+        var newMerchandise = new ProductDto
+            {
+                ProductType = ProductType.Merchandise,
+                MerchandiseDto = new MerchandiseDto()
+            };
+
+        MerchandiseToInsert.Add(newMerchandise);
+        await _MerchandiseDataGridRefMobile.InsertRow(newMerchandise);
+    }
+
+    async Task OnCreateRowMobile(ProductDto merchandise)
+    {
+        merchandise.ProductType = ProductType.Merchandise;
+        var response = await _productService.AddProductAsync(merchandise);
+        if (response.IsSuccess)
+        {
+            MerchandiseToInsert.Remove(merchandise);
+            NotificationService.Notify(NotificationSeverity.Success, "Creación Exitosa", "El producto ha sido creado correctamente.", 4000);
+        }
+    }
+
+    async Task OnUpdateRowMobile(ProductDto merchandise)
+    {
+        Reset(merchandise);
+
+        var result = (ResponseAdapterDto)await _productService.UpdateProductAsync(merchandise);
+        if (result.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Actualización Exitosa", "El producto ha sido actualizado correctamente.", 4000);
+        }
+    }
+}

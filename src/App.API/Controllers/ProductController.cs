@@ -15,11 +15,13 @@ namespace App.API.Controllers
     {
         private readonly IProductCommandService _productCommandService;
         private readonly IProductQueryService _productQueryService;
+        private readonly ITransactionCommandService _transactionCommandService;
 
-        public ProductController(IProductCommandService productCommandService, IProductQueryService productQueryService)
+        public ProductController(IProductCommandService productCommandService, IProductQueryService productQueryService, ITransactionCommandService transactionCommandService)
         {
             _productCommandService = productCommandService;
             _productQueryService = productQueryService;
+            _transactionCommandService = transactionCommandService;
         }
 
         // GET: api/Product/{id}
@@ -65,20 +67,50 @@ namespace App.API.Controllers
             return Ok(id);
         }
 
-        // Opcional: Endpoint para manejar acciones específicas de subtipos
-        // Ejemplo: Actualizar la cantidad de stock de un producto de tipo Merchandise
-        [HttpPatch("UpdateStock/{id:long}")]
-        public async Task<IActionResult> UpdateStock(long id, [FromBody] int quantity)
+        [HttpPatch("AdjustStock/{id:long}")]
+        public async Task<IActionResult> AdjustStock(long id, [FromBody] StockRequest quantityAdjustment)
         {
             var product = await _productQueryService.GetProductAsync(id);
-            if (product == null || product.ProductType != ProductType.Merchandise)
-                return BadRequest("Product not found or not a Merchandise type");
+            if (product == null)
+                return BadRequest("Product not found");
 
-            var merchandiseDto = product.MerchandiseDto;
-            merchandiseDto.StockQuantity = quantity;
+            // Ajuste del stock
+            product.StockQuantity += quantityAdjustment.Quantity;
+            product.TotalQuantity += quantityAdjustment.Quantity;
+
             await _productCommandService.AddOrUpdateProductAsync(product);
 
-            return Ok(merchandiseDto);
+            return Ok();
         }
+
+        [HttpPost("IncrementStock/{id:long}")]
+        public async Task<IActionResult> IncrementStock(long id, [FromBody] StockRequest request)
+        {
+            var product = await _productQueryService.GetProductAsync(id);
+            if (product == null)
+            {
+                return BadRequest("Product not found or not a Merchandise type");
+            }
+
+            await _transactionCommandService.IncrementStockAsync(id, request.Quantity, request.Value);
+
+            return Ok();
+        }
+
+
+        [HttpPost("DecrementStock/{id:long}")]
+        public async Task<IActionResult> DecrementStock(long id, [FromBody] StockRequest request)
+        {
+            var product = await _productQueryService.GetProductAsync(id);
+            if (product == null)
+            {
+                return BadRequest("Product not found or not a Merchandise type");
+            }
+
+            await _transactionCommandService.DecrementStockAsync(id, request.Quantity, request.Value);
+
+            return Ok();
+        }
+
     }
 }

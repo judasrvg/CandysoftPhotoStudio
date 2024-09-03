@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<ITattooService, TattooService>();
 builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IConfigValueService, ConfigValueService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<DialogService>(); // Asegúrate de que esta línea esté habilitada

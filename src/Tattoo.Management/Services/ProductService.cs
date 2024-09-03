@@ -11,7 +11,7 @@ using Tattoo.Management.Models.Configuration;
 using System.Text.Json.Serialization;
 using Tattoo.Management.Models.Forms;
 using Tattoo.Management.Services;
-namespace App.Client.Services
+namespace Tattoo.Management.Services
 {
     public class ProductService : BaseApiService, IProductService
     {
@@ -54,12 +54,56 @@ namespace App.Client.Services
             return await HandleResponseAsync<long>(response);
         }
 
-        public async Task<ResponseAdapterDto> UpdateStockAsync(long id, int quantity)
+        public async Task<ResponseAdapterDto> AdjustStockAsync(long productId, int quantityAdjustment)
         {
             var client = _http.CreateClient("ProductHttpClient");
-            var content = new StringContent(JsonSerializer.Serialize(quantity), Encoding.UTF8, "application/json");
-            var response = await client.PatchAsync($"UpdateStock/{id}", content);
-            return await HandleResponseAsync<int>(response);
+
+            var requestData = new StockRequest
+            {
+                Quantity = quantityAdjustment
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+            var response = await client.PatchAsync($"AdjustStock/{productId}", content);
+
+            return await HandleResponseAsync<string>(response); // Asumimos que el endpoint retorna un mensaje de éxito
         }
+
+
+        public async Task<ResponseAdapterDto> IncrementStockAsync(long productId, int quantity, decimal purchaseCost)
+        {
+            var client = _http.CreateClient("ProductHttpClient");
+
+            var requestData = new StockRequest
+            {
+                Quantity = quantity,
+                Value = purchaseCost
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"IncrementStock/{productId}", content);
+
+            return await HandleResponseAsync<string>(response);
+        }
+
+
+        public async Task<ResponseAdapterDto> DecrementStockAsync(long productId, int quantity, decimal salePrice)
+        {
+            var client = _http.CreateClient("ProductHttpClient");
+
+            var requestData = new StockRequest
+            {
+                Quantity = quantity,
+                Value = salePrice
+            };
+
+            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"DecrementStock/{productId}", content);
+
+            return await HandleResponseAsync<string>(response);
+        }
+
+
+
     }
 }

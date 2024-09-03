@@ -41,7 +41,7 @@ namespace App.Application.Services.Command
                 _mapper.Map(productDto, product);
 
                 // Maneja el tipo específico
-                product = CreateSpecificType(productDto);
+                product = UpdateSpecificType(productDto, product);
             }
             else
             {
@@ -71,52 +71,125 @@ namespace App.Application.Services.Command
             switch (productDto.ProductType)
             {
                 case ProductType.FixedAsset:
-                    product = _mapper.Map<FixedAsset>(productDto.FixedAssetDto);
+                    product = new FixedAsset
+                    {
+                        // Mapea las propiedades específicas de FixedAsset
+                        PurchaseDate = productDto.FixedAssetDto.PurchaseDate,
+                        WarrantyExpiryDate = productDto.FixedAssetDto.WarrantyExpiryDate,
+                        DepreciationRate = productDto.FixedAssetDto.DepreciationRate,
+
+                    };
                     break;
+
                 case ProductType.Merchandise:
-                    product = _mapper.Map<Merchandise>(productDto.MerchandiseDto);
+                    product = new Merchandise
+                    {
+                        // Mapea las propiedades específicas de Merchandise
+                        StockQuantity = productDto.StockQuantity,
+                        LastRestockedDate = productDto.MerchandiseDto.LastRestockedDate
+                    };
                     break;
-                case ProductType.RawMaterial:
-                    product = _mapper.Map<RawMaterial>(productDto.RawMaterialDto);
-                    break;
+
+                //case ProductType.RawMaterial:
+                //    product = new RawMaterial
+                //    {
+                //        // Mapea las propiedades específicas de RawMaterial
+                //        StockQuantity = productDto.StockQuantity,
+                //        ConsumptionRate = productDto.RawMaterialDto.ConsumptionRate,
+                //        LastUsedDate = productDto.RawMaterialDto.LastUsedDate
+                //    };
+                //    break;
+
                 default:
-                    throw new InvalidOperationException("Unsupported product type.");
+                    throw new ArgumentException("Tipo de producto no soportado");
             }
+
+            // Mapea las propiedades comunes
+            _mapper.Map(productDto, product);
+            product.StockQuantity = productDto.StockQuantity;
+            product.TotalQuantity = productDto.StockQuantity;
+
             return product;
         }
 
-
-        private void UpdateSpecificType(Product product, ProductDto productDto)
+        private Product UpdateSpecificType(ProductDto productDto, Product product)
         {
             switch (productDto.ProductType)
             {
                 case ProductType.FixedAsset:
-                    _mapper.Map(productDto.FixedAssetDto, product.FixedAsset);
+                    var fixedAsset = product as FixedAsset;
+                    if (fixedAsset != null)
+                    {
+                        fixedAsset.PurchaseDate = productDto.FixedAssetDto.PurchaseDate;
+                        fixedAsset.WarrantyExpiryDate = productDto.FixedAssetDto.WarrantyExpiryDate;
+                        fixedAsset.DepreciationRate = productDto.FixedAssetDto.DepreciationRate;
+                    }
                     break;
-                case ProductType.Merchandise:
-                    _mapper.Map(productDto.MerchandiseDto, product.Merchandise);
-                    break;
-                case ProductType.RawMaterial:
-                    _mapper.Map(productDto.RawMaterialDto, product.RawMaterial);
-                    break;
-            }
-        }
-    }
 
+                case ProductType.Merchandise:
+                    var merchandise = product as Merchandise;
+                    if (merchandise != null)
+                    {
+                        merchandise.StockQuantity = productDto.StockQuantity;
+                        merchandise.LastRestockedDate = productDto.MerchandiseDto.LastRestockedDate;
+                    }
+                    break;
+
+                //case ProductType.RawMaterial:
+                //    var rawMaterial = product as RawMaterial;
+                //    if (rawMaterial != null)
+                //    {
+                //        rawMaterial.StockQuantity = productDto.StockQuantity;
+                //        rawMaterial.ConsumptionRate = productDto.RawMaterialDto.ConsumptionRate;
+                //        rawMaterial.LastUsedDate = productDto.RawMaterialDto.LastUsedDate;
+                //    }
+                //    break;
+
+                default:
+                    throw new ArgumentException("Tipo de producto no soportado");
+            }
+
+            // Mapea las propiedades comunes
+            _mapper.Map(productDto, product);
+
+            return product;
+        }
+
+        public async Task AdjustStockAsync(long productId, int quantity, string reason)
+        {
+            var product = await _readRepository.GetByIdAsync(productId);
+            if (product == null) throw new KeyNotFoundException("Product not found.");
+
+            // Realiza el ajuste de stock
+            product.StockQuantity += quantity;
+
+            // No actualiza TotalQuantity ya que es un ajuste, no una compra/venta
+            product.ModifiedDate = DateTime.UtcNow;
+
+            await _unitOfWork.CompleteAsync();
+        }
+
+
+
+    }
 
     public class TransactionCommandService : ITransactionCommandService
     {
         private readonly IReadRepository<Transaction> _readRepository;
         private readonly IWriteRepository<Transaction> _writeRepository;
+        private readonly IProductCommandService _productCommandService;
+        private readonly IProductQueryService _productQueryService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TransactionCommandService(IReadRepository<Transaction> readRepository, IWriteRepository<Transaction> writeRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public TransactionCommandService(IReadRepository<Transaction> readRepository, IWriteRepository<Transaction> writeRepository, IUnitOfWork unitOfWork, IMapper mapper, IProductCommandService productCommandService, IProductQueryService productQueryService)
         {
             _readRepository = readRepository;
             _writeRepository = writeRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _productCommandService = productCommandService;
+            _productQueryService = productQueryService;
         }
 
         public async Task<long> AddTransactionAsync(TransactionDto transactionDto)
@@ -136,6 +209,57 @@ namespace App.Application.Services.Command
                 await _unitOfWork.CompleteAsync();
             }
         }
-    }
 
+        public async Task IncrementStockAsync(long productId, int quantity, decimal purchaseCost)
+        {
+            var product = await _productQueryService.GetProductAsync(productId);
+            if (product == null) throw new KeyNotFoundException("Product not found.");
+
+            // Incrementar el stock y actualizar la cantidad total
+            product.StockQuantity += quantity;
+            product.TotalQuantity += quantity;
+
+            // Registrar la transacción de gasto
+            var transaction = new Transaction
+            {
+                ProductId = productId,
+                TransactionDate = DateTime.UtcNow,
+                Quantity = quantity,
+                TransactionType = TransactionType.Expense,
+                TotalAmount =-( purchaseCost * quantity)
+            };
+
+            await _writeRepository.AddAsync(transaction);
+            await _productCommandService.AddOrUpdateProductAsync(product);
+            await _unitOfWork.CompleteAsync();
+        }
+
+
+        public async Task DecrementStockAsync(long productId, int quantity, decimal salePrice)
+        {
+            var product = await _productQueryService.GetProductAsync(productId);
+            if (product == null) throw new KeyNotFoundException("Product not found.");
+
+            // Verifica si hay suficiente stock
+            if (product.StockQuantity < quantity) throw new InvalidOperationException("Not enough stock to decrement.");
+
+            // Decrementar el stock
+            product.StockQuantity -= quantity;
+
+            // Registrar la transacción de ingreso
+            var transaction = new Transaction
+            {
+                ProductId = productId,
+                TransactionDate = DateTime.UtcNow,
+                Quantity = quantity,
+                TransactionType = TransactionType.Income,
+                TotalAmount = salePrice * quantity
+            };
+
+            await _writeRepository.AddAsync(transaction);
+            await _productCommandService.AddOrUpdateProductAsync(product);
+            await _unitOfWork.CompleteAsync();
+        }
+
+    }
 }

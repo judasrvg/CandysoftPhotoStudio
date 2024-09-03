@@ -1,0 +1,352 @@
+﻿@page "/FixedAssetView"
+@using Radzen.Blazor
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+@inject IProductService _productService
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+
+@* <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end ">
+    <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="CREAR" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && FixedAssetsToInsert.Count() > 0)" />
+</RadzenStack> *@
+<NotranslateDirective>
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
+    <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Crear" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && FixedAssetsToInsert.Count() > 0)" />
+
+</RadzenStack>
+
+<RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end mobile-only">
+    <RadzenButton class="mobile-only" ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" Text="CREAR" Click="@InsertRowMobile" Disabled="@(editMode == DataGridEditMode.Single && FixedAssetsToInsert.Count() > 0)" />
+
+</RadzenStack>
+
+<!-- Vista de Escritorio -->
+<RadzenDataGrid class="datagrid-layout desktop-only" @ref="_FixedAssetsDataGridRef" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="false" PageSize="15" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                Data="@_FixedAssetsData" TItem="ProductDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
+    <Columns>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Name" Title="Nombre">
+            <EditTemplate Context="fixedAsset">
+                <RadzenTextBox @bind-Value="fixedAsset.Name" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Price" Title="Precio">
+            <EditTemplate Context="fixedAsset">
+                <RadzenNumeric @bind-Value="fixedAsset.Price" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="FixedAssetDto.PurchaseDate" Title="Fecha de Compra">
+            <EditTemplate Context="fixedAsset">
+                <RadzenDatePicker @bind-Value="fixedAsset.FixedAssetDto.PurchaseDate" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="FixedAssetDto.WarrantyExpiryDate" Title="Expiración de Garantía">
+            <EditTemplate Context="fixedAsset">
+                <RadzenDatePicker ShowSeconds="false" @bind-Value="fixedAsset.FixedAssetDto.WarrantyExpiryDate" Style="width:100%" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="FixedAssetDto.DepreciationRate" Title="Depreciación (%)">
+            <EditTemplate Context="fixedAsset">
+                <RadzenNumeric @bind-Value="fixedAsset.FixedAssetDto.DepreciationRate" Style="width:100%" Min="0" Max="100" Step="0.01" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="StockQuantity" Title="Cantidad">
+            <EditTemplate Context="fixedAsset">
+                <RadzenNumeric @bind-Value="fixedAsset.StockQuantity" Style="width:100%" Min="0" Max="100" Step="1" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Title="Acciones">
+            <Template Context="fixedAsset">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => EditRow(fixedAsset))" @onclick:stopPropagation="true" />
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteRow(fixedAsset))" @onclick:stopPropagation="true" />
+            </Template>
+            <EditTemplate Context="fixedAsset">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => SaveRow(fixedAsset))" />
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => CancelEdit(fixedAsset))" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+<!-- Vista Móvil -->
+<RadzenDataGrid class="datagrid-layout datagrid-mobile mobile-only" @ref="_FixedAssetsDataGridRefMobile" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="true" PageSize="8" AllowSorting="false" EditMode="DataGridEditMode.Single"
+                Data="@_FixedAssetsData" TItem="ProductDto" RowUpdate="@OnUpdateRowMobile" RowCreate="@OnCreateRowMobile">
+    <Columns>
+        <RadzenDataGridColumn CssClass="text-center" HeaderCssClass="display-none-column" TItem="ProductDto" Property="Name">
+            <EditTemplate Context="fixedAsset">
+                <div class="rz-cell">
+                    <span>Nombre:</span>
+                    <RadzenTextBox MaxLength="200" @bind-Value="fixedAsset.Name" Name="fixedAsset_name" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Precio:</span>
+                    <RadzenNumeric @bind-Value="fixedAsset.Price" Name="fixedAsset_price" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Fecha de Compra:</span>
+                    <RadzenDatePicker @bind-Value="fixedAsset.FixedAssetDto.PurchaseDate" Name="fixedAsset_purchaseDate" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Expiración de Garantía:</span>
+                    <RadzenDatePicker ShowSeconds="false" @bind-Value="fixedAsset.FixedAssetDto.WarrantyExpiryDate" Name="fixedAsset_warrantyDate" Style="width:100%; display: block;" />
+                </div>
+                <div class="rz-cell">
+                    <span>Depreciación (%):</span>
+                    <RadzenNumeric @bind-Value="fixedAsset.FixedAssetDto.DepreciationRate" Name="fixedAsset_depreciation" Style="width:100%; display: block;" Min="0" Max="100" Step="0.01" />
+                </div>
+                <div class="rz-cell">
+                    <span>Cantidad:</span>
+                    <RadzenNumeric @bind-Value="fixedAsset.StockQuantity" Name="fixedAsset_quantity" Style="width:100%; display: block;" Min="0" Max="100" Step="1" />
+                </div>
+                <div class="rz-cell action-buttons">
+                    <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(async () => await SaveRowMobile(fixedAsset))" />
+                    <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await CancelEditMobile(fixedAsset))" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await DeleteRowMobile(fixedAsset))" />
+                </div>
+            </EditTemplate>
+            <Template Context="fixedAsset">
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Nombre:</span>
+                    <div>@fixedAsset.Name</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Precio:</span>
+                    <div>@fixedAsset.Price</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Fecha de Compra:</span>
+                    <div>@fixedAsset.FixedAssetDto.PurchaseDate.ToString("dd/MM/yyyy")</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Expiración de Garantía:</span>
+                    <div>@fixedAsset.FixedAssetDto.WarrantyExpiryDate.ToString("dd/MM/yyyy")</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Depreciación (%):</span>
+                    <div>@fixedAsset.FixedAssetDto.DepreciationRate%</div>
+                </div>
+                <div class="rz-cell">
+                    <span style="font-weight:600;line-height: 33px;">Cantidad:</span>
+                    <div>@fixedAsset.StockQuantity</div>
+                </div>
+                <div class="rz-cell action-buttons">
+                    <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(async () => await EditRowMobile(fixedAsset))" @onclick:stopPropagation="true" />
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await DeleteRowMobile(fixedAsset))" @onclick:stopPropagation="true" />
+                </div>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+</NotranslateDirective>
+@code {
+    RadzenDataGrid<ProductDto> _FixedAssetsDataGridRef;
+    RadzenDataGrid<ProductDto> _FixedAssetsDataGridRefMobile;
+    HashSet<ProductDto> _FixedAssetsData = new HashSet<ProductDto>();
+
+    DataGridEditMode editMode = DataGridEditMode.Single;
+    List<ProductDto> FixedAssetsToInsert = new List<ProductDto>();
+    List<ProductDto> FixedAssetsToUpdate = new List<ProductDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadFixedAssets();
+    }
+
+    private async Task LoadFixedAssets()
+    {
+        var response = await _productService.GetAllProductsAsync();
+        if (response.IsSuccess)
+        {
+            var products = response.Data as IEnumerable<ProductDto>;
+
+            _FixedAssetsData = products?
+                .Where(p => p.ProductType == ProductType.FixedAsset)
+                .ToHashSet() ?? new HashSet<ProductDto>();
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
+        }
+
+        StateHasChanged();
+    }
+
+    void Reset()
+    {
+        FixedAssetsToInsert.Clear();
+        FixedAssetsToUpdate.Clear();
+    }
+
+    void Reset(ProductDto fixedAsset)
+    {
+        FixedAssetsToInsert.Remove(fixedAsset);
+        FixedAssetsToUpdate.Remove(fixedAsset);
+    }
+
+    async Task EditRow(ProductDto fixedAsset)
+    {
+        if (editMode == DataGridEditMode.Single && FixedAssetsToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        FixedAssetsToUpdate.Add(fixedAsset);
+        await _FixedAssetsDataGridRef.EditRow(fixedAsset);
+    }
+
+    async Task OnUpdateRow(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+
+        var result = (ResponseAdapterDto)await _productService.UpdateProductAsync(fixedAsset);
+        if (result.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Actualización Exitosa", "El producto ha sido actualizado correctamente.", 4000);
+        }
+    }
+
+    async Task SaveRow(ProductDto fixedAsset)
+    {
+        await _FixedAssetsDataGridRef.UpdateRow(fixedAsset);
+    }
+
+    void CancelEdit(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+
+        _FixedAssetsDataGridRef.CancelEditRow(fixedAsset);
+    }
+
+    async Task DeleteRow(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+
+        bool hasSucess = await ConfirmDelete(fixedAsset.Id);
+        if (hasSucess)
+        {
+            _FixedAssetsData.Remove(fixedAsset);
+            await _FixedAssetsDataGridRef.Reload();
+        }
+    }
+
+    async Task InsertRow()
+    {
+        if (editMode == DataGridEditMode.Single)
+        {
+            Reset();
+        }
+
+        var newFixedAsset = new ProductDto
+            {
+                ProductType = ProductType.FixedAsset,
+                FixedAssetDto = new FixedAssetDto()
+            };
+
+        FixedAssetsToInsert.Add(newFixedAsset);
+        await _FixedAssetsDataGridRef.InsertRow(newFixedAsset);
+    }
+
+    async Task OnCreateRow(ProductDto fixedAsset)
+    {
+        fixedAsset.ProductType = ProductType.FixedAsset;
+        var response = await _productService.AddProductAsync(fixedAsset);
+        if (response.IsSuccess)
+        {
+            FixedAssetsToInsert.Remove(fixedAsset);
+            NotificationService.Notify(NotificationSeverity.Success, "Creación Exitosa", "El producto ha sido creado correctamente.", 4000);
+        }
+    }
+
+    protected async Task<bool> ConfirmDelete(long id)
+    {
+        var confirm = await DialogService.Confirm("¿Estás seguro de que quieres eliminar este producto?", "Confirmación", new ConfirmOptions { OkButtonText = "Sí", CancelButtonText = "No" });
+        if (confirm.HasValue && confirm.Value)
+        {
+            var result = (ResponseAdapterDto)await _productService.DeleteProductAsync(id);
+            return result.IsSuccess;
+        }
+        return false;
+    }
+
+    /*************************Mobile**************************/
+    async Task SaveRowMobile(ProductDto fixedAsset)
+    {
+        await _FixedAssetsDataGridRefMobile.UpdateRow(fixedAsset);
+    }
+
+    async Task CancelEditMobile(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+        _FixedAssetsDataGridRefMobile.CancelEditRow(fixedAsset);
+    }
+
+    async Task EditRowMobile(ProductDto fixedAsset)
+    {
+        if (editMode == DataGridEditMode.Single && FixedAssetsToInsert.Count() > 0)
+        {
+            Reset();
+        }
+
+        FixedAssetsToUpdate.Add(fixedAsset);
+        await _FixedAssetsDataGridRefMobile.EditRow(fixedAsset);
+    }
+
+    async Task DeleteRowMobile(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+
+        bool hasSuccess = await ConfirmDelete(fixedAsset.Id);
+        if (hasSuccess)
+        {
+            _FixedAssetsData.Remove(fixedAsset);
+            await _FixedAssetsDataGridRefMobile.Reload();
+        }
+    }
+
+    async Task InsertRowMobile()
+    {
+        if (editMode == DataGridEditMode.Single)
+        {
+            Reset();
+        }
+
+        var newFixedAsset = new ProductDto
+            {
+                ProductType = ProductType.FixedAsset,
+                FixedAssetDto = new FixedAssetDto()
+            };
+
+        FixedAssetsToInsert.Add(newFixedAsset);
+        await _FixedAssetsDataGridRefMobile.InsertRow(newFixedAsset);
+    }
+
+    async Task OnCreateRowMobile(ProductDto fixedAsset)
+    {
+        fixedAsset.ProductType = ProductType.FixedAsset;
+        var response = await _productService.AddProductAsync(fixedAsset);
+        if (response.IsSuccess)
+        {
+            FixedAssetsToInsert.Remove(fixedAsset);
+            NotificationService.Notify(NotificationSeverity.Success, "Creación Exitosa", "El producto ha sido creado correctamente.", 4000);
+        }
+    }
+
+    async Task OnUpdateRowMobile(ProductDto fixedAsset)
+    {
+        Reset(fixedAsset);
+
+        var result = (ResponseAdapterDto)await _productService.UpdateProductAsync(fixedAsset);
+        if (result.IsSuccess)
+        {
+            NotificationService.Notify(NotificationSeverity.Success, "Actualización Exitosa", "El producto ha sido actualizado correctamente.", 4000);
+        }
+    }
+}

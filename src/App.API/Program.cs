@@ -154,6 +154,10 @@ try
     builder.Services.AddScoped<IReservationQueryService, ReservationQueryService>();
     builder.Services.AddScoped<IReservationCommandService, ReservationCommandService>();
     builder.Services.AddScoped<ITattooQueryService, TattooQueryService>();
+    builder.Services.AddScoped<IProductQueryService, ProductQueryService>();
+    builder.Services.AddScoped<IProductCommandService, ProductCommandService>();
+    builder.Services.AddScoped<ITransactionQueryService, TransactionQueryService>();
+    builder.Services.AddScoped<ITransactionCommandService, TransactionCommandService>();
     builder.Services.AddScoped<ITattooCommandService, TattooCommandService>();
     builder.Services.AddTransient<INotificationCommandServices, NotificationCommandServices>(provider =>
     {

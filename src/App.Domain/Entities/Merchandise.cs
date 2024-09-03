@@ -8,7 +8,6 @@ namespace App.Domain.Entities
 {
     public class Merchandise : Product
     {
-        public int StockQuantity { get; set; }
         public DateTime? LastRestockedDate { get; set; }
     }
 

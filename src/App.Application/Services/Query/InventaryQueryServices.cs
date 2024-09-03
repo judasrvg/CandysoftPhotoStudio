@@ -56,14 +56,47 @@ namespace App.Application.Services.Query
             switch (product.ProductType)
             {
                 case ProductType.FixedAsset:
-                    productDto.FixedAssetDto = _mapper.Map<FixedAssetDto>(product.FixedAsset);
+                    var fixedAsset = product as FixedAsset;
+                    if (fixedAsset != null)
+                    {
+                        productDto.FixedAssetDto = new FixedAssetDto
+                        {
+                            PurchaseDate = fixedAsset.PurchaseDate,
+                            WarrantyExpiryDate = fixedAsset.WarrantyExpiryDate,
+                            DepreciationRate = fixedAsset.DepreciationRate,
+                            //Quantity = fixedAsset.Quantity,
+
+                        };
+                    }
                     break;
+
                 case ProductType.Merchandise:
-                    productDto.MerchandiseDto = _mapper.Map<MerchandiseDto>(product.Merchandise);
+                    var merchandise = product as Merchandise;
+                    if (merchandise != null)
+                    {
+                        productDto.MerchandiseDto = new MerchandiseDto
+                        {
+                            //StockQuantity = merchandise.StockQuantity,
+                            LastRestockedDate = merchandise.LastRestockedDate
+                        };
+                    }
                     break;
-                case ProductType.RawMaterial:
-                    productDto.RawMaterialDto = _mapper.Map<RawMaterialDto>(product.RawMaterial);
-                    break;
+
+                //case ProductType.RawMaterial:
+                //    var rawMaterial = product as RawMaterial;
+                //    if (rawMaterial != null)
+                //    {
+                //        productDto.RawMaterialDto = new RawMaterialDto
+                //        {
+                //            //StockQuantity = rawMaterial.StockQuantity,
+                //            ConsumptionRate = rawMaterial.ConsumptionRate,
+                //            LastUsedDate = rawMaterial.LastUsedDate
+                //        };
+                //    }
+                //    break;
+
+                default:
+                    throw new ArgumentException("Tipo de producto no soportado");
             }
         }
     }

@@ -86,6 +86,8 @@ namespace App.Domain.Entities
         public void JumpToState(IReservationState state)
         {
             CurrentState = state;
+            GenerateTransactionIfNeeded();
+
         }
 
         // Método para establecer estados específicos internamente
