@@ -86,12 +86,34 @@
         border-radius: 50% !important;
     }
     .badge-priority {
-        border: solid 1px black !important;
+        position: absolute;
+        padding: 5px;
+        left: 0px;
+        color: #0a890a;
+        border: none !important;
         z-index: 1;
-        width: 50%!important;
-        float:right;
-        border-radius: 10% !important;
-        font-weight: 600
+        width: 50%;
+        font-size: 22px !important;
+        border-radius: 30px !important;
+        font-weight: bold;
+        text-align: center !important;
+        align-content: center !important;
+        background-color: #ffffffd4;
+    }
+
+    .badge-priority-stock {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #ffffff;
+        border: none !important;
+        z-index: 1;
+        width: 30%;
+        border-radius: 30px !important;
+        font-weight: bold;
+        text-align: center !important;
+        align-content: center !important;
+        background-color: #0089ff;
     }
     /*Upload*/
     .upload-custom {
@@ -405,6 +427,7 @@
         position: relative;
         width: calc(45% - 10px); /* Ajusta el ancho según la cantidad de columnas deseada */
         height: 10rem;
+        min-width:4rem;
         padding-bottom: 25%; /* Mantiene la proporción de aspecto */
         overflow: hidden;
         box-sizing: border-box;
@@ -547,6 +570,16 @@
         color: #ff0017bf !important;
         padding-right: 1rem;
         cursor:pointer;
+    }
+
+    /*iconremove*/
+    .icon-color-remove-stock {
+        float: inline-end;
+        color: #ff0017bf !important;
+        /*padding-right: 1rem;*/
+        cursor: pointer;
+        font-size:30px!important;
+        background-color:white;
     }
 
     /*iconlike*/

@@ -959,6 +959,14 @@
         }
 
     /*iconremove*/
+    .icon-color-remove-stock {
+        float: inline-end;
+        color: #ff0017bf !important;
+        padding-right: 1rem;
+        cursor: pointer;
+    }
+
+    /*iconremove*/
     .icon-color-remove {
         float: inline-end;
         color: #ff0017bf !important;

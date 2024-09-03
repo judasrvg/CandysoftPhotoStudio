@@ -9,9 +9,15 @@ namespace App.Application.DTOs
 {
     public class StockRequest
     {
+        public long Id { get; set; }
         public int Quantity { get; set; }
         public decimal Value { get; set; }
         public bool WithTransaction{ get; set; }
+    }
+
+    public class StockDecrement
+    {
+        public StockRequest[] Requests { get; set; } = [];
     }
 
     public class ProductDto

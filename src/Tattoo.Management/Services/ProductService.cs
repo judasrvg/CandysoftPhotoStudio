@@ -87,18 +87,12 @@ namespace Tattoo.Management.Services
         }
 
 
-        public async Task<ResponseAdapterDto> DecrementStockAsync(long productId, int quantity, decimal salePrice)
+        public async Task<ResponseAdapterDto> DecrementStockAsync(StockDecrement stockRequest)
         {
             var client = _http.CreateClient("ProductHttpClient");
 
-            var requestData = new StockRequest
-            {
-                Quantity = quantity,
-                Value = salePrice
-            };
-
-            var content = new StringContent(JsonSerializer.Serialize(requestData), Encoding.UTF8, "application/json");
-            var response = await client.PostAsync($"DecrementStock/{productId}", content);
+            var content = new StringContent(JsonSerializer.Serialize(stockRequest), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync($"DecrementStock", content);
 
             return await HandleResponseAsync<string>(response);
         }

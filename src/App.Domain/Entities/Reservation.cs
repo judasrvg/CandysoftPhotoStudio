@@ -123,7 +123,7 @@ namespace App.Domain.Entities
                 {
                     ReservationId = Id,
                     TransactionDate = DateTime.UtcNow,
-                    Quantity = 1, // O el valor adecuado
+                    Quantity = Offers?.Count()??1, // O el valor adecuado
                     TransactionType = TransactionType.Income, // O Expense según sea el caso
                     TotalAmount = TotalAmount,
                     Description = $"Servicio paquete de fotos({TotalAmount})"

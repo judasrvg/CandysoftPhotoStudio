@@ -14,7 +14,7 @@ namespace Tattoo.Management.Services
         Task<ResponseAdapterDto> UpdateProductAsync(ProductDto productDto);
         Task<ResponseAdapterDto> DeleteProductAsync(long id);
         Task<ResponseAdapterDto> IncrementStockAsync(long productId, int quantity, decimal purchaseCost);
-        Task<ResponseAdapterDto> DecrementStockAsync(long productId, int quantity, decimal salePrice);
+        Task<ResponseAdapterDto> DecrementStockAsync(StockDecrement decrementRequest);
         Task<ResponseAdapterDto> AdjustStockAsync(long productId, int quantityAdjustment);
     }
 }

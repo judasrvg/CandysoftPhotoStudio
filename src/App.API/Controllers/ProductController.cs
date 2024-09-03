@@ -98,16 +98,20 @@ namespace App.API.Controllers
         }
 
 
-        [HttpPost("DecrementStock/{id:long}")]
-        public async Task<IActionResult> DecrementStock(long id, [FromBody] StockRequest request)
+        [HttpPost("DecrementStock")]
+        public async Task<IActionResult> DecrementStock( [FromBody] StockDecrement request)
         {
-            var product = await _productQueryService.GetProductAsync(id);
-            if (product == null)
+            foreach (var req in request.Requests)
             {
-                return BadRequest("Product not found or not a Merchandise type");
-            }
+                var product = await _productQueryService.GetProductAsync(req.Id);
+                if (product == null)
+                {
+                    return BadRequest("Product not found or not a Merchandise type");
+                }
 
-            await _transactionCommandService.DecrementStockAsync(id, request.Quantity, request.Value);
+                await _transactionCommandService.DecrementStockAsync(req.Id, req.Quantity, req.Value);
+            }
+            
 
             return Ok();
         }

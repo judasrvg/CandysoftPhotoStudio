@@ -4,10 +4,15 @@ namespace Tattoo.Management.Models.Forms
 {
     public class StockRequest
     {
+        public long Id { get; set; }
         public int Quantity { get; set; }
         public decimal Value { get; set; }
         public bool WithTransaction { get; set; }
+    }
 
+    public class StockDecrement
+    {
+        public StockRequest[] Requests { get; set; } = [];
     }
 
     public class TattooDto 
@@ -116,12 +121,14 @@ namespace Tattoo.Management.Models.Forms
         public DateTime ModifiedDate { get; set; }=DateTime.Now;
         public int StockQuantity { get; set; } = 0; // Inicializado en 0
         public int TotalQuantity { get; set; } = 0; // Inicializado en 0
+        public int TotalBuy { get; set; } = 0; // Inicializado en 0
 
         public string ImagePath { get; set; } = string.Empty;
         public string MiniatureImagePath { get; set; } = string.Empty;
 
         public FixedAssetDto? FixedAssetDto { get; set; }
         public MerchandiseDto? MerchandiseDto { get; set; }
+
         //public RawMaterialDto? RawMaterialDto { get; set; }
     }
 

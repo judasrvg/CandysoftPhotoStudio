@@ -17,9 +17,9 @@ using static System.Net.WebRequestMethods;
 namespace Tattoo.Management.Pages
 {
 
-    public partial class GaleryTattoo
+    public partial class StoreProducts
     {
-        [Inject] private ITattooService _galeryTattooService { get; set; }
+        [Inject] private IProductService _productService { get; set; }
         [Inject] private IConfigValueService _configValueService { get; set; }
         [Inject] private NotificationService _notificationService { get; set; }
         [Inject] private DialogService DialogService { get; set; }
@@ -31,21 +31,20 @@ namespace Tattoo.Management.Pages
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            await LoadGaleryTattoos();
-            await LoadTattooStyles();
-            ///TODO:Load GaleryTattoo list to
+            await LoadStoreProducts();
+            ///TODO:Load StoreProducts list to
         }
 
         /// <summary>
         /// methods for inside grid edition
         /// </summary>
-        RadzenDataList<TattooDto> _GaleryTattoosDataGridRef;
-        RadzenDataList<TattooDto> _GaleryTattoosDataGridRefMobile;
-        HashSet<TattooDto> _GaleryTattoosData = new();
+        RadzenDataList<ProductDto> _MerchandiseDataGridRef;
+        RadzenDataList<ProductDto> _MerchandiseDataGridRefMobile;
+        HashSet<ProductDto> _MerchandiseData = new();
         FormFilterGetTattoos _formFilterGetTattoos= new FormFilterGetTattoos();
         HashSet<ConfigValueDto> _tattooStylesData= new HashSet<ConfigValueDto>();
-        ////TODO:combo GaleryTattoos for select a GaleryTattoo for X GaleryTattoo, multiple selection with all posible selection.
-        //IEnumerable<TattooDto> GaleryTattoos; 
+        ////TODO:combo StoreProducts for select a StoreProducts for X StoreProducts, multiple selection with all posible selection.
+        //IEnumerable<ProductDto> StoreProducts; 
         private bool IsConsumedDialog = false;
 
         DataGridEditMode editMode = DataGridEditMode.Single;
@@ -64,15 +63,19 @@ namespace Tattoo.Management.Pages
         /// <summary>
         /// Data Load and Actions
         /// </summary>
-        private async Task LoadGaleryTattoos()
+        private async Task LoadStoreProducts()
         {
             InvokeAsync(async () =>
             {
-                var response = await _galeryTattooService.GetTattoosAsync(_formFilterGetTattoos);
+                var response = await _productService.GetAllProductsAsync();
                 if (response.IsSuccess)
                 {
-                    var parsedResponse = response?.Data as IEnumerable<TattooDto>;
-                    _GaleryTattoosData = parsedResponse?.OrderBy(t=>t.Order).ToHashSet() ?? new();
+                    var products = response.Data as IEnumerable<ProductDto>;
+
+                    var parsedResponse = response?.Data as IEnumerable<ProductDto>;
+                    _MerchandiseData = products?
+                    .Where(p => p.ProductType == ProductType.Merchandise)
+                    .ToHashSet() ?? new HashSet<ProductDto>();
                 }
                 else
                 {
@@ -89,29 +92,15 @@ namespace Tattoo.Management.Pages
             
         }
 
-        private async Task LoadTattooStyles()
-        {
-            //var response = await _configValueService.GetConfigValueAsync(CacheValueType.TattooStyle);
 
-            //if (response.IsSuccess)
-            //{
-            //    var parsedResponse = response?.Data as IEnumerable<ConfigValueDto>;
-            //    _tattooStylesData = parsedResponse?.ToHashSet() ?? new();
-            //}
-            //else
-            //{
-            //    _notificationService.Notify(NotificationSeverity.Error, "Failed to Load", response.ErrorMessage, 4000);
-            //}
-        }
-
-        protected async Task<bool> AddGaleryTattoo(TattooDto GaleryTattoo)
+        protected async Task<bool> AddStoreProducts(ProductDto StoreProducts)
         {
-            var response = await _galeryTattooService.AddTattooAsync(GaleryTattoo);
-            var InsertedGaleryTattoo = response.Data as TattooDto;
-            if (response.IsSuccess && (InsertedGaleryTattoo != null))
+            var response = await _productService.AddProductAsync(StoreProducts);
+            var InsertedStoreProducts = response.Data as ProductDto;
+            if (response.IsSuccess && (InsertedStoreProducts != null))
             {
-                //_GaleryTattoosData.Remove(GaleryTattoo);
-                _GaleryTattoosData.Add(InsertedGaleryTattoo);
+                //_MerchandiseData.Remove(StoreProducts);
+                _MerchandiseData.Add(InsertedStoreProducts);
             }
 
             return HasSuccessResponse(response);
@@ -121,11 +110,11 @@ namespace Tattoo.Management.Pages
 
         private async Task OnChangeStyle()
         {
-            await LoadGaleryTattoos();
+            await LoadStoreProducts();
 
         }
 
-        private async Task ShowDialogAddTattoo(object args)
+        private async Task ShowDialogVender(object args)
         {
             if (_dialogOpen)
             {
@@ -136,15 +125,38 @@ namespace Tattoo.Management.Pages
 
             try
             {
-               var response =  await DialogService.OpenAsync<CreateTattooDialog>($"Nuevo",
-               new Dictionary<string, object>() { { "_tattooStyles", _tattooStylesData }, { "_countTattoos", _GaleryTattoosData.Count()} },
-               new DialogOptions() { Width = "780px", Resizable = false, Draggable = false });
+                var products = _MerchandiseData.Where(x=>x.TotalBuy>0).ToList(); // Suponiendo que _MerchandiseData es de tipo IEnumerable<ProductDto>
 
-                if (response == null || !(response is TattooDto))
+                var response = await DialogService.OpenAsync<SellConfirmationDialog>($"Confirmación de Venta",
+                    new Dictionary<string, object>() { { "Products", products } },
+                    new DialogOptions() { Width = "780px", Resizable = false, Draggable = false });
+
+                if (response == null || response == false)
                 {
                     return;
                 }
-                _GaleryTattoosData.Add(response);
+
+                var stockRequests = products.Select(p => new StockRequest
+                {
+                    Id = p.Id,
+                    Quantity = p.TotalBuy,
+                    Value = p.Price,
+                    WithTransaction = true
+                }).ToArray();
+
+                var stockDecrement = new StockDecrement { Requests = stockRequests };
+
+                var result = await _productService.DecrementStockAsync(stockDecrement);
+
+                if (result.IsSuccess)
+                {
+                    _notificationService.Notify(NotificationSeverity.Success, "Venta completada", "La venta se ha realizado con éxito.", 3000);
+                    await LoadStoreProducts();
+                }
+                else
+                {
+                    _notificationService.Notify(NotificationSeverity.Error, "Error en la venta", "Ocurrió un error al procesar la venta.", 3000);
+                }
             }
             finally
             {
@@ -152,34 +164,35 @@ namespace Tattoo.Management.Pages
             }
         }
 
-        private async Task ShowDialogEditTattoo( TattooDto tattoo)
-        {
-            if (_dialogOpen)
-            {
-                return;
-            }
 
-            _dialogOpen = true;
+        //private async Task ShowDialogEditTattoo( ProductDto tattoo)
+        //{
+        //    if (_dialogOpen)
+        //    {
+        //        return;
+        //    }
 
-            try
-            {
-                var response = await DialogService.OpenAsync<EditTattooDialog>($"Editar",
-                new Dictionary<string, object>() { { "_tattooStyles", _tattooStylesData }, { "_tattooBase", tattoo } },
-                new DialogOptions() { Width = "780px", Resizable = false, Draggable = false });
+        //    _dialogOpen = true;
 
-                if (response == null || !(response is TattooDto))
-                {
-                    return;
-                }
-                _GaleryTattoosData.Remove(tattoo);
-                _GaleryTattoosData.Add(response);
-                _GaleryTattoosData = _GaleryTattoosData.OrderBy(x => x.Order).ToHashSet();
-            }
-            finally
-            {
-                _dialogOpen = false;
-            }
-        }
+        //    try
+        //    {
+        //        var response = await DialogService.OpenAsync<EditTattooDialog>($"Edit Tattoo",
+        //        new Dictionary<string, object>() { { "_tattooStyles", _tattooStylesData }, { "_tattooBase", tattoo } },
+        //        new DialogOptions() { Width = "780px", Resizable = false, Draggable = false });
+
+        //        if (response == null || !(response is ProductDto))
+        //        {
+        //            return;
+        //        }
+        //        _MerchandiseData.Remove(tattoo);
+        //        _MerchandiseData.Add(response);
+        //        _MerchandiseData = _MerchandiseData.OrderBy(x => x.Order).ToHashSet();
+        //    }
+        //    finally
+        //    {
+        //        _dialogOpen = false;
+        //    }
+        //}
 
         private async Task ShowDialogZoomImage(object args, string imagePath)
         {
@@ -205,44 +218,38 @@ namespace Tattoo.Management.Pages
             }
         }
 
-
-        protected async Task<bool> EditGaleryTattoo(TattooDto GaleryTattoo)
-        {
-            var response = await _galeryTattooService.UpdateTattooAsync(GaleryTattoo);
-            return HasSuccessResponse(response);
-        }
-
         
-        protected async Task<bool> OnChangeTattooOrder(object args, long tattooId)
-        {
-            var requestDto = new TattooDto { Id = tattooId, Order = (int)args };
-            var response = await _galeryTattooService.ReorderTattooAsync(requestDto);
-            if (response.IsSuccess)
-            {
-                var parsedResponse = response?.Data as IEnumerable<TattooDto>;
-                _GaleryTattoosData = parsedResponse?.OrderBy(t => t.Order).ToHashSet() ?? new();
-            }
-            return HasSuccessResponse(response);
-        }
+        
+        //protected async Task<bool> OnChangeTattooOrder(object args, long tattooId)
+        //{
+        //    var requestDto = new ProductDto { Id = tattooId, Order = (int)args };
+        //    var response = await _productService.ReorderTattooAsync(requestDto);
+        //    if (response.IsSuccess)
+        //    {
+        //        var parsedResponse = response?.Data as IEnumerable<ProductDto>;
+        //        _MerchandiseData = parsedResponse?.OrderBy(t => t.Order).ToHashSet() ?? new();
+        //    }
+        //    return HasSuccessResponse(response);
+        //}
 
-        protected async Task<bool> DeleteGaleryTattoo(long id)
+        protected async Task<bool> DeleteStoreProducts(long id)
         {
-            var response = await _galeryTattooService.DeleteTattooAsync(id);
-            if (HasSuccessResponse(response))
-            {
-                if (!_GaleryTattoosData?.Any() ?? true)
-                {
-                    _notificationService.Notify(NotificationSeverity.Success, "Nothing to drop", "Empty list", 4000);
-                    return false;
-                }
-                _GaleryTattoosData.Remove(_GaleryTattoosData!.First(c => c.Id == id));
-                _notificationService.Notify(NotificationSeverity.Success, "Delete", "Success Operation", 4000);
-            }
+            //var response = await _productService.DeleteTattooAsync(id);
+            //if (HasSuccessResponse(response))
+            //{
+            //    if (!_MerchandiseData?.Any() ?? true)
+            //    {
+            //        _notificationService.Notify(NotificationSeverity.Success, "Nothing to drop", "Empty list", 4000);
+            //        return false;
+            //    }
+            //    _MerchandiseData.Remove(_MerchandiseData!.First(c => c.Id == id));
+            //    _notificationService.Notify(NotificationSeverity.Success, "Delete", "Success Operation", 4000);
+            //}
 
             return true;
         }
 
-        //public async Task OnClickTattoo(TattooDto tattoo)
+        //public async Task OnClickTattoo(ProductDto tattoo)
         //{
         //    await ShowDialogEditTattoo(tattoo,tattoo);
         //}
@@ -252,7 +259,7 @@ namespace Tattoo.Management.Pages
             var confirm = await DialogService.Confirm("Sure you want to delete this?", "Confirmation", new ConfirmOptions { OkButtonText = "Yes", CancelButtonText = "No" });
             if (confirm.HasValue && confirm.Value)
             {
-                await DeleteGaleryTattoo(id);
+                await DeleteStoreProducts(id);
             }
         }
 

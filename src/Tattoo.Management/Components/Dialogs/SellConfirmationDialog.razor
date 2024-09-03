@@ -1,0 +1,56 @@
+﻿@inject DialogService DialogService
+@inject NotificationService NotificationService
+@using Radzen.Blazor
+@using System.Text.Json
+@using System.Globalization
+@using Tattoo.Management.Components.Dialogs
+@using Tattoo.Management.Components.Layout
+@using Tattoo.Management.Helpers
+@using Tattoo.Management.Models.Dialogs
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Services
+@inject IProductService _productService
+@inject NotificationService NotificationService
+@inject DialogService DialogService
+@inject IConfiguration Configuration;
+
+<RadzenCard Style="width:100%;max-width:780px;">
+    <h3>Totales de la venta</h3>
+    <RadzenDataGrid @ref="productsGrid" Data="@Products" TItem="ProductDto" ShowPagingSummary="false">
+        <Columns>
+            <RadzenDataGridColumn TItem="ProductDto" Property="Name" Title="Producto" />
+            <RadzenDataGridColumn TItem="ProductDto" Property="Price" Title="Precio"  />
+            <RadzenDataGridColumn TItem="ProductDto" Property="TotalBuy" Title="Cantidad" />
+        </Columns>
+    </RadzenDataGrid>
+
+    <br />
+
+    <div>
+        <strong>Total: @TotalAmount.ToString("C", CultureInfo.GetCultureInfo("en-US"))</strong>
+    </div>
+
+    <RadzenButton Text="Confirmar" Click="@Confirm" Style="margin-right:10px;" />
+    <RadzenButton Text="Cancelar" Click="@Cancel" ButtonStyle="ButtonStyle.Danger" />
+</RadzenCard>
+
+@code {
+    [Parameter]
+    public List<ProductDto> Products { get; set; } = new List<ProductDto>();
+
+    private RadzenDataGrid<ProductDto> productsGrid;
+
+    private decimal TotalAmount => Products.Sum(p => p.Price * p.TotalBuy);
+
+    private async Task Confirm()
+    {
+        DialogService.Close(true);
+    }
+
+    private void Cancel()
+    {
+        DialogService.Close(false);
+    }
+}
