@@ -1,6 +1,10 @@
 ﻿@page "/MerchandiseView"
 @using Radzen.Blazor
+@using System.Text.Json
 @using Tattoo.Management.Components.Dialogs
+@using Tattoo.Management.Components.Layout
+@using Tattoo.Management.Helpers
+@using Tattoo.Management.Models.Dialogs
 @using Tattoo.Management.Models.Forms
 @using Tattoo.Management.Models.Forms.Enum
 @using Tattoo.Management.Models.Requests
@@ -8,6 +12,7 @@
 @inject IProductService _productService
 @inject NotificationService NotificationService
 @inject DialogService DialogService
+@inject IConfiguration Configuration;
 
 <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end desktop-only">
     <RadzenButton ButtonStyle="ButtonStyle.Success" class="desktop-only" Icon="add_circle_outline" Text="Crear" Click="@InsertRow" Disabled="@(editMode == DataGridEditMode.Single && MerchandiseToInsert.Count() > 0)" />
@@ -21,6 +26,22 @@
 <RadzenDataGrid class="datagrid-layout desktop-only" @ref="_MerchandiseDataGridRef" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="false" PageSize="15" AllowSorting="false" EditMode="DataGridEditMode.Single"
                 Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
     <Columns>
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Title="">
+            <EditTemplate Context="merchandise">
+                <div class="product-image-container">
+                    <RadzenImage Style="width:100%"  Path="@(!string.IsNullOrWhiteSpace(merchandise.MiniatureImagePath) ? $"{ImagesBaseUrl}{merchandise.MiniatureImagePath}" : !string.IsNullOrWhiteSpace(merchandise.ImagePath) ? $"{ImagesBaseUrl}{merchandise.ImagePath}" :"/css/images/genericproduct.webp" )" class="product-image image-thumbnail" AlternateText="@merchandise.Name" Click=@((args)=>ShowDialogZoomImage(args,$"{ImagesBaseUrl}{merchandise.ImagePath}")) />
+
+                </div>
+
+            </EditTemplate>
+            <Template Context="merchandise">
+                <div class="product-image-container">
+                    <RadzenImage Style="width:100%" Path="@(!string.IsNullOrWhiteSpace(merchandise.MiniatureImagePath) ? $"{ImagesBaseUrl}{merchandise.MiniatureImagePath}" : !string.IsNullOrWhiteSpace(merchandise.ImagePath) ? $"{ImagesBaseUrl}{merchandise.ImagePath}" :"/css/images/genericproduct.webp" )" class="product-image image-thumbnail" AlternateText="@merchandise.Name" Click=@((args)=>ShowDialogZoomImage(args,$"{ImagesBaseUrl}{merchandise.ImagePath}")) />
+
+                </div>
+            </Template>
+        </RadzenDataGridColumn>
+
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Name" Title="Nombre">
             <EditTemplate Context="merchandise">
                 <RadzenTextBox @bind-Value="merchandise.Name" Style="width:100%" />
@@ -29,12 +50,12 @@
 
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Price" Title="Precio">
             <EditTemplate Context="merchandise">
-                <RadzenNumeric @bind-Value="merchandise.Price" Style="width:100%" />
+                <RadzenNumeric @bind-Value="merchandise.Price" Style="width:100%; color:forestgreen;" />
             </EditTemplate>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="PurchaseCost" Title="Costo-invertido">
             <EditTemplate Context="merchandise">
-                <RadzenNumeric @bind-Value="merchandise.PurchaseCost" Style="width:100%" />
+                <RadzenNumeric @bind-Value="merchandise.PurchaseCost" Style="width:100%;color:red;" />
             </EditTemplate>
         </RadzenDataGridColumn>
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="MerchandiseDto.LastRestockedDate" Title="Última Reposición">
@@ -57,6 +78,8 @@
             <Template Context="merchandise">
                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => EditRow(merchandise))" @onclick:stopPropagation="true" />
                 <RadzenButton Icon="inventory" ButtonStyle="ButtonStyle.Warning" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(() => OpenAdjustStockDialog(merchandise))" @onclick:stopPropagation="true" />
+                <RadzenUpload @ref="upload" Icon="add_a_photo" ChooseText="" Complete=@((args)=>OnComplete(args,merchandise)) Auto="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/uploadSingle")" Change="OnChange" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "" }})"
+                              Progress="OnProgress" class=" upload-custom" />
                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => DeleteRow(merchandise))" @onclick:stopPropagation="true" />
             </Template>
             <EditTemplate Context="merchandise">
@@ -69,10 +92,17 @@
 
 <!-- Vista Móvil -->
 <RadzenDataGrid class="datagrid-layout datagrid-mobile mobile-only" @ref="_MerchandiseDataGridRefMobile" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="true" PageSize="8" AllowSorting="false" EditMode="DataGridEditMode.Single"
-                Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRowMobile" RowCreate="@OnCreateRowMobile">
+                Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
     <Columns>
         <RadzenDataGridColumn CssClass="text-center" HeaderCssClass="display-none-column" TItem="ProductDto" Property="Name">
             <EditTemplate Context="merchandise">
+                <div class="rz-cell">
+                    <div class="product-image-container">
+                        <RadzenImage Path="@(!string.IsNullOrWhiteSpace(merchandise.MiniatureImagePath) ? $"{ImagesBaseUrl}{merchandise.MiniatureImagePath}" : !string.IsNullOrWhiteSpace(merchandise.ImagePath) ? $"{ImagesBaseUrl}{merchandise.ImagePath}" :"/css/images/genericproduct.webp" )" class="product-image image-thumbnail" AlternateText="@merchandise.Name" Click=@((args)=>ShowDialogZoomImage(args,$"{ImagesBaseUrl}{merchandise.ImagePath}")) />
+                    
+                    </div>
+                </div>
+
                 <div class="rz-cell">
                     <span>Nombre:</span>
                     <RadzenTextBox MaxLength="200" @bind-Value="merchandise.Name" Name="merchandise_name" Style="width:100%; display: block;" />
@@ -105,6 +135,12 @@
             </EditTemplate>
             <Template Context="merchandise">
                 <div class="rz-cell">
+                    <div class="product-image-container">
+                        <RadzenImage Path="@(!string.IsNullOrWhiteSpace(merchandise.MiniatureImagePath) ? $"{ImagesBaseUrl}{merchandise.MiniatureImagePath}" : !string.IsNullOrWhiteSpace(merchandise.ImagePath) ? $"{ImagesBaseUrl}{merchandise.ImagePath}" :"/css/images/genericproduct.webp" )" class="product-image image-thumbnail" AlternateText="@merchandise.Name" Click=@((args)=>ShowDialogZoomImage(args,$"{ImagesBaseUrl}{merchandise.ImagePath}")) />
+
+                    </div>
+                </div>
+                <div class="rz-cell">
                     <span style="font-weight:600;line-height: 33px;">Nombre:</span>
                     <div>@merchandise.Name</div>
                 </div>
@@ -131,6 +167,8 @@
                 <div class="rz-cell action-buttons">
                     <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(async () => await EditRowMobile(merchandise))" @onclick:stopPropagation="true" />
                     <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="inventory" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(() => OpenAdjustStockDialog(merchandise))" @onclick:stopPropagation="true" />
+                    <RadzenUpload @ref="upload" Icon="add_a_photo" ChooseText="" Complete=@((args)=>OnComplete(args,merchandise)) Auto="true" Accept=".png, .gif, .bmp, .webp, .svg, .tiff, .jpg" Url="@($"{Configuration["ApiImageBaseUrl"]}/api/Images/uploadSingle")" Change="OnChange" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "" }})"
+                                  Progress="OnProgress" class=" upload-custom" />
                     <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(async () => await DeleteRowMobile(merchandise))" @onclick:stopPropagation="true" />
                 </div>
             </Template>
@@ -139,6 +177,10 @@
 </RadzenDataGrid>
 
 @code {
+    [Inject] private string? ImagesBaseUrl { get; set; }
+    [Inject] private GlobalState stateService { get; set; }
+    [Inject] private DialogHelper DialogHelper { get; set; }
+
     RadzenDataGrid<ProductDto> _MerchandiseDataGridRef;
     RadzenDataGrid<ProductDto> _MerchandiseDataGridRefMobile;
     HashSet<ProductDto> _MerchandiseData = new HashSet<ProductDto>();
@@ -146,6 +188,13 @@
     DataGridEditMode editMode = DataGridEditMode.Single;
     List<ProductDto> MerchandiseToInsert = new List<ProductDto>();
     List<ProductDto> MerchandiseToUpdate = new List<ProductDto>();
+    int progress;
+    bool showProgress;
+    bool showComplete;
+    string completionMessage;
+    bool cancelUpload = false;
+    List<(string FileName, string Url, string ThumbnailFileName)> uploadedFilePaths = new List<(string, string, string)>();
+    RadzenUpload upload;
 
     protected override async Task OnInitializedAsync()
     {
@@ -352,5 +401,140 @@
         {
             NotificationService.Notify(NotificationSeverity.Success, "Actualización Exitosa", "El producto ha sido actualizado correctamente.", 4000);
         }
+    }
+    private bool _dialogOpen = false;
+
+    //**********************Dialog Generic***************
+
+    private async Task ShowNewDialog<T>(object arg, DialogHeaders dialogHeaders, string width = "780px", string cssClass = "") where T : ComponentBase
+    {
+        using (var dialogBuilder = DialogHelper.CreateDialog<T>(DialogService))
+        {
+            await dialogBuilder
+                .WithOptions(new DialogOptions() { CloseDialogOnOverlayClick = false, Width = width, CssClass = cssClass })
+                .WithHeaderParams(dialogHeaders)
+                .OnClose(async (args) =>
+                {
+                    if (stateService.GlobalIsSuccessDialogRequest || stateService.GlobalIsPartialSuccessDialogRequest)
+                    {
+                        await InvokeAsync(async () =>
+                        {
+                            NotificationService.Notify(new NotificationMessage
+                                {
+                                    Severity = stateService.GlobalIsPartialSuccessDialogRequest ? NotificationSeverity.Error : NotificationSeverity.Success,
+                                    Detail = stateService.GlobalDialogRequestMessage,
+                                    Duration = 4000
+                                });
+                            stateService.GlobalIsSuccessDialogRequest = false;
+                            stateService.GlobalIsPartialSuccessDialogRequest = false;
+                            StateHasChanged();
+                        });
+                    }
+
+                })
+                .ShowAsync();
+        }
+    }
+
+
+    private async Task BusyDialog()
+    {
+        await DialogService.OpenAsync<BusyLoading>(
+            "",
+            null,
+            new DialogOptions()
+                {
+                    ShowTitle = false,
+                    Style = "display: contents;background-color: #ff000000 !important;border-radius: 50px 50px 50px 50px!important;min-height:auto;min-width:auto;width:auto",
+                    CloseDialogOnEsc = false
+                }
+        );
+    }
+
+    private async Task ShowDialogZoomImage(object args, string imagePath)
+    {
+        if (_dialogOpen)
+        {
+            return;
+        }
+
+        _dialogOpen = true;
+
+        try
+        {
+            await ShowNewDialog<ImageZoomDialog>(args, new DialogHeaders()
+                {
+                    dialogParams = new Dictionary<string, object>() {
+                {"_imagePath",  imagePath}
+            }
+                }, "100vw!important", "zoom-up");
+        }
+        finally
+        {
+            _dialogOpen = false;
+        }
+    }
+
+    /**************UPLOAD******************/
+    void TrackProgress(UploadProgressArgs args)
+    {
+        showProgress = true;
+        showComplete = false;
+        progress = args.Progress;
+
+        // cancel upload
+        args.Cancel = cancelUpload;
+
+        // reset cancel flag
+        cancelUpload = false;
+    }
+
+    async void OnComplete(UploadCompleteEventArgs args, ProductDto merchandise)
+    {
+        if (args.JsonResponse != null)
+        {
+            var jsonResponse = args.JsonResponse.RootElement;
+            if (jsonResponse.ValueKind == JsonValueKind.Array)
+            {
+                uploadedFilePaths = jsonResponse.EnumerateArray()
+                    .Select(e => (e.GetProperty("file").GetString(), e.GetProperty("url").GetString(), e.GetProperty("thumbnailFileName").GetString()))
+                    .ToList();
+            }
+        }
+        else
+        {
+            NotificationService.Notify(new NotificationMessage
+                {
+                    Severity = NotificationSeverity.Error,
+                    Detail = "Image upload failed",
+                    Duration = 4000
+                });
+            // _isLoading = false;
+            return;
+        }
+
+        // Set the image path to the first uploaded file's URL (or handle accordingly)
+        if (uploadedFilePaths.Any())
+        {
+            merchandise.ImagePath = $"/imagesshared/images/{uploadedFilePaths.First().FileName}";
+            merchandise.MiniatureImagePath = $"/imagesshared/images/{uploadedFilePaths.First().ThumbnailFileName}";
+        }
+
+        await OnUpdateRow(merchandise);
+    }
+
+    void CancelUpload()
+    {
+        cancelUpload = true;
+    }
+
+    void OnChange(UploadChangeEventArgs args)
+    {
+        // Handle file selection change if needed
+    }
+
+    void OnProgress(UploadProgressArgs args)
+    {
+        // Progress tracking code
     }
 }

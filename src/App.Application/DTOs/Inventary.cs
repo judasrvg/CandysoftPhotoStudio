@@ -26,7 +26,9 @@ namespace App.Application.DTOs
         public DateTime ModifiedDate { get; set; } = DateTime.Now;
         public int StockQuantity { get; set; } = 0; // Inicializado en 0
         public int TotalQuantity { get; set; } = 0; // Inicializado en 0
-        // Propiedades específicas para cada tipo
+        public string ImagePath { get; set; } = string.Empty;
+        public string MiniatureImagePath { get; set; } = string.Empty;
+
         public FixedAssetDto? FixedAssetDto { get; set; }
         public MerchandiseDto? MerchandiseDto { get; set; }
         //public RawMaterialDto? RawMaterialDto { get; set; }
@@ -61,6 +63,8 @@ namespace App.Application.DTOs
         public int Quantity { get; set; }
         public TransactionType TransactionType { get; set; }
         public decimal TotalAmount { get; set; }
+        public string Description { get; set; } = string.Empty;
+
     }
 
 }

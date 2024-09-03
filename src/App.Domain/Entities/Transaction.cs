@@ -16,6 +16,7 @@ namespace App.Domain.Entities
         public int Quantity { get; set; }
         public TransactionType TransactionType { get; set; }
         public decimal TotalAmount { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         // Navigation properties
         public Product? Product { get; set; }

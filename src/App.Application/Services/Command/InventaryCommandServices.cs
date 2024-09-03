@@ -226,7 +226,8 @@ namespace App.Application.Services.Command
                 TransactionDate = DateTime.UtcNow,
                 Quantity = quantity,
                 TransactionType = TransactionType.Expense,
-                TotalAmount =-( purchaseCost * quantity)
+                TotalAmount =-( purchaseCost * quantity),
+                Description = $"Gasto-Entrada en stock. ({quantity}) Producto:{product.Name} (Total:${-(purchaseCost * quantity)})"
             };
 
             await _writeRepository.AddAsync(transaction);
@@ -253,7 +254,9 @@ namespace App.Application.Services.Command
                 TransactionDate = DateTime.UtcNow,
                 Quantity = quantity,
                 TransactionType = TransactionType.Income,
-                TotalAmount = salePrice * quantity
+                TotalAmount = salePrice * quantity,
+                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Total:${salePrice * quantity})"
+
             };
 
             await _writeRepository.AddAsync(transaction);

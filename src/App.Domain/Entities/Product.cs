@@ -19,10 +19,14 @@ namespace App.Domain.Entities
         public DateTime ModifiedDate { get; set; } = DateTime.UtcNow;
         public int StockQuantity { get; set; } = 0; // Inicializado en 0
         public int TotalQuantity { get; set; } = 0; // Inicializado en 0
+        public string ImagePath { get; set; } = string.Empty;
+        public string MiniatureImagePath { get; set; } = string.Empty;
 
         // Navigation properties
         public FixedAsset? FixedAsset { get; set; }
         public Merchandise? Merchandise { get; set; }
+
+
     }
 
 }

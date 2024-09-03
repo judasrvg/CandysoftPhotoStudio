@@ -125,7 +125,8 @@ namespace App.Domain.Entities
                     TransactionDate = DateTime.UtcNow,
                     Quantity = 1, // O el valor adecuado
                     TransactionType = TransactionType.Income, // O Expense según sea el caso
-                    TotalAmount = TotalAmount
+                    TotalAmount = TotalAmount,
+                    Description = $"Servicio paquete de fotos({TotalAmount})"
                 };
                 Transactions.Add(transaction);
             }

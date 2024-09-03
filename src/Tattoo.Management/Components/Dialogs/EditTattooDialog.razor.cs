@@ -92,8 +92,8 @@ namespace Tattoo.Management.Components.Dialogs
             // Set the image path to the first uploaded file's URL (or handle accordingly)
             if (uploadedFilePaths.Any())
             {
-                _creationForm.ImagePath = $"{Configuration["ImagesBaseUrl"]}/imagesshared/images/{uploadedFilePaths.First().FileName}";
-                _creationForm.MiniatureImagePath = $"{Configuration["ImagesBaseUrl"]}/imagesshared/images/{uploadedFilePaths.First().ThumbnailFileName}";
+                _creationForm.ImagePath = $"/imagesshared/images/{uploadedFilePaths.First().FileName}";
+                _creationForm.MiniatureImagePath = $"/imagesshared/images/{uploadedFilePaths.First().ThumbnailFileName}";
             }
 
             await SubmitTattoo();

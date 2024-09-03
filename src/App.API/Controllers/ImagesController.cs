@@ -77,7 +77,7 @@ public class ImagesController : ControllerBase
                     var thumbnailResult = await UploadFileWithRetries(thumbnailStream, thumbnailPath);
                     var thumbnailUrl = $"{_ftpSettings.Host}/images/{thumbnailFileName}";
 
-                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = fileUrl, thumbnailFileName });
+                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = $"/images/{webpFileName}", thumbnailFileName });
                 }
             }
 
@@ -150,7 +150,7 @@ public class ImagesController : ControllerBase
                     var thumbnailResult = await UploadFileWithRetries(thumbnailStream, thumbnailPath);
                     var thumbnailUrl = $"{_ftpSettings.Host}/images/{thumbnailFileName}";
 
-                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = fileUrl, thumbnailFileName });
+                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = $"/images/{webpFileName}", thumbnailFileName });
                 }
             }
         }
@@ -215,7 +215,7 @@ public class ImagesController : ControllerBase
                     var thumbnailResult = await UploadFileWithRetries(thumbnailStream, thumbnailPath);
                     var thumbnailUrl = $"{_ftpSettings.Host}/imagesclient/{thumbnailFileName}";
 
-                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = fileUrl, thumbnailFileName });
+                    uploadResults.Add(new { file = webpFileName, result.status, result.reason, url = $"/imagesclient/{webpFileName}", thumbnailFileName });
                 }
             }
         }
