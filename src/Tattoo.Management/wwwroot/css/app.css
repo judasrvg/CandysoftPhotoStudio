@@ -373,8 +373,9 @@ img {
 
     /*image*/
     .datalist-radzen.data-list-products {
-        /*display: flex;*/
+        display: flex;
         padding-top:1.5rem!important;
+        
         flex-wrap: wrap;
         gap: 10px; /* Espacio entre los elementos */
     }
@@ -399,6 +400,7 @@ img {
         box-sizing: border-box;
         box-shadow: 0 0rem 0rem 0rem white, 0rem 0rem 1rem 0.8rem #000000 !important;
         border-radius: 10px !important;
+        min-width: 16rem;
     }
 
     .image-container-appintment {
@@ -432,8 +434,8 @@ img {
 
     .product-image-container {
         position: relative;
-        /*max-width: calc(50.1% - 10px);*/ /* Ajusta el ancho según la cantidad de columnas deseada */
-        height: 12rem;
+        max-width: calc(50.1% - 10px);
+        min-height: 5rem;
         padding-bottom: 25%; /* Mantiene la proporción de aspecto */
         overflow: hidden;
         box-sizing: border-box;

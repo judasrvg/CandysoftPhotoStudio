@@ -32,8 +32,13 @@
         <strong>Total: @TotalAmount.ToString("C", CultureInfo.GetCultureInfo("en-US"))</strong>
     </div>
 
-    <RadzenButton Text="Confirmar" Click="@Confirm" Style="margin-right:10px;" />
-    <RadzenButton Text="Cancelar" Click="@Cancel" ButtonStyle="ButtonStyle.Danger" />
+    <RadzenRow>
+        <RadzenColumn class="justify-content-center">
+            <RadzenButton Text="Confirmar" Click="@Confirm" Style="margin-right:10px;" />
+            <RadzenButton Text="Cancelar" Click="@Cancel" ButtonStyle="ButtonStyle.Danger" />
+        </RadzenColumn>
+    </RadzenRow>
+    
 </RadzenCard>
 
 @code {
