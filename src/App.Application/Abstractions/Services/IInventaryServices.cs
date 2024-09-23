@@ -31,7 +31,7 @@ namespace App.Application.Abstractions.Services
     {
         Task<long> AddTransactionAsync(TransactionDto transaction);
         Task DeleteTransactionAsync(long id);
-        Task DecrementStockAsync(long productId, int quantity, decimal purchaseCost);
+        Task DecrementStockAsync(long productId, int quantity, decimal purchaseCost, int purchaseCostCard);
         Task IncrementStockAsync(long productId, int quantity, decimal salePrice);
     }
 

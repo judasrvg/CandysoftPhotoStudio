@@ -236,7 +236,7 @@ namespace App.Application.Services.Command
         }
 
 
-        public async Task DecrementStockAsync(long productId, int quantity, decimal salePrice)
+        public async Task DecrementStockAsync(long productId, int quantity, decimal salePrice, int salePriceCard)
         {
             var product = await _productQueryService.GetProductAsync(productId);
             if (product == null) throw new KeyNotFoundException("Product not found.");
@@ -254,8 +254,8 @@ namespace App.Application.Services.Command
                 TransactionDate = DateTime.UtcNow,
                 Quantity = quantity,
                 TransactionType = TransactionType.Income,
-                TotalAmount = salePrice * quantity,
-                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Total:${salePrice * quantity})"
+                TotalAmount = (salePrice) * quantity,
+                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Transferido:{salePriceCard} Total:${(salePrice) * quantity})"
 
             };
 

@@ -28,16 +28,17 @@
 
     private async Task OnLogin()
     {
-        const string correctPasswordHash = "6c557dae12444fa4c6c178d6fa8313d3272aaf0627f26adaaa5c05d2c9593065"; // Hash de "tattoo99"
+        const string correctPasswordHash = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // Hash de "tattoo99"
+        const string correctPasswordHashVendedor = "bc431c22f966ff587d08bec8f58b97425d05c402e54c9052888b3a3ab1b7f7a3"; // Hash de "tattoo99"
 
         string enteredPasswordHash = PasswordHasher.HashPassword(password);
 
-        if (enteredPasswordHash == correctPasswordHash)
+  if (enteredPasswordHash == correctPasswordHash || enteredPasswordHash == correctPasswordHashVendedor)
         {
             stateService.IsAuthenticated = true;
             _notificationService.Notify(NotificationSeverity.Success, "Authorized", "WELCOME!", 4000);
             
-            await SetAuthDateInLocalStorage();
+            await SetAuthDateInLocalStorage(enteredPasswordHash == correctPasswordHashVendedor ? "V" :"A");
             NavigationManager.NavigateTo("/"); // Redirigir a la página principal
         }
         else
@@ -47,10 +48,11 @@
     }
 
 
-    private async Task SetAuthDateInLocalStorage()
+    private async Task SetAuthDateInLocalStorage(string Role)
     {
         var today = DateTime.Now.Date;
         var authDate = today.ToString("yyyy-MM-dd"); // Formatea la fecha solo con año, mes y día
         await JSRuntime.InvokeVoidAsync("localStorage.setItem", "auth_date", authDate);
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "auth_role", Role);
     }
 }

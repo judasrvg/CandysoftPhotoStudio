@@ -23,7 +23,7 @@
 </RadzenStack>
 
 <!-- Vista de Escritorio -->
-<RadzenDataGrid class="datagrid-layout desktop-only" @ref="_MerchandiseDataGridRef" AllowAlternatingRows="false" AllowFiltering="false" AllowPaging="false" PageSize="15" AllowSorting="false" EditMode="DataGridEditMode.Single"
+<RadzenDataGrid  class="datagrid-layout desktop-only" @ref="_MerchandiseDataGridRef" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" EditMode="DataGridEditMode.Single"
                 Data="@_MerchandiseData" TItem="ProductDto" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow">
     <Columns>
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Title="">
@@ -42,7 +42,7 @@
             </Template>
         </RadzenDataGridColumn>
 
-        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Name" Title="Nombre">
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout"  TItem="ProductDto" Property="Name" Title="Nombre">
             <EditTemplate Context="merchandise">
                 <RadzenTextBox @bind-Value="merchandise.Name" Style="width:100%" />
             </EditTemplate>

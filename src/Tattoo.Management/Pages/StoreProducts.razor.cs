@@ -41,6 +41,7 @@ namespace Tattoo.Management.Pages
         RadzenDataList<ProductDto> _MerchandiseDataGridRef;
         RadzenDataList<ProductDto> _MerchandiseDataGridRefMobile;
         HashSet<ProductDto> _MerchandiseData = new();
+        HashSet<ProductDto> _MerchandiseDataSearchable = new();
         FormFilterGetTattoos _formFilterGetTattoos= new FormFilterGetTattoos();
         HashSet<ConfigValueDto> _tattooStylesData= new HashSet<ConfigValueDto>();
         ////TODO:combo StoreProducts for select a StoreProducts for X StoreProducts, multiple selection with all posible selection.
@@ -74,6 +75,10 @@ namespace Tattoo.Management.Pages
 
                     var parsedResponse = response?.Data as IEnumerable<ProductDto>;
                     _MerchandiseData = products?
+                    .Where(p => p.ProductType == ProductType.Merchandise)
+                    .ToHashSet() ?? new HashSet<ProductDto>();
+
+                    _MerchandiseDataSearchable = products?
                     .Where(p => p.ProductType == ProductType.Merchandise)
                     .ToHashSet() ?? new HashSet<ProductDto>();
                 }
@@ -125,23 +130,50 @@ namespace Tattoo.Management.Pages
 
             try
             {
-                var products = _MerchandiseData.Where(x=>x.TotalBuy>0).ToList(); // Suponiendo que _MerchandiseData es de tipo IEnumerable<ProductDto>
+                var products = _MerchandiseData.Where(x => x.TotalBuy > 0).ToList();
 
+                // Abrir diálogo para obtener el valor total de la transferencia por tarjeta
                 var response = await DialogService.OpenAsync<SellConfirmationDialog>($"Confirmación de Venta",
                     new Dictionary<string, object>() { { "Products", products } },
                     new DialogOptions() { Width = "780px", Resizable = false, Draggable = false });
 
-                if (response == null || response == false)
+                if (response == null || (!(response is int) && response == false))
                 {
                     return;
                 }
 
-                var stockRequests = products.Select(p => new StockRequest
+                // Total transferido por tarjeta
+                var totalValueCard = response is int ? (int)response : 0;
+                var totalAmount = products.Sum(p => p.Price * p.TotalBuy);
+
+                // Aquí calculamos el valor que se pagará por tarjeta para cada producto proporcionalmente
+                decimal remainingValueCard = totalValueCard;
+
+                var stockRequests = products.Select(p =>
                 {
-                    Id = p.Id,
-                    Quantity = p.TotalBuy,
-                    Value = p.Price,
-                    WithTransaction = true
+                    // Proporción del valor de la tarjeta asignada al producto basado en su precio/cantidad
+                    var productTotal = p.Price * p.TotalBuy;
+                    var proportionalValueCard = (productTotal / totalAmount) * totalValueCard;
+
+                    // Si es el último producto, asignar lo que quede en `remainingValueCard`
+                    if (p == products.Last())
+                    {
+                        proportionalValueCard = remainingValueCard;
+                    }
+                    else
+                    {
+                        // Restar el valor de tarjeta ya asignado a este producto del total restante
+                        remainingValueCard -= proportionalValueCard;
+                    }
+
+                    return new StockRequest
+                    {
+                        Id = p.Id,
+                        Quantity = p.TotalBuy,
+                        Value = p.Price,
+                        ValueCard = (int)Math.Round(proportionalValueCard),
+                        WithTransaction = true
+                    };
                 }).ToArray();
 
                 var stockDecrement = new StockDecrement { Requests = stockRequests };

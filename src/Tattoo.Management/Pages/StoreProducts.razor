@@ -27,6 +27,15 @@
     </RadzenText>
 
     <RadzenRow class="">
+        <RadzenColumn class="text-start">
+            <RadzenStack Style="width:6rem;float:inline-end;">
+                <RadzenStack AlignItems="AlignItems.Start" Gap="10px" class="mt-2 mb-2 justify-content-start ">
+                    <RadzenTextBox Change="(args)=>_MerchandiseDataSearchable = _MerchandiseData.Where(x=>x.Name.Contains(args, StringComparison.OrdinalIgnoreCase)).ToHashSet()" Placeholder="Busque aquí su producto" />
+
+                </RadzenStack>
+
+            </RadzenStack>
+        </RadzenColumn>
         <RadzenColumn class="text-end">
             <RadzenStack Style="width:6rem;float:inline-end;">
                 <RadzenStack AlignItems="AlignItems.End" Gap="10px" class="mt-2 mb-2 justify-content-end ">
@@ -38,7 +47,7 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseData" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
+    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseDataSearchable" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
         <Template Context="product">
             <div class="image-container">
                 @*

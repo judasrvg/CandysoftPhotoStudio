@@ -39,7 +39,7 @@ namespace App.API.Controllers
         public async Task<IActionResult> GetAllProducts()
         {
             var products = await _productQueryService.GetProductsAsync();
-            return Ok(products);
+            return Ok(products.OrderByDescending(x=>x.StockQuantity>0));
         }
 
         // POST: api/Product/Add
@@ -109,7 +109,7 @@ namespace App.API.Controllers
                     return BadRequest("Product not found or not a Merchandise type");
                 }
 
-                await _transactionCommandService.DecrementStockAsync(req.Id, req.Quantity, req.Value);
+                await _transactionCommandService.DecrementStockAsync(req.Id, req.Quantity, req.Value, req.ValueCard);
             }
             
 

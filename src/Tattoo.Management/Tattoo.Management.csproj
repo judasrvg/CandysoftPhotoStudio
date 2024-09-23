@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Pages\Transactions.razor.css" />
     <Compile Include="Pages\StoreProducts.razor.css" />
     <Compile Include="Pages\Offer.razor.css" />
     <Compile Include="Pages\FAQTattooSpanish.razor.css" />

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Radzen;
 using Tattoo.Management;
+using Tattoo.Management.Abstraction;
 using Tattoo.Management.Helpers;
 using Tattoo.Management.Services;
 
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IImagesService, ImagesService>();
 builder.Services.AddScoped<IConfigValueService, ConfigValueService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddScoped<NotificationService>();
 builder.Services.AddScoped<DialogService>(); // Asegúrate de que esta línea esté habilitada

@@ -2,11 +2,18 @@
 
 namespace Tattoo.Management.Models.Forms
 {
+    public class TransactionFilterDto
+    {
+        public DateTime? StartDate { get; set; } = DateTime.Now;
+        public DateTime? EndDate { get; set; } = DateTime.Now;
+        public TransactionType? TransactionType { get; set; } // Nullable in case the user doesn't want to filter by type
+    }
     public class StockRequest
     {
         public long Id { get; set; }
         public int Quantity { get; set; }
         public decimal Value { get; set; }
+        public decimal ValueCard { get; set; }
         public bool WithTransaction { get; set; }
     }
 

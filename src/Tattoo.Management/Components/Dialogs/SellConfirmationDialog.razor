@@ -25,15 +25,20 @@
             <RadzenDataGridColumn TItem="ProductDto" Property="TotalBuy" Title="Cantidad" />
         </Columns>
     </RadzenDataGrid>
+    <RadzenRow class="pt-2 pb-2">
+        <strong>Por Transferencia:</strong>
 
+        <RadzenNumeric @bind-Value="@CardTransfer"></RadzenNumeric>
+    </RadzenRow>
     <br />
 
-    <div>
+    <RadzenRow>
+        
         <strong>Total: @TotalAmount.ToString("C", CultureInfo.GetCultureInfo("en-US"))</strong>
-    </div>
+    </RadzenRow>
 
     <RadzenRow>
-        <RadzenColumn class="justify-content-center">
+        <RadzenColumn class="justify-content-center text-center">
             <RadzenButton Text="Confirmar" Click="@Confirm" Style="margin-right:10px;" />
             <RadzenButton Text="Cancelar" Click="@Cancel" ButtonStyle="ButtonStyle.Danger" />
         </RadzenColumn>
@@ -48,10 +53,10 @@
     private RadzenDataGrid<ProductDto> productsGrid;
 
     private decimal TotalAmount => Products.Sum(p => p.Price * p.TotalBuy);
-
+    private int CardTransfer = 0;
     private async Task Confirm()
     {
-        DialogService.Close(true);
+        DialogService.Close(CardTransfer == 0 ? true : CardTransfer);
     }
 
     private void Cancel()

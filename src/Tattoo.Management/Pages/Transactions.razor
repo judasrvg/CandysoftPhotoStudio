@@ -1,0 +1,141 @@
+﻿@page "/transactions"
+
+@using Radzen
+@using Radzen.Blazor
+@using System.Globalization
+@using Tattoo.Management.Abstraction
+@using Tattoo.Management.Models.Forms
+@using Tattoo.Management.Models.Forms.Enum
+@using Tattoo.Management.Models.Requests
+@using Tattoo.Management.Security
+@using Tattoo.Management.Services
+
+@inject ITransactionService TransactionService
+@inject NotificationService NotificationService
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime;
+@inject NavigationManager NavigationManager;
+
+<NotranslateDirective>
+    <RadzenCard Style="    background-color: color(srgb 0 0 0 / 0);">
+        <RadzenRow>
+            <RadzenColumn SizeMD="3" SizeSM="12">
+                <RadzenFormField Text="Fecha Inicio" class="col-sm-12">
+                    <ChildContent>
+                        <RadzenDatePicker TValue="DateTime?" @bind-Value="filter.StartDate" DateFormat="yyyy/MM/dd" Name="Date"  />
+                    </ChildContent>
+                    <Helper>
+                        <RadzenRequiredValidator Component="Date" Text="Date is required" Style="position: absolute" />
+                    </Helper>
+                </RadzenFormField>
+
+            </RadzenColumn>
+            <RadzenColumn SizeMD="3" SizeSM="12">
+
+                <RadzenFormField Text="Fecha Fin" class="col-sm-12">
+                    <ChildContent>
+                        <RadzenDatePicker TValue="DateTime?" @bind-Value="filter.EndDate" DateFormat="yyyy/MM/dd" Name="Date" />
+                    </ChildContent>
+                    <Helper>
+                        <RadzenRequiredValidator Component="Date" Text="Date is required" Style="position: absolute" />
+                    </Helper>
+                </RadzenFormField>
+            </RadzenColumn>
+            @* <RadzenColumn Size="4">
+            </RadzenColumn> *@
+            <RadzenColumn SizeMD="3" SizeSM="12" Style="    padding: .5rem;">
+                <RadzenDropDown @bind-Value="filter.TransactionType" AllowClear="true" Data="@transactionTypes" TextProperty="Text" ValueProperty="Value" Placeholder="Tipo de Transacción" />
+            </RadzenColumn>
+            <RadzenColumn SizeMD="3" SizeSM="12" Style="    padding: .5rem; text-align:end;">
+                <RadzenButton Text="Buscar" ButtonStyle="ButtonStyle.Primary" Icon="search" Click="@SearchTransactions" />
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenCard>
+
+    <!-- Mostrar el gráfico con los ingresos y gastos por día -->
+    <RadzenRow>
+        <RadzenColumn Size="12" Style="background-color: color(a98-rgb 0 0 0 / 0.47);">
+            <RadzenChart>
+                <RadzenAreaSeries  Stroke="rgb(54,162,235)" StrokeWidth="2" Fill="rgba(54,162,235,.5)" Data="@incomeData" CategoryProperty="TransactionDate" ValueProperty="TotalAmount">
+                    <ChildContent>
+                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(54,162,235)" StrokeWidth="2" Size="8" />
+                    </ChildContent>
+                    <TooltipTemplate Context="data">
+                        Ingresos en <span>@data.TransactionDate.ToString("dd/MM/yyyy")</span>: <strong>@data.TotalAmount.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"))</strong>
+                    </TooltipTemplate>
+                </RadzenAreaSeries>
+
+                <RadzenAreaSeries Stroke="rgb(236,72,127)" StrokeWidth="2" Fill="rgba(236,72,127,.5)" Data="@expenseData" CategoryProperty="TransactionDate" ValueProperty="TotalAmount">
+                    <ChildContent>
+                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(236,72,127)" StrokeWidth="2" Size="8" />
+                    </ChildContent>
+                    <TooltipTemplate Context="data">
+                        Gastos en <span>@data.TransactionDate.ToString("dd/MM/yyyy")</span>: <strong>@data.TotalAmount.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"))</strong>
+                    </TooltipTemplate>
+                </RadzenAreaSeries>
+
+                <RadzenCategoryAxis>
+                    <RadzenGridLines Visible="true" Stroke="#ccc" LineType="LineType.Dashed" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis>
+                    <RadzenGridLines Visible="true" />
+                </RadzenValueAxis>
+                <RadzenChartTooltipOptions Style="border: 1px solid rgb(54,162,235); background: #eee; color: #000;" />
+            </RadzenChart>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <!-- Mostrar DataGrid con las transacciones filtradas -->
+    <RadzenRow>
+        <RadzenColumn Size="12">
+            <RadzenDataGrid @ref="dataGrid" Data="@transactions" AllowFiltering="true" TItem="TransactionDto" PageSize="10" AllowPaging="true" AllowSorting="true">
+                <Columns>
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionType" Title="Tipo" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionDate" Title="Fecha" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Description" Title="Descripción" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Quantity" Title="Cantidad" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TotalAmount" Title="Monto Total"  />
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenColumn>
+    </RadzenRow>
+
+</NotranslateDirective>
+
+
+@code {
+    private TransactionFilterDto filter = new TransactionFilterDto();
+    private IEnumerable<TransactionDto> transactions = new List<TransactionDto>();
+    private IEnumerable<TransactionDto> incomeData = new List<TransactionDto>();
+    private IEnumerable<TransactionDto> expenseData = new List<TransactionDto>();
+
+    private RadzenDataGrid<TransactionDto> dataGrid;
+
+    // Tipos de transacción disponibles en el dropdown
+    private List<dynamic> transactionTypes = new List<dynamic>
+    {
+        new { Text = "Ingresos", Value = TransactionType.Income },
+        new { Text = "Gastos", Value = TransactionType.Expense }
+    };
+
+    // Función para cargar las transacciones según los filtros
+    private async Task SearchTransactions()
+    {
+        var response = await TransactionService.GetFilteredTransactionsAsync(filter);
+
+        if (response.IsSuccess)
+        {
+            transactions = response.Data as IEnumerable<TransactionDto>;
+
+            // Dividir datos en ingresos y gastos para el gráfico
+            incomeData = transactions.Where(t => t.TransactionType == TransactionType.Income);
+            expenseData = transactions.Where(t => t.TransactionType == TransactionType.Expense);
+
+            await dataGrid.Reload();
+        }
+        else
+        {
+            NotificationService.Notify(NotificationSeverity.Error, "Error al cargar transacciones", response.ErrorMessage, 4000);
+        }
+    }
+}
