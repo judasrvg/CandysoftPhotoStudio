@@ -5,7 +5,7 @@ namespace Tattoo.Management.Models.Forms
     public class TransactionFilterDto
     {
         public DateTime? StartDate { get; set; } = DateTime.Now;
-        public DateTime? EndDate { get; set; } = DateTime.Now;
+        public DateTime? EndDate { get; set; } = DateTime.Now.AddDays(1);
         public TransactionType? TransactionType { get; set; } // Nullable in case the user doesn't want to filter by type
     }
     public class StockRequest

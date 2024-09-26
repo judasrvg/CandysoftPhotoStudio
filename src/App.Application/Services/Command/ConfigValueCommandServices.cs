@@ -40,12 +40,15 @@ namespace App.Application.Services.Command
 
             if (existKey)
             {
-                if (existingConfig!.Value == configValue!.Value && existingConfig!.ValueDescription == configValue.ValueDescription)
+                if (existingConfig!.Value == configValue!.Value && existingConfig!.ValueDescription == configValue.ValueDescription && existingConfig!.PriceValue == configValue.PriceValue && existingConfig!.ValueType == configValue.ValueType)
                 {
                     throw new InvalidOperationException("The value you entered already exists");
                 }
                 existingConfig!.Value = configValue.Value;
                 existingConfig!.ValueDescription = configValue.ValueDescription;
+                existingConfig!.PriceValue = configValue.PriceValue;
+                existingConfig!.ValueType = configValue.ValueType;
+                existingConfig!.IsSpecialValue = configValue.IsSpecialValue;
                 _writeRepository.Update(existingConfig);
             }
             else

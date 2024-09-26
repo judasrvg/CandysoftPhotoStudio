@@ -37,17 +37,17 @@ try
     //.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     //.AddEnvironmentVariables();
 
-    //builder.Services.AddCors(options =>
-    //{
-    //    options.AddPolicy("AllowSpecificOrigins",
-    //        builder =>
-    //        {
-    //            builder.WithOrigins("https://localhost:7257", "http://salgado99-001-site2.atempurl.com")
-    //                   .AllowAnyHeader()
-    //                   .AllowAnyMethod()
-    //                   .AllowCredentials();
-    //        });
-    //});
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigins",
+            builder =>
+            {
+                builder//.WithOrigins("https://localhost:7257", "http://localhost:7290")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
+            });
+    });
 
     // Agregar NLog a ASP.NET Core
     builder.Logging.ClearProviders();
@@ -126,18 +126,17 @@ try
     builder.Services.Configure<FTPSettings>(builder.Configuration.GetSection("FTPSettings"));
 
     builder.Services.AddAutoMapper(typeof(DeltaMappingProfile));
-        
+
     // Registrar DbContext antes de otros servicios que lo usan
-    //builder.Services.AddDbContext<EFContextNAG>(options =>
+
+    //builder.Services.AddDbContext<SQLSDBContext>(options =>
     //{
-    //    string connectionString = builder.Configuration.GetConnectionString("PostgresConnection");
-    //    EFContextNAG.ConfigureGlobalDataSource(connectionString); // Ensure the DataSource is configured
-    //    options.UseNpgsql(connectionString);
+    //    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
     //});
     builder.Services.AddDbContext<SQLSDBContext>(options =>
     {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"));
-    });
+        // No necesitas configurar la cadena de conexión aquí, se manejará en OnConfiguring.
+    }, ServiceLifetime.Scoped);
 
     //Generic Repository and UOW
     builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -168,7 +167,7 @@ try
 
     //if (!builder.Environment.IsProduction())
     //{
-        builder.Services.AddHostedService<AppointmentNotificationService>();
+        //builder.Services.AddHostedService<AppointmentNotificationService>();
     //}
 
     var app = builder.Build();
@@ -204,9 +203,9 @@ try
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "App API v1"));
     }
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
     app.UseApiKeyMiddleware();
-    app.UseAuthorization();
+    //app.UseAuthorization();
     app.MapControllers();
 
     // Initialize the database

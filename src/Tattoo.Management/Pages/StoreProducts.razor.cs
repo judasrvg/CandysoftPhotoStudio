@@ -47,7 +47,7 @@ namespace Tattoo.Management.Pages
         ////TODO:combo StoreProducts for select a StoreProducts for X StoreProducts, multiple selection with all posible selection.
         //IEnumerable<ProductDto> StoreProducts; 
         private bool IsConsumedDialog = false;
-
+        private bool showWithZero = false;
         DataGridEditMode editMode = DataGridEditMode.Single;
 
 

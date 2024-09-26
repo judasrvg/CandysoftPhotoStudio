@@ -28,7 +28,13 @@
 
     <RadzenRow class="">
         <RadzenColumn class="text-start">
+            <RadzenStack AlignItems="AlignItems.Start" Gap="10px" class="mt-2 mb-2 justify-content-start" Style="display:block!important;padding-left:2rem!important;">
+                <RadzenCheckBox Name="All" @bind-Value=showWithZero></RadzenCheckBox>
+                <RadzenLabel Component="All" class="text-white">Mostrar todos</RadzenLabel>
+
+            </RadzenStack>
             <RadzenStack Style="width:6rem;float:inline-end;">
+                
                 <RadzenStack AlignItems="AlignItems.Start" Gap="10px" class="mt-2 mb-2 justify-content-start ">
                     <RadzenTextBox Change="(args)=>_MerchandiseDataSearchable = _MerchandiseData.Where(x=>x.Name.Contains(args, StringComparison.OrdinalIgnoreCase)).ToHashSet()" Placeholder="Busque aquí su producto" />
 
@@ -47,7 +53,7 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseDataSearchable" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
+    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseDataSearchable.Where(p=>p.StockQuantity>0 || showWithZero)" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
         <Template Context="product">
             <div class="image-container">
                 @*

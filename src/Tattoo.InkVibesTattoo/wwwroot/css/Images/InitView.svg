@@ -33,9 +33,9 @@
 
   <!-- Text -->
   <g>
-    <text x="400" y="100" font-size="100" font-family="emoji" class="text-outline" text-anchor="middle">ink</text>
-    <text x="400" y="200" font-size="100" font-family="emoji" class="text-outline" text-anchor="middle">VibesTattoo</text>
-    <text x="400" y="100" font-size="100" font-family="emoji" class="text-fill" text-anchor="middle">ink</text>
-    <text x="400" y="200" font-size="100" font-family="emoji" class="text-fill" text-anchor="middle">VibesTattoo</text>
+    <text x="400" y="100" font-size="100" font-family="emoji" class="text-outline" text-anchor="middle">CANDY</text>
+    <text x="400" y="200" font-size="100" font-family="emoji" class="text-outline" text-anchor="middle">PHOTOSTUDIO</text>
+    <text x="400" y="100" font-size="100" font-family="emoji" class="text-fill" text-anchor="middle">CANDY</text>
+    <text x="400" y="200" font-size="100" font-family="emoji" class="text-fill" text-anchor="middle">PHOTOSTUDIO</text>
   </g>
 </svg>

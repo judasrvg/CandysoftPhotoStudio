@@ -58,7 +58,7 @@
             <RadzenChart>
                 <RadzenAreaSeries  Stroke="rgb(54,162,235)" StrokeWidth="2" Fill="rgba(54,162,235,.5)" Data="@incomeData" CategoryProperty="TransactionDate" ValueProperty="TotalAmount">
                     <ChildContent>
-                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(54,162,235)" StrokeWidth="2" Size="8" />
+                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(54,162,235)" StrokeWidth="2" Size="10" />
                     </ChildContent>
                     <TooltipTemplate Context="data">
                         Ingresos en <span>@data.TransactionDate.ToString("dd/MM/yyyy")</span>: <strong>@data.TotalAmount.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"))</strong>
@@ -67,7 +67,7 @@
 
                 <RadzenAreaSeries Stroke="rgb(236,72,127)" StrokeWidth="2" Fill="rgba(236,72,127,.5)" Data="@expenseData" CategoryProperty="TransactionDate" ValueProperty="TotalAmount">
                     <ChildContent>
-                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(236,72,127)" StrokeWidth="2" Size="8" />
+                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgba(236,72,127)" StrokeWidth="2" Size="10" />
                     </ChildContent>
                     <TooltipTemplate Context="data">
                         Gastos en <span>@data.TransactionDate.ToString("dd/MM/yyyy")</span>: <strong>@data.TotalAmount.ToString("C0", CultureInfo.CreateSpecificCulture("en-US"))</strong>
@@ -110,7 +110,12 @@
     private IEnumerable<TransactionDto> expenseData = new List<TransactionDto>();
 
     private RadzenDataGrid<TransactionDto> dataGrid;
-
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await SearchTransactions();
+        ///TODO:Load StoreProducts list to
+    }
     // Tipos de transacción disponibles en el dropdown
     private List<dynamic> transactionTypes = new List<dynamic>
     {
@@ -130,6 +135,11 @@
             // Dividir datos en ingresos y gastos para el gráfico
             incomeData = transactions.Where(t => t.TransactionType == TransactionType.Income);
             expenseData = transactions.Where(t => t.TransactionType == TransactionType.Expense);
+            foreach (var ep in expenseData)
+            {
+                ep.TotalAmount = (ep.TotalAmount) * -1M;    
+
+            }
 
             await dataGrid.Reload();
         }

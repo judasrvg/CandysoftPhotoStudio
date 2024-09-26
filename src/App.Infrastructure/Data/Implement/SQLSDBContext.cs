@@ -1,6 +1,7 @@
 ﻿using App.Domain.Entities;
 using App.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace App.Infrastructure
 {
@@ -13,8 +14,8 @@ namespace App.Infrastructure
         //**************Inventario*************
         public DbSet<Product> Products { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-
-        public SQLSDBContext(DbContextOptions<SQLSDBContext> options) : base(options) { }
+        private readonly IConfiguration _configuration;
+        public SQLSDBContext(DbContextOptions<SQLSDBContext> options, IConfiguration configuration) : base(options) { _configuration = configuration; }
 
         public SQLSDBContext() { }
 
@@ -67,8 +68,10 @@ namespace App.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            var connectionString = _configuration.GetConnectionString("SQLServerConnection");
+
             // Configuración de la base de datos (cambiar según sea necesario)
-            optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
+            optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("App.Infrastructure"));
         }
     }
 }
