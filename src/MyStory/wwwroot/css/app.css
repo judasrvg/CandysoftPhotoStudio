@@ -105,7 +105,7 @@ code {
 /***************MyAPP**************/
 @font-face {
     font-family: 'MaterialCustom';
-    src: url('/css/Fonts/Asar-Regular.ttf') format('truetype');
+    src: url('/Fonts/Asar-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -602,67 +602,6 @@ nav {
         cursor: pointer;
     }
 
-/* Lightbox Overlay */
-.lightbox-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* Contenido del Lightbox */
-.lightbox-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90%;
-}
-
-    /* Imagen del Lightbox */
-    .lightbox-content img {
-        width: 100%;
-        height: auto;
-        max-height: 80vh;
-    }
-
-/* Navegación en Lightbox */
-.lightbox-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 2em;
-    color: white;
-}
-
-    .lightbox-nav.prev {
-        left: -50px; /* Desplazamiento hacia la izquierda */
-    }
-
-    .lightbox-nav.next {
-        right: -50px; /* Desplazamiento hacia la derecha */
-    }
-
-/* Cerrar Lightbox */
-.lightbox-close {
-    position: absolute;
-    top: -30px;
-    right: -30px;
-    background: rgba(255, 255, 255, 0.3);
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 2em;
-    color: white;
-}
 
 
 /* Contenedor de secciones de la galería */
@@ -728,6 +667,71 @@ nav {
     color: white;
 }
 
+/* Lightbox Overlay */
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Contenido del Lightbox */
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    background-color: white; /* Añade fondo blanco por si las imágenes tienen transparencia */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+    /* Imagen del Lightbox */
+    .lightbox-content img {
+        max-width: 100%;
+        max-height: 80vh;
+        border-radius: 8px;
+    }
+
+/* Navegación en Lightbox */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 2em;
+    color: white;
+}
+
+    .lightbox-nav.prev {
+        left: -28px; /* Desplazamiento hacia la izquierda */
+    }
+
+    .lightbox-nav.next {
+        right: -28px; /* Desplazamiento hacia la derecha */
+    }
+
+/* Cerrar Lightbox */
+.lightbox-close {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 2em;
+    color: white;
+}
 
 
 /*******************************FIN Gallery************************/
@@ -838,3 +842,46 @@ nav {
     color:white!important;
 }
         /*********************Fin Contacto**********************/
+
+/* Contenedor principal de la sección especial */
+.special-section {
+    padding: 60px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+/* Contenedor interno */
+.special-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Foto redondeada */
+.special-photo img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Nombre del cliente */
+.client-name {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Reseña del cliente */
+.client-review {
+    font-size: 1.2em;
+    color: #555;
+    font-style: italic;
+    margin: 0 20px;
+}
+
+
+/*******************************FIN especial section******************/
+

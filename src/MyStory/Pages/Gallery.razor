@@ -1,41 +1,55 @@
 ﻿<div class="gallery-sections">
     @for (int i = 0; i < Images.Count; i++)
     {
-        <div class="gallery-section @GetBackgroundClass(i)">
-            @if (i % 2 == 0)
+        var index = i;
+        <!-- Captura el valor de `i` en una variable local -->
+        <div class="gallery-section @GetBackgroundClass(index)">
+            @if (index % 2 == 0)
             {
                 <div class="gallery-image">
-                    <img src="@Images[i]" alt="Foto de la galería" />
+                    <img src="@Images[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
                 </div>
                 <div class="gallery-text">
-                    <p>@GetTextForImage(i)</p>
+                    <p>@GetTextForImage(index)</p>
                 </div>
             }
             else
             {
                 <div class="gallery-text">
-                    <p>@GetTextForImage(i)</p>
+                    <p>@GetTextForImage(index)</p>
                 </div>
                 <div class="gallery-image">
-                    <img src="@Images[i]" alt="Foto de la galería" />
+                    <img src="@Images[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
                 </div>
             }
         </div>
     }
 </div>
 
+
+<!-- Lightbox -->
+@if (IsLightboxOpen)
+{
+    <div class="lightbox-overlay" @onclick="CloseLightbox">
+        <div class="lightbox-content" @onclick:stopPropagation="true">
+            <button class="lightbox-nav prev" @onclick="PreviousImage">&#10094;</button>
+            <img src="@Images[CurrentImageIndex]" alt="Imagen ampliada" />
+            <button class="lightbox-nav next" @onclick="NextImage">&#10095;</button>
+            <button class="lightbox-close" @onclick="CloseLightbox">&times;</button>
+        </div>
+    </div>
+}
+
 @code {
-    // Lista de imágenes para la galería (solo 5 fotos)
     private List<string> Images = new List<string>
     {
-        "css/images/img_4a2b3454-ac95-4e1c-88f9-95cc6f32ed90.webp",
-        "css/images/img_8190400c-1fe8-45da-8a35-d06c05df1d52.webp",
-        "css/images/img_a13decea-740c-4bf4-89cd-bf70cabc63fb.webp",
-        "css/images/img_31a92326-154a-46bd-9c87-8cf75c8fa89f.webp",
-        "css/images/img_8190400c-1fe8-45da-8a35-d06c05df1d52.webp"
+        "css/images/img_1.webp",
+        "css/images/img_2.webp",
+        "css/images/img_3.webp",
+        "css/images/img_4.webp",
+        "css/images/img_5.webp"
     };
 
-    // Texto personalizado por cada tipo de grupo
     private Dictionary<string, List<string>> Texts = new Dictionary<string, List<string>>
     {
         { "n", new List<string> { "Inocencia en cada sonrisa", "Pequeños detalles, grandes recuerdos", "Alegría en su máxima expresión", "Un instante de felicidad pura", "La magia de ser niño" } },
@@ -45,8 +59,41 @@
         { "e", new List<string> { "Esperando un milagro", "El comienzo de una vida", "Una espera llena de amor", "Cada día más cerca", "Un latido dentro de otro" } }
     };
 
-    // Tipo de sitio, tomado de la configuración (n, q, p, f, e)
-    private string SiteType = "n"; // Cambiar según el tipo
+    private string SiteType = "n"; // Tipo de sitio, tomado de la configuración (n, q, p, f, e)
+
+    // Lightbox state variables
+    private bool IsLightboxOpen = false;
+    private int CurrentImageIndex = 0;
+
+    // Abrir lightbox con la imagen seleccionada
+    private void OpenLightbox(int index)
+    {
+        if (index >= 0 && index < Images.Count)
+        {
+            CurrentImageIndex = index;
+            IsLightboxOpen = true;
+        }
+    }
+
+
+    // Cerrar lightbox
+    private void CloseLightbox()
+    {
+        IsLightboxOpen = false;
+    }
+
+
+    // Navegar a la imagen anterior
+    private void PreviousImage()
+    {
+        CurrentImageIndex = (CurrentImageIndex - 1 + Images.Count) % Images.Count;
+    }
+
+    // Navegar a la siguiente imagen
+    private void NextImage()
+    {
+        CurrentImageIndex = (CurrentImageIndex + 1) % Images.Count;
+    }
 
     // Obtener el texto correspondiente a la imagen
     private string GetTextForImage(int index)

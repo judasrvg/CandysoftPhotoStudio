@@ -4,6 +4,7 @@
     <ul>
         <li id="menu-home" @onclick=@(() => ScrollToSection("section1")) class="@(CurrentSection == "section0" ? "active" : "")">Inicio</li>
         <li id="menu-artist" @onclick=@(() => ScrollToSection("section2")) class="@(CurrentSection == "section2" ? "active" : "")">Galeria</li>
+        <li id="menu-special" @onclick=@(() => ScrollToSection("section4")) class="@(CurrentSection == "section4" ? "active" : "")">Historia</li>
         <li id="menu-gallery" @onclick=@(() => ScrollToSection("section3")) class="@(CurrentSection == "section3" ? "active" : "")">Contacto</li>
     </ul>
 </nav>
