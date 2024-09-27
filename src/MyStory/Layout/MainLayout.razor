@@ -1,16 +1,34 @@
 ﻿@inherits LayoutComponentBase
+
+<nav>
+    <ul>
+        <li id="menu-home" @onclick=@(() => ScrollToSection("section1")) class="@(CurrentSection == "section0" ? "active" : "")">Inicio</li>
+        <li id="menu-artist" @onclick=@(() => ScrollToSection("section2")) class="@(CurrentSection == "section2" ? "active" : "")">Galeria</li>
+        <li id="menu-gallery" @onclick=@(() => ScrollToSection("section3")) class="@(CurrentSection == "section3" ? "active" : "")">Contacto</li>
+    </ul>
+</nav>
+
+
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+        <!-- Aquí se incluirán todas las secciones de la página -->
+        @Body
     </main>
 </div>
+
+@inject IJSRuntime JSRuntime;
+
+@code {
+    private string CurrentSection = "section1"; // Por defecto, la sección activa es "Inicio"
+
+    // Método para desplazarse a una sección específica
+    private async Task ScrollToSection(string sectionId)
+    {
+        CurrentSection = sectionId;
+
+        // Usar JS interop para hacer scroll a la sección
+        await JSRuntime.InvokeVoidAsync("scrollToSection", sectionId);
+
+        StateHasChanged();
+    }
+}

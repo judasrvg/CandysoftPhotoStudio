@@ -1,0 +1,204 @@
+﻿<!-- Contenedor principal del carrusel -->
+<div class="carousel-container">
+    <!-- Sección de Introducción -->
+    
+
+    <!-- Botón anterior -->
+    <button class="carousel-control prev" @onclick="PreviousImage">&#10094;</button>
+
+    <!-- Carrusel de imágenes -->
+    <div class="carousel">
+        @foreach (var image in Images)
+        {
+            <div class="carousel-item @(image == Images[CurrentImageIndex] ? "active" : "")">
+                <img src="@image" alt="Foto del Carrusel" loading="lazy" />
+
+                <!-- Mensaje con animación de entrada -->
+                <div class="carousel-message @(GetAnimationClassForCurrentMessage())">
+                    <p>@GetMessageForCurrentImage()</p>
+                </div>
+            </div>
+
+        }
+    </div>
+
+    <!-- Botón siguiente -->
+    <button class="carousel-control next" @onclick="NextImage">&#10095;</button>
+
+    <!-- Indicadores del carrusel -->
+    <div class="carousel-indicators">
+        @for (int i = 0; i < Images.Count; i++)
+        {
+            <span class="indicator @(i == CurrentImageIndex ? "active" : "")" @onclick="() => GoToImage(i)"></span>
+        }
+    </div>
+
+    <div class="carousel-text-overlay">
+        <div class="intro-container">
+            <h1 class="intro-title">Bienvenidos a la Galería de Recuerdos</h1>
+            <p class="intro-subtitle"></p>
+        </div>
+    </div>
+</div>
+
+
+@inject IConfiguration Configuration;
+@inject IJSRuntime JSRuntime;
+
+@code {
+    private string SiteType;
+    private Dictionary<string, List<string>> Messages;
+    private List<string> Images = new List<string>
+    {
+        "css/images/img_4a2b3454-ac95-4e1c-88f9-95cc6f32ed90.webp",
+        "css/images/img_8190400c-1fe8-45da-8a35-d06c05df1d52.webp",
+        "css/images/img_a13decea-740c-4bf4-89cd-bf70cabc63fb.webp",
+        "css/images/img_31a92326-154a-46bd-9c87-8cf75c8fa89f.webp"
+    };
+
+    private int CurrentImageIndex = 0; // Índice de la imagen actual
+    private Timer _timer;
+
+
+    private string GetAnimationClassForCurrentMessage()
+    {
+        var animationClasses = new List<string>
+        {
+            "slide-from-right",
+            "slide-from-left",
+            "slide-top-to-bottom-right",
+            "slide-top-to-bottom-left",
+            "slide-diagonal"
+        };
+        return animationClasses[CurrentImageIndex % animationClasses.Count];
+    }
+
+
+    protected override void OnInitialized()
+    {
+        // Obtiene el tipo de sitio desde la configuración
+        SiteType = Configuration["siteType"];
+
+        // Define los mensajes para cada tipo de sitio
+        Messages = new Dictionary<string, List<string>>
+        {
+            { "n", new List<string>
+                {
+                    "Sonríe como si fueras un niño",
+                    "La felicidad está en los detalles pequeños",
+                    "La inocencia captura la belleza del mundo",
+                    "La alegría de ser niño es un regalo que nunca se agota.",
+                    "Cada sonrisa es un nuevo capítulo en la aventura de la niñez.",
+                    "Pequeños momentos, grandes recuerdos.",
+                    "Que tu imaginación nunca deje de volar.",
+                    "Ser niño es ver la magia en cada rincón."
+                }
+            },
+            { "p", new List<string>
+                {
+                    "Amor en cada mirada",
+                    "Momentos que valen una eternidad",
+                    "El amor es un viaje que vale la pena",
+                    "Cada beso es una historia de amor en sí misma.",
+                    "El amor no se mide en tiempo, sino en momentos inolvidables.",
+                    "Donde hay amor, siempre hay un hogar.",
+                    "Sonríe, porque tienes el amor a tu lado.",
+                    "Dos corazones, un solo latido."
+                }
+            },
+            { "f", new List<string>
+                {
+                    "Familia es donde la vida comienza y el amor nunca termina",
+                    "Unidos por la vida",
+                    "Los mejores recuerdos se hacen juntos",
+                    "Familia: nuestro refugio en el mundo.",
+                    "Juntos es mi lugar favorito.",
+                    "Cada abrazo familiar es un lazo que nunca se rompe.",
+                    "Las mejores aventuras se viven en familia.",
+                    "Amor y risas: la fórmula secreta de la familia."
+                }
+            },
+            { "e", new List<string>
+                {
+                    "Esperando un pequeño milagro",
+                    "La magia de la vida está por comenzar",
+                    "Cada vida comienza con amor",
+                    "Esperando la mayor bendición de nuestras vidas.",
+                    "Un pequeño milagro crece en cada latido.",
+                    "El comienzo de un amor que no tiene fin.",
+                    "Esperar a un hijo es esperar el mayor regalo.",
+                    "Un pedacito de cielo creciendo en la tierra."
+                }
+            },
+            { "q", new List<string>
+                {
+                    "Quince años de sueños y sonrisas",
+                    "Una nueva etapa comienza",
+                    "Brilla con todo tu esplendor",
+                    "15 años de sueños, risas y aventuras.",
+                    "Brilla como la estrella que eres.",
+                    "Hoy es tu día para brillar con todo tu esplendor.",
+                    "La vida es un baile; hoy comienza tu ritmo.",
+                    "Una princesa en su mejor cuento de hadas."
+                }
+            }
+        };
+
+        // Configura el temporizador para cambiar las imágenes automáticamente
+        _timer = new Timer(ChangeImage, null, 0, 5000); // Cambia cada 3 segundos
+    }
+
+    private void ChangeImage(object state)
+    {
+        CurrentImageIndex = (CurrentImageIndex + 1) % Images.Count;
+        InvokeAsync(StateHasChanged); // Forzar redibujar
+    }
+
+    private void NextImage()
+    {
+        PauseAutoRotation();
+        CurrentImageIndex = (CurrentImageIndex + 1) % Images.Count;
+        ResumeAutoRotation();
+    }
+
+    private void PreviousImage()
+    {
+        PauseAutoRotation();
+        CurrentImageIndex = (CurrentImageIndex - 1 + Images.Count) % Images.Count;
+        ResumeAutoRotation();
+    }
+
+    private void GoToImage(int index)
+    {
+        PauseAutoRotation();
+        CurrentImageIndex = index;
+        ResumeAutoRotation();
+    }
+
+    private void PauseAutoRotation()
+    {
+        _timer?.Change(Timeout.Infinite, Timeout.Infinite); // Pausar el temporizador
+    }
+
+    private void ResumeAutoRotation()
+    {
+        _timer?.Change(3000, 3000); // Reanudar después de 3 segundos
+    }
+
+    public void Dispose()
+    {
+        _timer?.Dispose();
+    }
+
+    // Obtiene el mensaje correspondiente al tipo de sitio y al índice actual de imagen
+    private string GetMessageForCurrentImage()
+    {
+        if (Messages.ContainsKey(SiteType))
+        {
+            var messages = Messages[SiteType];
+            return messages[CurrentImageIndex % messages.Count];
+        }
+        return string.Empty;
+    }
+}
+

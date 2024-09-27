@@ -1,0 +1,67 @@
+﻿<div class="gallery-sections">
+    @for (int i = 0; i < Images.Count; i++)
+    {
+        <div class="gallery-section @GetBackgroundClass(i)">
+            @if (i % 2 == 0)
+            {
+                <div class="gallery-image">
+                    <img src="@Images[i]" alt="Foto de la galería" />
+                </div>
+                <div class="gallery-text">
+                    <p>@GetTextForImage(i)</p>
+                </div>
+            }
+            else
+            {
+                <div class="gallery-text">
+                    <p>@GetTextForImage(i)</p>
+                </div>
+                <div class="gallery-image">
+                    <img src="@Images[i]" alt="Foto de la galería" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    // Lista de imágenes para la galería (solo 5 fotos)
+    private List<string> Images = new List<string>
+    {
+        "css/images/img_4a2b3454-ac95-4e1c-88f9-95cc6f32ed90.webp",
+        "css/images/img_8190400c-1fe8-45da-8a35-d06c05df1d52.webp",
+        "css/images/img_a13decea-740c-4bf4-89cd-bf70cabc63fb.webp",
+        "css/images/img_31a92326-154a-46bd-9c87-8cf75c8fa89f.webp",
+        "css/images/img_8190400c-1fe8-45da-8a35-d06c05df1d52.webp"
+    };
+
+    // Texto personalizado por cada tipo de grupo
+    private Dictionary<string, List<string>> Texts = new Dictionary<string, List<string>>
+    {
+        { "n", new List<string> { "Inocencia en cada sonrisa", "Pequeños detalles, grandes recuerdos", "Alegría en su máxima expresión", "Un instante de felicidad pura", "La magia de ser niño" } },
+        { "q", new List<string> { "El brillo de los 15 años", "Una nueva etapa comienza", "Quince años de sueños", "Baila con todo tu esplendor", "Un día inolvidable" } },
+        { "p", new List<string> { "Amor en cada mirada", "Dos corazones, un solo latido", "El amor es eterno", "Un viaje juntos", "Cada momento contigo es especial" } },
+        { "f", new List<string> { "Familia, nuestro refugio", "La unión de corazones", "Juntos es nuestro lugar", "Los mejores recuerdos", "Donde el amor nunca termina" } },
+        { "e", new List<string> { "Esperando un milagro", "El comienzo de una vida", "Una espera llena de amor", "Cada día más cerca", "Un latido dentro de otro" } }
+    };
+
+    // Tipo de sitio, tomado de la configuración (n, q, p, f, e)
+    private string SiteType = "n"; // Cambiar según el tipo
+
+    // Obtener el texto correspondiente a la imagen
+    private string GetTextForImage(int index)
+    {
+        if (Texts.ContainsKey(SiteType))
+        {
+            return Texts[SiteType][index % Texts[SiteType].Count];
+        }
+        return "Foto sin descripción";
+    }
+
+    // Obtener la clase de fondo para la sección
+    private string GetBackgroundClass(int index)
+    {
+        var classes = new List<string> { "bg-white", "bg-light-gray", "bg-black", "bg-light-gray", "bg-white" };
+        return classes[index % classes.Count];
+    }
+}
