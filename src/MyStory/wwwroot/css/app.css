@@ -103,6 +103,15 @@ code {
 }
 
 /***************MyAPP**************/
+
+/*.section {
+    margin: 0;
+    padding: 0;*/
+    /*font-family: 'Arial', sans-serif;*/
+    /*background: url('/css/images/bg-photo.webp') no-repeat center center fixed !important;
+    background-size: cover;
+}*/
+
 @font-face {
     font-family: 'MaterialCustom';
     src: url('/Fonts/Asar-Regular.ttf') format('truetype');
@@ -110,10 +119,47 @@ code {
     font-style: normal;
 }
 
- label, .section, p, h1, h2, h3, h4, h5, h6 {
-    font-family: 'MaterialCustom' !important;
+@font-face {
+    font-family: 'MaterialCustomBrush';
+    src: url('/Fonts/Tapestry-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
+@font-face {
+    font-family: 'MaterialCustomMiss';
+    src: url('/Fonts/GreatVibes-Regular.ttf') format('truetype');
+    font-weight: 500!important;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MaterialCustomVibes';
+    src: url('/Fonts/GreatVibes-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+label, .section, p, h1, h2, h3, h4, h5, h6 , li{
+    font-family: 'MaterialCustomBrush' !important;
+}
+
+.MyBrushFont {
+    font-family: 'MaterialCustomBrush' !important;
+}
+
+
+.MyVibesFont {
+    font-family: 'MaterialCustomVibes' !important;
+}
+
+
+.MyMissFont {
+    font-family: 'MaterialCustomMiss' !important;
+    font-weight: 500!important;
+    font-style: normal;
+    font-size: 2.7em !important;
+}
 
 body {
     scroll-behavior: smooth;
