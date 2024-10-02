@@ -881,6 +881,12 @@ nav {
     .social-media a {
         font-size: 1em;
     }
+
+    .thumbnail {
+        max-width: 10rem!important;
+        max-height: 14rem!important;
+        padding: 5px;
+    }
 }
 
 
@@ -931,3 +937,106 @@ nav {
 
 /*******************************FIN especial section******************/
 
+.collage-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Fondo desenfocado y oscurecido */
+.collage-background {
+    position: absolute;
+    top: -20px; /* Expande el fondo hacia afuera del contenedor */
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    width: calc(100% + 40px); /* Aumenta el tamaño del fondo para evitar bordes */
+    height: calc(100% + 40px);
+    background: url('/css/images/bg_collage.webp') center center/cover no-repeat;
+    filter: blur(8px);
+    background-size: cover;
+    z-index: 1; /* Establece el fondo detrás del contenido */
+    opacity: 0.9; /* Controla la opacidad del fondo */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3)), url('/css/images/bg_collage.webp') center center/cover no-repeat;
+}
+
+.collage-header {
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    z-index: 20; /* Asegura que el SVG esté frente al fondo */
+}
+
+.collage-svg {
+    width: 80%;
+    max-width: 600px;
+    height: auto;
+    fill: white;
+    animation: svgAnimation 1.3s ease-in-out infinite alternate;
+}
+
+@keyframes svgAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+.collage-thumbnails {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    display: table;
+    justify-content: center;
+    /*gap: 10px;*/
+    z-index: 2; /* Asegura que las miniaturas estén frente al fondo */
+}
+
+.thumbnail {
+    max-width: 17rem;
+    max-height: 25rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius:22px!important;
+    padding:10px;
+}
+
+    .thumbnail:hover {
+        transform: scale(1.1);
+    }
+
+.collage-text {
+    font-size:13px!important;
+}
+
+.collage-text-dos {
+    font-size: 8px !important;
+    filter: blur(0.4px);
+}
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    padding-top: 2rem;
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+
+/************************************FIN COLLAGE****************************/

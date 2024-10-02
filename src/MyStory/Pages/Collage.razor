@@ -1,0 +1,46 @@
+﻿@page "/collage"
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="collage-container">
+    <!-- Fondo desenfocado y oscurecido -->
+    <div class="collage-background"></div>
+    <!-- SVG Animado -->
+    <div class="collage-header">
+        <svg class="collage-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20">
+            <!-- Aquí irá el contenido del SVG con animación -->
+            <text x="10" y="15" class="collage-text">INSPIRACION</text>
+            <text x="12" y="18" class="collage-text-dos">creatividad</text>
+        </svg>
+    </div>
+
+    <!-- Miniaturas de fotos con Lightbox -->
+    <div class="collage-thumbnails">
+        <img src="css/images/thumbnails/collage1.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl1)" />
+        <img src="css/images/thumbnails/collage2.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl2)" />
+        <img src="css/images/thumbnails/collage3.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl3)" />
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" @onclick="CloseLightbox" style="@(isLightboxOpen ? "display: block;" : "display: none;")">
+    <img src="@lightboxImageUrl" class="lightbox-image" />
+</div>
+
+@code {
+    private bool isLightboxOpen = false;
+    private string? lightboxImageUrl;
+    private static readonly string CollageUrl1 = "css/images/collage1.webp";
+    private static readonly string CollageUrl2 = "css/images/collage2.webp";
+    private static readonly string CollageUrl3 = "css/images/collage3.webp";
+
+    private void OpenLightbox(string imageUrl)
+    {
+        lightboxImageUrl = imageUrl;
+        isLightboxOpen = true;
+    }
+
+    private void CloseLightbox()
+    {
+        isLightboxOpen = false;
+    }
+}

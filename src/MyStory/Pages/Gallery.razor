@@ -7,7 +7,7 @@
             @if (index % 2 == 0)
             {
                 <div class="gallery-image">
-                    <img src="@Images[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
+                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
                 </div>
                 <div class="gallery-text">
                     <p>@GetTextForImage(index)</p>
@@ -19,7 +19,7 @@
                     <p>@GetTextForImage(index)</p>
                 </div>
                 <div class="gallery-image">
-                    <img src="@Images[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
+                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
                 </div>
             }
         </div>
@@ -48,6 +48,15 @@
         "css/images/img_3.webp",
         "css/images/img_4.webp",
         "css/images/img_5.webp"
+    };
+
+    private List<string> ImagesThumbNails = new List<string>
+    {
+        "css/images/thumbnails/img_1.webp",
+        "css/images/thumbnails/img_2.webp",
+        "css/images/thumbnails/img_3.webp",
+        "css/images/thumbnails/img_4.webp",
+        "css/images/thumbnails/img_5.webp"
     };
 
     private Dictionary<string, List<string>> Texts = new Dictionary<string, List<string>>
