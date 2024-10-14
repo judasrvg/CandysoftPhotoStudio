@@ -11,7 +11,8 @@ namespace App.Application.DTOs
     {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public TransactionType? TransactionType { get; set; } // Nullable in case the user doesn't want to filter by type
+        public TransactionType? TransactionType { get; set; } 
+        public TransactionGroup? TransactionGroup { get; set; }
     }
 
     public class StockRequest
@@ -26,6 +27,7 @@ namespace App.Application.DTOs
     public class StockDecrement
     {
         public StockRequest[] Requests { get; set; } = [];
+        public TransactionGroup? Group { get; set; }
     }
 
     public class ProductDto
@@ -34,6 +36,8 @@ namespace App.Application.DTOs
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public ProductType ProductType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
+
         public decimal Price { get; set; }
         public decimal PurchaseCost { get; set; }
         public DateTime CreatedDate { get; set; }= DateTime.Now;
@@ -76,6 +80,7 @@ namespace App.Application.DTOs
         public DateTime TransactionDate { get; set; } = DateTime.Now;
         public int Quantity { get; set; }
         public TransactionType TransactionType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
         public decimal TotalAmount { get; set; }
         public string Description { get; set; } = string.Empty;
 

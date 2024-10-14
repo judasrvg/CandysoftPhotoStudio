@@ -50,4 +50,30 @@ namespace Tattoo.Management.Models.Forms.Enum
         Expense = 1,
         Income = 2
     }
+
+
+public enum TransactionGroup
+    {
+        [Description("Paquete de Fotografía")]
+        PAQUETE_FOTOGRAFIA,
+
+        [Description("Venta")]
+        VENTA,
+
+        [Description("Servicio de Impresión")]
+        SERVICIO_IMPRESION,
+
+        [Description("Servicio de Reparación")]
+        SERVICIO_REPARACION,
+
+        [Description("Servicio de Fotografía e Impresión")]
+        SERVICIO_FOTOGRAFIA_IMPRESION,
+
+        [Description("Servicio de Fotografía Digital")]
+        SERVICIO_FOTOGRAFIA_DIGITAL,
+
+        [Description("Otros")]
+        OTROS
+    }
+
 }

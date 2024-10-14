@@ -8,6 +8,8 @@ using System.Text.RegularExpressions;
 
 namespace Tattoo.Management.Helpers
 {
+
+    
     /// <summary>
     /// Formatter helper for transform UI string element to defined formats
     /// </summary>
@@ -59,7 +61,13 @@ namespace Tattoo.Management.Helpers
 
             return sb.ToString();
         }
-
+        public static string GetEnumDescription(Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attribute = field.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                                 .FirstOrDefault() as DescriptionAttribute;
+            return attribute == null ? value.ToString() : attribute.Description;
+        }
         //Adapt for this simple send message
 
         //public static List<MessageInfoDto> BuildProductOrderTable(List<ProductOrder> orders, string userName, string userPhone)

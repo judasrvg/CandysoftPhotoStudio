@@ -172,7 +172,8 @@ namespace Tattoo.Management.Pages
                         Quantity = p.TotalBuy,
                         Value = p.Price,
                         ValueCard = (int)Math.Round(proportionalValueCard),
-                        WithTransaction = true
+                        WithTransaction = true,
+                        Group = TransactionGroup.VENTA
                     };
                 }).ToArray();
 

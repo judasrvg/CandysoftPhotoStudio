@@ -15,6 +15,7 @@ namespace App.Domain.Entities
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
         public int Quantity { get; set; }
         public TransactionType TransactionType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
         public decimal TotalAmount { get; set; }
         public string Description { get; set; } = string.Empty;
 

@@ -125,8 +125,9 @@ namespace App.Domain.Entities
                     TransactionDate = DateTime.UtcNow,
                     Quantity = Offers?.Count()??1, // O el valor adecuado
                     TransactionType = TransactionType.Income, // O Expense según sea el caso
+                    TransactionGroup = TransactionGroup.PAQUETE_FOTOGRAFIA, // O Expense según sea el caso
                     TotalAmount = TotalAmount,
-                    Description = $"Servicio paquete de fotos({TotalAmount})"
+                    Description = $"Servicio paquete de fotos(Ofertas:{((Offers == null || !Offers.Any()) ? string.Empty:string.Join('|',Offers))} Total:{TotalAmount})"
                 };
                 Transactions.Add(transaction);
             }

@@ -53,6 +53,20 @@
             </EditTemplate>
         </RadzenDataGridColumn>
 
+        <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="TransactionGroup" Title="Grupo">
+            <EditTemplate Context="merchandise">
+                <RadzenDropDown Style="width:100%"
+                                TValue="TransactionGroup"
+                                @bind-Value="merchandise.TransactionGroup"
+                                Data="@GetTransactionGroupItems()"
+                                ValueProperty="Value"
+                                TextProperty="Description" />
+
+
+
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
         <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="ProductDto" Property="Price" Title="Precio">
             <EditTemplate Context="merchandise">
                 <RadzenNumeric @bind-Value="merchandise.Price" Style="width:100%; color:forestgreen;" />
@@ -112,6 +126,12 @@
                     <span>Nombre:</span>
                     <RadzenTextBox MaxLength="200" @bind-Value="merchandise.Name" Name="merchandise_name" Style="width:100%; display: block;" />
                 </div>
+
+                <div class="rz-cell">
+                    <span>Grupo:</span>
+                    <RadzenDropDown Style="width:100%" TValue="TransactionGroup" @bind-Value="merchandise.TransactionGroup" Data="@(Enum.GetValues(typeof(TransactionGroup)).Cast<TransactionGroup>())" />
+                </div>
+                
                 <div class="rz-cell">
                     <span>Precio:</span>
                     <RadzenNumeric @bind-Value="merchandise.Price" Name="merchandise_price" Style="width:100%; display: block;" />
@@ -332,6 +352,17 @@
         {
             await LoadMerchandise();
         }
+    }
+    public List<EnumItem<TransactionGroup>> GetTransactionGroupItems()
+    {
+        return Enum.GetValues(typeof(TransactionGroup))
+            .Cast<TransactionGroup>()
+            .Select(e => new EnumItem<TransactionGroup>
+                {
+                    Value = e,
+                    Description = FormatterHelper.GetEnumDescription(e)
+                })
+            .ToList();
     }
 
     /*************************Mobile**************************/

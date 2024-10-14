@@ -71,8 +71,8 @@ namespace App.Infrastructure
             var connectionString = _configuration.GetConnectionString("SQLServerConnection");
 
             // Configuración de la base de datos (cambiar según sea necesario)
-            optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("App.Infrastructure"));
-            //optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
+            //optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("App.Infrastructure"));
+            optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
         }
     }
 }

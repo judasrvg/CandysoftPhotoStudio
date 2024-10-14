@@ -38,6 +38,12 @@ public class TransactionController : ControllerBase
             transactions = transactions.Where(t => t.TransactionType == filter.TransactionType.Value);
         }
 
+        // Aplicar filtro de tipo de transacciónGrupo 
+        if (filter.TransactionGroup.HasValue)
+        {
+            transactions = transactions.Where(t => t.TransactionGroup == filter.TransactionGroup.Value);
+        }
+
         return Ok(transactions);
     }
 }

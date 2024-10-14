@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace App.Application.Services.Command
 {
@@ -86,7 +87,8 @@ namespace App.Application.Services.Command
                     {
                         // Mapea las propiedades específicas de Merchandise
                         StockQuantity = productDto.StockQuantity,
-                        LastRestockedDate = productDto.MerchandiseDto.LastRestockedDate
+                        LastRestockedDate = productDto.MerchandiseDto.LastRestockedDate,
+                        TransactionGroup = TransactionGroup.VENTA
                     };
                     break;
 
@@ -222,6 +224,7 @@ namespace App.Application.Services.Command
                 TransactionDate = DateTime.UtcNow,
                 Quantity = quantity,
                 TransactionType = TransactionType.Expense,
+                TransactionGroup = product.TransactionGroup,
                 TotalAmount =-( purchaseCost * quantity),
                 Description = $"Gasto-Entrada en stock. ({quantity}) Producto:{product.Name} (Total:${-(purchaseCost * quantity)})"
             };
@@ -250,8 +253,9 @@ namespace App.Application.Services.Command
                 TransactionDate = DateTime.UtcNow,
                 Quantity = quantity,
                 TransactionType = TransactionType.Income,
+                TransactionGroup = product.TransactionGroup,
                 TotalAmount = (salePrice) * quantity,
-                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Efectivo:{((salePrice) * quantity)- salePriceCard} Transferido:{salePriceCard} Total:${(salePrice) * quantity})"
+                Description = $"Ingreso-{(product.TransactionGroup == TransactionGroup.VENTA ? new StringBuilder("Venta") : new StringBuilder("Servicio"))}. ({quantity}) {(product.TransactionGroup == TransactionGroup.VENTA ? new StringBuilder("Producto") : new StringBuilder("Servicio"))}:{product.Name} (Efectivo:{((salePrice) * quantity)- salePriceCard} Transferido:{salePriceCard} Total:${(salePrice) * quantity})"
 
             };
 

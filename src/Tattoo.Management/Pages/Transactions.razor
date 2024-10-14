@@ -4,6 +4,7 @@
 @using Radzen.Blazor
 @using System.Globalization
 @using Tattoo.Management.Abstraction
+@using Tattoo.Management.Helpers
 @using Tattoo.Management.Models.Forms
 @using Tattoo.Management.Models.Forms.Enum
 @using Tattoo.Management.Models.Requests
@@ -19,7 +20,7 @@
 <NotranslateDirective>
     <RadzenCard Style="    background-color: color(srgb 0 0 0 / 0);">
         <RadzenRow>
-            <RadzenColumn SizeMD="3" SizeSM="12">
+            <RadzenColumn SizeMD="2" SizeSM="12">
                 <RadzenFormField Text="Fecha Inicio" class="col-sm-12">
                     <ChildContent>
                         <RadzenDatePicker TValue="DateTime?" @bind-Value="filter.StartDate" DateFormat="yyyy/MM/dd" Name="Date"  />
@@ -30,7 +31,7 @@
                 </RadzenFormField>
 
             </RadzenColumn>
-            <RadzenColumn SizeMD="3" SizeSM="12">
+            <RadzenColumn SizeMD="2" SizeSM="12">
 
                 <RadzenFormField Text="Fecha Fin" class="col-sm-12">
                     <ChildContent>
@@ -43,10 +44,18 @@
             </RadzenColumn>
             @* <RadzenColumn Size="4">
             </RadzenColumn> *@
-            <RadzenColumn SizeMD="3" SizeSM="12" Style="    padding: .5rem;">
+            <RadzenColumn SizeMD="2" SizeSM="12" Style="    padding: .5rem;">
                 <RadzenDropDown @bind-Value="filter.TransactionType" AllowClear="true" Data="@transactionTypes" TextProperty="Text" ValueProperty="Value" Placeholder="Tipo de Transacción" />
             </RadzenColumn>
-            <RadzenColumn SizeMD="3" SizeSM="12" Style="    padding: .5rem; text-align:end;">
+            <RadzenColumn SizeMD="3" SizeSM="12"  Style="    padding: .5rem;">
+                <RadzenDropDown Style="width:100%" AllowClear="true"
+                                TValue="TransactionGroup?"
+                                @bind-Value="filter.TransactionGroup"
+                                Data="@GetTransactionGroupItems()"
+                                ValueProperty="Value"
+                                TextProperty="Description"  />
+            </RadzenColumn>
+            <RadzenColumn SizeMD="2" SizeSM="12" Style="    padding: .5rem; text-align:end;">
                 <RadzenButton Text="Buscar" ButtonStyle="ButtonStyle.Primary" Icon="search" Click="@SearchTransactions" />
             </RadzenColumn>
         </RadzenRow>
@@ -129,6 +138,18 @@
         new { Text = "Ingresos", Value = TransactionType.Income },
         new { Text = "Gastos", Value = TransactionType.Expense }
     };
+
+    public List<EnumItem<TransactionGroup>> GetTransactionGroupItems()
+    {
+        return Enum.GetValues(typeof(TransactionGroup))
+            .Cast<TransactionGroup>()
+            .Select(e => new EnumItem<TransactionGroup>
+                {
+                    Value = e,
+                    Description = FormatterHelper.GetEnumDescription(e)
+                })
+            .ToList();
+    }
 
     // Función para cargar las transacciones según los filtros
     private async Task SearchTransactions()

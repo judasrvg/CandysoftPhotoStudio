@@ -172,11 +172,12 @@ namespace Tattoo.Management.Pages
                         Quantity = p.TotalBuy,
                         Value = p.Price,
                         ValueCard = (int)Math.Round(proportionalValueCard),
-                        WithTransaction = true
+                        WithTransaction = true,
+                        Group = p.TransactionGroup
                     };
                 }).ToArray();
 
-                var stockDecrement = new StockDecrement { Requests = stockRequests };
+                var stockDecrement = new StockDecrement { Requests = stockRequests};
 
                 var result = await _productService.DecrementStockAsync(stockDecrement);
 

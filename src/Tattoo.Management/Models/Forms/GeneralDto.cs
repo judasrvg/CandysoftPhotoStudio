@@ -7,10 +7,14 @@ namespace Tattoo.Management.Models.Forms
         public DateTime? StartDate { get; set; } = DateTime.Now;
         public DateTime? EndDate { get; set; } = DateTime.Now.AddDays(1);
         public TransactionType? TransactionType { get; set; } = Enum.TransactionType.Income; // Nullable in case the user doesn't want to filter by type
+        public TransactionGroup? TransactionGroup { get; set; }
+
     }
     public class StockRequest
     {
         public long Id { get; set; }
+        public TransactionGroup? Group { get; set; }
+
         public int Quantity { get; set; }
         public decimal Value { get; set; }
         public decimal ValueCard { get; set; }
@@ -116,12 +120,20 @@ namespace Tattoo.Management.Models.Forms
         public long? TattooGenreId { get; set; }
     }
 
+    public class EnumItem<T>
+    {
+        public T Value { get; set; }
+        public string Description { get; set; }
+    }
+
+
     public class ProductDto
     {
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public ProductType ProductType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
         public decimal Price { get; set; }
         public decimal PurchaseCost { get; set; }
         public DateTime CreatedDate { get; set; }= DateTime.Now;
@@ -168,6 +180,7 @@ namespace Tattoo.Management.Models.Forms
         public DateTime TransactionDate { get; set; } = DateTime.Now;
         public int Quantity { get; set; }
         public TransactionType TransactionType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
         public decimal TotalAmount { get; set; }
         public string Description { get; set; } = string.Empty;
 

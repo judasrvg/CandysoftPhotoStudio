@@ -298,6 +298,8 @@
     async Task OnCreateRow(ProductDto merchandise)
     {
         merchandise.ProductType = ProductType.Merchandise;
+        merchandise.TransactionGroup = TransactionGroup.VENTA;
+
         var response = await _productService.AddProductAsync(merchandise);
         if (response.IsSuccess)
         {
@@ -384,6 +386,7 @@
     async Task OnCreateRowMobile(ProductDto merchandise)
     {
         merchandise.ProductType = ProductType.Merchandise;
+        merchandise.TransactionGroup = TransactionGroup.VENTA;
         var response = await _productService.AddProductAsync(merchandise);
         if (response.IsSuccess)
         {

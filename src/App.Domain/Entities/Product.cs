@@ -13,6 +13,7 @@ namespace App.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public ProductType ProductType { get; set; }
+        public TransactionGroup TransactionGroup { get; set; }
         public decimal Price { get; set; }
         public decimal PurchaseCost { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
