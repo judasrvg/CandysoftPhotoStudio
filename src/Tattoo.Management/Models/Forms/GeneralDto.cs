@@ -6,7 +6,7 @@ namespace Tattoo.Management.Models.Forms
     {
         public DateTime? StartDate { get; set; } = DateTime.Now;
         public DateTime? EndDate { get; set; } = DateTime.Now.AddDays(1);
-        public TransactionType? TransactionType { get; set; } // Nullable in case the user doesn't want to filter by type
+        public TransactionType? TransactionType { get; set; } = Enum.TransactionType.Income; // Nullable in case the user doesn't want to filter by type
     }
     public class StockRequest
     {
@@ -136,7 +136,7 @@ namespace Tattoo.Management.Models.Forms
         public FixedAssetDto? FixedAssetDto { get; set; }
         public MerchandiseDto? MerchandiseDto { get; set; }
 
-        //public RawMaterialDto? RawMaterialDto { get; set; }
+        public RawMaterialDto? RawMaterialDto { get; set; }
     }
 
     public class FixedAssetDto
@@ -157,8 +157,8 @@ namespace Tattoo.Management.Models.Forms
     {
         public long ProductId { get; set; }
         //public int StockQuantity { get; set; }
-        public decimal? ConsumptionRate { get; set; }
-        public DateTime LastUsedDate { get; set; } = DateTime.Now;
+        //public decimal? ConsumptionRate { get; set; }
+        //public DateTime LastUsedDate { get; set; } = DateTime.Now;
     }
     public class TransactionDto
     {

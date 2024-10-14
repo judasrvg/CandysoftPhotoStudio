@@ -8,8 +8,8 @@ namespace App.Domain.Entities
 {
     public class RawMaterial : Product
     {
-        public decimal? ConsumptionRate { get; set; }
-        public DateTime? LastUsedDate { get; set; }
+        //public decimal? ConsumptionRate { get; set; }
+        //public DateTime? LastUsedDate { get; set; }
     }
 
 }

@@ -45,7 +45,7 @@ namespace App.Application.DTOs
 
         public FixedAssetDto? FixedAssetDto { get; set; }
         public MerchandiseDto? MerchandiseDto { get; set; }
-        //public RawMaterialDto? RawMaterialDto { get; set; }
+        public RawMaterialDto? RawMaterialDto { get; set; }
     }
 
     public class FixedAssetDto
@@ -65,8 +65,8 @@ namespace App.Application.DTOs
     {
         public long ProductId { get; set; }
         //public int StockQuantity { get; set; }
-        public decimal? ConsumptionRate { get; set; }
-        public DateTime? LastUsedDate { get; set; } = DateTime.Now;
+        //public decimal? ConsumptionRate { get; set; }
+        //public DateTime? LastUsedDate { get; set; } = DateTime.Now;
     }
     public class TransactionDto
     {

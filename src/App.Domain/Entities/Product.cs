@@ -25,6 +25,7 @@ namespace App.Domain.Entities
         // Navigation properties
         public FixedAsset? FixedAsset { get; set; }
         public Merchandise? Merchandise { get; set; }
+        public RawMaterial? RawMaterial { get; set; }
 
 
     }

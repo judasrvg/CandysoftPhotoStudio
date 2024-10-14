@@ -508,10 +508,11 @@ body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
     text-align: center;
     padding: 1.5rem;
-    height:10rem;
+    padding-top: 10rem;
+    height: 20rem;
 }
 
 
@@ -1011,12 +1012,13 @@ nav {
     }
 
 .collage-text {
-    font-size:13px!important;
+    font-size: 14px !important;
+    filter: blur(0.9px);
 }
 
 .collage-text-dos {
     font-size: 8px !important;
-    filter: blur(0.4px);
+    font-weight:600;
 }
 
 .lightbox {

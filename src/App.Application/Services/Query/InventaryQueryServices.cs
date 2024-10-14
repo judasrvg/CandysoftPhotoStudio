@@ -82,18 +82,18 @@ namespace App.Application.Services.Query
                     }
                     break;
 
-                //case ProductType.RawMaterial:
-                //    var rawMaterial = product as RawMaterial;
-                //    if (rawMaterial != null)
-                //    {
-                //        productDto.RawMaterialDto = new RawMaterialDto
-                //        {
-                //            //StockQuantity = rawMaterial.StockQuantity,
-                //            ConsumptionRate = rawMaterial.ConsumptionRate,
-                //            LastUsedDate = rawMaterial.LastUsedDate
-                //        };
-                //    }
-                //    break;
+                case ProductType.RawMaterial:
+                    var rawMaterial = product as RawMaterial;
+                    if (rawMaterial != null)
+                    {
+                        productDto.RawMaterialDto = new RawMaterialDto
+                        {
+                            //StockQuantity = rawMaterial.StockQuantity,
+                            //ConsumptionRate = rawMaterial.ConsumptionRate,
+                            //LastUsedDate = rawMaterial.LastUsedDate
+                        };
+                    }
+                    break;
 
                 default:
                     throw new ArgumentException("Tipo de producto no soportado");

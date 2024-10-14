@@ -17,6 +17,7 @@
     <None Remove="Pages\GaleryTattoo - Copy.razor.css" />
     <None Remove="Pages\GaleryTattoo.razor.css" />
     <None Remove="Pages\Home.razor.css" />
+    <None Remove="Pages\StoreProducts - Copy.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Pages\StoreServices.razor.css" />
     <Compile Include="Pages\Transactions.razor.css" />
     <Compile Include="Pages\StoreProducts.razor.css" />
     <Compile Include="Pages\Offer.razor.css" />

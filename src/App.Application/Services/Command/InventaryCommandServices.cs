@@ -90,15 +90,13 @@ namespace App.Application.Services.Command
                     };
                     break;
 
-                //case ProductType.RawMaterial:
-                //    product = new RawMaterial
-                //    {
-                //        // Mapea las propiedades específicas de RawMaterial
-                //        StockQuantity = productDto.StockQuantity,
-                //        ConsumptionRate = productDto.RawMaterialDto.ConsumptionRate,
-                //        LastUsedDate = productDto.RawMaterialDto.LastUsedDate
-                //    };
-                //    break;
+                case ProductType.RawMaterial:
+                    product = new RawMaterial
+                    {
+                        // Mapea las propiedades específicas de RawMaterial
+                        StockQuantity = productDto.StockQuantity
+                    };
+                    break;
 
                 default:
                     throw new ArgumentException("Tipo de producto no soportado");
@@ -135,15 +133,13 @@ namespace App.Application.Services.Command
                     }
                     break;
 
-                //case ProductType.RawMaterial:
-                //    var rawMaterial = product as RawMaterial;
-                //    if (rawMaterial != null)
-                //    {
-                //        rawMaterial.StockQuantity = productDto.StockQuantity;
-                //        rawMaterial.ConsumptionRate = productDto.RawMaterialDto.ConsumptionRate;
-                //        rawMaterial.LastUsedDate = productDto.RawMaterialDto.LastUsedDate;
-                //    }
-                //    break;
+                case ProductType.RawMaterial:
+                    var rawMaterial = product as RawMaterial;
+                    if (rawMaterial != null)
+                    {
+                        rawMaterial.StockQuantity = productDto.StockQuantity;
+                    }
+                    break;
 
                 default:
                     throw new ArgumentException("Tipo de producto no soportado");
@@ -255,7 +251,7 @@ namespace App.Application.Services.Command
                 Quantity = quantity,
                 TransactionType = TransactionType.Income,
                 TotalAmount = (salePrice) * quantity,
-                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Transferido:{salePriceCard} Total:${(salePrice) * quantity})"
+                Description = $"Ingreso-Venta. ({quantity}) Producto:{product.Name} (Efectivo:{((salePrice) * quantity)- salePriceCard} Transferido:{salePriceCard} Total:${(salePrice) * quantity})"
 
             };
 

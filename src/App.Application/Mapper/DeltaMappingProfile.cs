@@ -16,7 +16,7 @@ namespace App.Application.Mapper
             CreateMap<Product, ProductDto>();
             CreateMap<FixedAsset, FixedAssetDto>();
             CreateMap<Merchandise, MerchandiseDto>();
-            //CreateMap<RawMaterial, RawMaterialDto>();
+            CreateMap<RawMaterial, RawMaterialDto>();
             CreateMap<Transaction, TransactionDto>();
 
             // Mapeos inversos
@@ -25,7 +25,7 @@ namespace App.Application.Mapper
             CreateMap<ProductDto, Product>();
             CreateMap<FixedAssetDto, FixedAsset>();
             CreateMap<MerchandiseDto, Merchandise>();
-            //CreateMap<RawMaterialDto, RawMaterial>();
+            CreateMap<RawMaterialDto, RawMaterial>();
             CreateMap<TransactionDto, Transaction>();
 
             // Mapeo de Reservation a ReservationDto

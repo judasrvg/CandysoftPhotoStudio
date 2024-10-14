@@ -88,13 +88,20 @@
     <!-- Mostrar DataGrid con las transacciones filtradas -->
     <RadzenRow>
         <RadzenColumn Size="12">
-            <RadzenDataGrid @ref="dataGrid" Data="@transactions" AllowFiltering="true" TItem="TransactionDto" PageSize="10" AllowPaging="true" AllowSorting="true">
+            <RadzenDataGrid @ref="dataGrid" Data="@transactions"  AllowFiltering="true" TItem="TransactionDto" PageSize="100" AllowPaging="true" AllowSorting="true" >
                 <Columns>
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionType" Title="Tipo" />
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionDate" Title="Fecha" />
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Description" Title="Descripción" />
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Quantity" Title="Cantidad" />
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TotalAmount" Title="Monto Total"  />
+                    @* <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionType" Title="Tipo" /> *@
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionDate" Title="Fecha" Width="15%" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Description" Title="Descripción" Width="65%" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Quantity" Title="Cantidad" Width="10%" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TotalAmount" Title="Monto" Width="10%">
+                        <Template Context="transaction">
+                            @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transaction.TotalAmount)
+                        </Template>
+                        <FooterTemplate>
+                           TOTAL: <b>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transactions.Sum(o => o.TotalAmount))</b>
+                        </FooterTemplate>
+                    </RadzenDataGridColumn>
                 </Columns>
             </RadzenDataGrid>
         </RadzenColumn>

@@ -30,15 +30,40 @@
 <!-- Lightbox -->
 @if (IsLightboxOpen)
 {
-    <div class="lightbox-overlay" @onclick="CloseLightbox">
-        <div class="lightbox-content" @onclick:stopPropagation="true">
-            <button class="lightbox-nav prev" @onclick="PreviousImage">&#10094;</button>
-            <img src="@Images[CurrentImageIndex]" alt="Imagen ampliada" />
-            <button class="lightbox-nav next" @onclick="NextImage">&#10095;</button>
-            <button class="lightbox-close" @onclick="CloseLightbox">&times;</button>
+    <div class="lightbox-overlay" >
+        <div class=" splide" id="main-slider" @onclick:stopPropagation="true">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    @foreach (var image in Images)
+                    {
+                        <li class="splide__slide">
+                            <img src="@image" alt="Imagen ampliada" />
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
+
+        <!-- Thumbnail slider for navigation -->
+        <div class="splide" id="thumbnail-slider">
+            <div class="splide__track">
+                <ul class="splide__list">
+                    @foreach (var thumbnail in ImagesThumbNails)
+                    {
+                        <li class="splide__slide">
+                            <img src="@thumbnail" alt="Miniatura de imagen" />
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <button class="lightbox-close" @onclick="CloseLightbox">&times;</button>
     </div>
 }
+
+@inject IConfiguration Configuration;
+@inject IJSRuntime JS;
 
 @code {
     private List<string> Images = new List<string>
@@ -75,12 +100,21 @@
     private int CurrentImageIndex = 0;
 
     // Abrir lightbox con la imagen seleccionada
-    private void OpenLightbox(int index)
+    private async Task OpenLightbox(int index)
     {
         if (index >= 0 && index < Images.Count)
         {
             CurrentImageIndex = index;
             IsLightboxOpen = true;
+
+            // Renderiza el DOM
+            await InvokeAsync(StateHasChanged);
+
+            // Espera un breve momento para asegurarte de que el DOM esté completamente cargado
+            await Task.Delay(100);
+
+            // Inicializa Splide
+            await JS.InvokeVoidAsync("initializeSplide");
         }
     }
 
@@ -119,5 +153,13 @@
     {
         var classes = new List<string> { "bg-white", "bg-light-gray", "bg-black", "bg-light-gray", "bg-white" };
         return classes[index % classes.Count];
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && IsLightboxOpen)
+        {
+            await JS.InvokeVoidAsync("initializeSplide");
+        }
     }
 }

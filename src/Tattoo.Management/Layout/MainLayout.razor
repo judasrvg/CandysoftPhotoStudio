@@ -34,12 +34,14 @@
                     <RadzenPanelMenuItem title="Galeria" Text="Galeria" Path="/GaleryTattoo" Icon="collections" />
                     <RadzenPanelMenuItem title="Ofertas" Text="Ofertas" Icon="dashboard" Path="/offer" />
                     <RadzenPanelMenuItem title="Inventario Fijo" Text="Inventario Fijo" Path="/FixedAssetView" Icon="inventory_2" />
+                    <RadzenPanelMenuItem title="Servicios" Text="Servicios" Path="/RawServiceView" Icon="grade" />
                     <RadzenPanelMenuItem title="Mercancias" Text="Mercancias" Path="/MerchandiseView" Icon="inventory" />
                     <RadzenPanelMenuItem title="Transacciones" Text="Transacciones" Path="/Transactions" Icon="paid" />
                     <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattooSpanish" Icon="question_answer" />
 
                 }
-                <RadzenPanelMenuItem title="Tienda Productos" Text="Tienda" Path="/StoreProducts" Icon="production_quantity_limits" />
+                <RadzenPanelMenuItem title="Tienda Servicios" Text="Servicios" Path="/StoreServices" Icon="shopping_cart_checkout" />
+                <RadzenPanelMenuItem title="Tienda Productos" Text="Productos" Path="/StoreProducts" Icon="production_quantity_limits" />
 
                 @* <RadzenPanelMenuItem title="FAQ" Text="FAQ" Path="/FAQTattoo" Icon="question_answer" /> *@
                 <RadzenPanelMenuItem title="SALIR" Text="SALIR" Click="Logout" Icon="logout" />
@@ -61,7 +63,7 @@
 </NotranslateDirective>
 
 @code {
-    bool sidebarExpanded = false;
+    bool sidebarExpanded = true;
     [Inject] private IReservationService _reservationService { get; set; }
     string authRoleString = "";
     protected override async Task OnInitializedAsync()

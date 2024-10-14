@@ -45,8 +45,8 @@ namespace App.Infrastructure
                 .HasDiscriminator<string>("ProductTypeDiscriminator")
                 .HasValue<Product>("Product")
                 .HasValue<Merchandise>("Merchandise")
-                .HasValue<FixedAsset>("FixedAsset");
-                //.HasValue<RawMaterial>("RawMaterial");
+                .HasValue<FixedAsset>("FixedAsset")
+                .HasValue<RawMaterial>("RawMaterial");
 
             // Relación de Reservation con Transaction
             modelBuilder.Entity<Reservation>()
@@ -72,6 +72,7 @@ namespace App.Infrastructure
 
             // Configuración de la base de datos (cambiar según sea necesario)
             optionsBuilder.UseSqlServer(connectionString, b => b.MigrationsAssembly("App.Infrastructure"));
+            //optionsBuilder.UseSqlServer("Server=.\\MSSQLSERVER22;Database=studioDB;User=sa;Password=123;TrustServerCertificate=true;", b => b.MigrationsAssembly("App.Infrastructure"));
         }
     }
 }
