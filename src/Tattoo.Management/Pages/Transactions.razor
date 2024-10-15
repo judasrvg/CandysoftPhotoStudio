@@ -102,7 +102,14 @@
                     @* <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionType" Title="Tipo" /> *@
                     <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TransactionDate" Title="Fecha" Width="15%" />
                     <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Description" Title="Descripción" Width="65%" />
-                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Quantity" Title="Cantidad" Width="10%" />
+                    <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="Quantity" Title="Cantidad" Width="10%" >
+                        <Template Context="transaction">
+                            @transaction.Quantity
+                        </Template>
+                        <FooterTemplate>
+                            C/U: <b>@transactions.Sum(o => o.Quantity)</b>
+                        </FooterTemplate>
+                    </RadzenDataGridColumn>
                     <RadzenDataGridColumn HeaderCssClass="datagrid-header-layout" TItem="TransactionDto" Property="TotalAmount" Title="Monto" Width="10%">
                         <Template Context="transaction">
                             @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transaction.TotalAmount)

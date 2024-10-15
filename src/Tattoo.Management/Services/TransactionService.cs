@@ -5,19 +5,16 @@ using System.Threading.Tasks;
 using Tattoo.Management.Models.Requests;
 using Tattoo.Management.Models.Forms;
 using Tattoo.Management.Abstraction;
+using static System.Net.WebRequestMethods;
+using Tattoo.Management.Services;
 
-public class TransactionService : ITransactionService
+public class TransactionService :  BaseApiService, ITransactionService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public TransactionService(IHttpClientFactory httpClientFactory)
-    {
-        _httpClientFactory = httpClientFactory;
-    }
+    public TransactionService(IHttpClientFactory http) : base(http) { }
 
     public async Task<ResponseAdapterDto> GetFilteredTransactionsAsync(TransactionFilterDto filter)
     {
-        var client = _httpClientFactory.CreateClient("TransactionHttpClient");
+        var client = _http.CreateClient("TransactionHttpClient");
 
         // Serializar el DTO a JSON
         var content = new StringContent(JsonSerializer.Serialize(filter), Encoding.UTF8, "application/json");
@@ -45,5 +42,12 @@ public class TransactionService : ITransactionService
                 ErrorMessage = error
             };
         }
+    }
+
+    public async Task<ResponseAdapterDto> DeleteProductAsync(long id)
+    {
+        var client = _http.CreateClient("ProductHttpClient");
+        var response = await client.DeleteAsync($"{id}");
+        return await HandleResponseAsync<long>(response);
     }
 }

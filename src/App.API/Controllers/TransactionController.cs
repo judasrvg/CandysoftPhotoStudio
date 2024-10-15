@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Application.Abstractions.Services;
 using App.Application.DTOs;
+using App.Application.Services.Command;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TransactionController : ControllerBase
 {
     private readonly ITransactionQueryService _transactionQueryService;
+    private readonly ITransactionCommandService _transactionCommandService;
 
-    public TransactionController(ITransactionQueryService transactionQueryService)
+    public TransactionController(ITransactionQueryService transactionQueryService, ITransactionCommandService transactionCommandService)
     {
         _transactionQueryService = transactionQueryService;
+        _transactionCommandService = transactionCommandService;
     }
 
     // Endpoint para obtener transacciones aplicando filtros de rango de fecha y tipo de transacción
@@ -45,5 +48,13 @@ public class TransactionController : ControllerBase
         }
 
         return Ok(transactions);
+    }
+
+    // DELETE: api/Product/{id}
+    [HttpDelete("{id:long}")]
+    public async Task<IActionResult> DeleteTransaction(long id)
+    {
+        await _transactionCommandService.DeleteTransactionAsync(id);
+        return Ok(id);
     }
 }

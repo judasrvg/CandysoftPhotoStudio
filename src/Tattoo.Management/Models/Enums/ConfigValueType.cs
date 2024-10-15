@@ -69,11 +69,16 @@ public enum TransactionGroup
         [Description("Servicio de Fotografía e Impresión")]
         SERVICIO_FOTOGRAFIA_IMPRESION,
 
-        [Description("Servicio de Fotografía Digital")]
-        SERVICIO_FOTOGRAFIA_DIGITAL,
+        [Description("Servicio Plasticado")]
+        SERVICIO_PLASTICADO,
+
+        [Description("Servicio Engargolado")]
+        SERVICIO_ENGARGOLADO,
 
         [Description("Otros")]
-        OTROS
+        OTROS,
+
+        
     }
 
 }

@@ -127,7 +127,7 @@ namespace App.Domain.Entities
                     TransactionType = TransactionType.Income, // O Expense según sea el caso
                     TransactionGroup = TransactionGroup.PAQUETE_FOTOGRAFIA, // O Expense según sea el caso
                     TotalAmount = TotalAmount,
-                    Description = $"Servicio paquete de fotos(Ofertas:{((Offers == null || !Offers.Any()) ? string.Empty:string.Join('|',Offers))} Total:{TotalAmount})"
+                    Description = $"Servicio paquete de fotos(Ofertas:{((Offers == null || !Offers.Any()) ? string.Empty:string.Join('|',Offers.Select(x=>x.Value)))} Total:{TotalAmount})"
                 };
                 Transactions.Add(transaction);
             }
