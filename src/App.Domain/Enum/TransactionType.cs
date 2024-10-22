@@ -34,7 +34,16 @@ namespace App.Domain.Enum
             SERVICIO_FOTOGRAFIA_DIGITAL,
     
             [Description("Otros")]
-            OTROS
-        }
+            OTROS,
+             
+            [Description("Ajuste")]
+            AJUSTE,
+        
+            [Description("Ajuste Reparacion")]
+            AJUSTE_REPARACION,
+
+            [Description("Ajuste VENTA")]
+            AJUSTE_VENTA
+    }
 
 }

@@ -4,8 +4,8 @@ namespace Tattoo.Management.Models.Forms
 {
     public class TransactionFilterDto
     {
-        public DateTime? StartDate { get; set; } = DateTime.Now;
-        public DateTime? EndDate { get; set; } = DateTime.Now.AddDays(1);
+        public DateTime? StartDate { get; set; } = DateTime.Now.Date;
+        public DateTime? EndDate { get; set; } = DateTime.Now.AddDays(1).Date;
         public TransactionType? TransactionType { get; set; } = Enum.TransactionType.Income; // Nullable in case the user doesn't want to filter by type
         public TransactionGroup? TransactionGroup { get; set; }
 

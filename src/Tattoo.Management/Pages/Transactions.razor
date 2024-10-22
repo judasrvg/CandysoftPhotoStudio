@@ -45,10 +45,10 @@
             @* <RadzenColumn Size="4">
             </RadzenColumn> *@
             <RadzenColumn SizeMD="2" SizeSM="12" Style="    padding: .5rem;">
-                <RadzenDropDown @bind-Value="filter.TransactionType" AllowClear="true" Data="@transactionTypes" TextProperty="Text" ValueProperty="Value" Placeholder="Tipo de Transacción" />
+                <RadzenDropDown @bind-Value="filter.TransactionType" AllowClear="true" Data="@transactionTypes" TextProperty="Text" ValueProperty="Value" Placeholder="Seleccione Tipo" />
             </RadzenColumn>
             <RadzenColumn SizeMD="3" SizeSM="12"  Style="    padding: .5rem;">
-                <RadzenDropDown Style="width:100%" AllowClear="true"
+                <RadzenDropDown Style="" AllowClear="true" Placeholder="Seleccione Grupo"
                                 TValue="TransactionGroup?"
                                 @bind-Value="filter.TransactionGroup"
                                 Data="@GetTransactionGroupItems()"
@@ -115,7 +115,7 @@
                             @String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transaction.TotalAmount)
                         </Template>
                         <FooterTemplate>
-                           TOTAL: <b>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transactions.Sum(o => o.TotalAmount))</b>
+                            TOTAL: <b>@String.Format(new System.Globalization.CultureInfo("en-US"), "{0:C}", transactions.Sum(o => o.TransactionType == TransactionType.Income ? o.TotalAmount : -(o.TotalAmount)))</b>
                         </FooterTemplate>
                     </RadzenDataGridColumn>
                 </Columns>

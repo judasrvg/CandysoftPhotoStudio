@@ -226,7 +226,7 @@ namespace App.Application.Services.Command
                 TransactionType = TransactionType.Expense,
                 TransactionGroup = product.TransactionGroup,
                 TotalAmount =-( purchaseCost * quantity),
-                Description = $"Gasto-Entrada en stock. ({quantity}) Producto:{product.Name} (Total:${-(purchaseCost * quantity)})"
+                Description = $"GASTO/AJUSTE. Cantidad({quantity}) Producto:{product.Name} (Total:${-(purchaseCost * quantity)})"
             };
 
             await _writeRepository.AddAsync(transaction);

@@ -78,7 +78,11 @@ public enum TransactionGroup
         [Description("Otros")]
         OTROS,
 
-        
+        [Description("Ajuste Reparacion")]
+        AJUSTE_REPARACION,
+
+        [Description("Ajuste VENTA")]
+        AJUSTE_VENTA
     }
 
 }

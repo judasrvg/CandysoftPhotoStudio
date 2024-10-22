@@ -47,7 +47,7 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseDataSearchable.Where(p=>p.StockQuantity>0 || showWithZero)" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
+    <RadzenDataList @ref="_MerchandiseDataGridRef" class="datalist-radzen data-list-products" Data="@_MerchandiseDataSearchable.Where(p=>(p.StockQuantity>0 && p.Price>0) || showWithZero)" TItem="ProductDto" PageSize="25" WrapItems="true" AllowPaging="true">
         <Template Context="product">
             <div class="image-container">
                 @*
