@@ -158,7 +158,7 @@ label, .section, p, h1, h2, h3, h4, h5, h6 , li{
     font-family: 'MaterialCustomMiss' !important;
     font-weight: 500!important;
     font-style: normal;
-    font-size: 2.7em !important;
+    font-size: 100px !important;
 }
 
 body {
@@ -289,58 +289,63 @@ body {
     position: absolute;
     padding: 15px 25px;
     border-radius: 12px;
-    font-size: 1.5em;
+    font-size: 20px;
     text-align: center;
     max-width: 80%;
     opacity: 0; /* Oculto inicialmente */
     transition: all 1s ease-out; /* Transición suave */
+    
 }
 
 /* Animación desde la derecha hacia el centro - Azul Grisáceo */
 .slide-from-right {
-    background: rgba(70, 130, 180, 0.7); /* Steel Blue */
+    
     color: #fff;
-    top: 50%;
-    right: -100%;
-    transform: translateY(-50%);
+    bottom: 4%;
+    left: 10%;
+    transform: translateY(-5%);
+    z-index: 3;
     animation: slideInFromRight 1.5s forwards;
 }
 
 /* Animación desde la izquierda hacia el centro - Verde Oliva */
 .slide-from-left {
-    background: rgba(85, 107, 47, 0.7); /* Olive Drab */
     color: #fff;
-    top: 50%;
-    left: -100%;
-    transform: translateY(-50%);
-    animation: slideInFromLeft 1.5s forwards;
+    bottom: 64%;
+    left: 10%;
+    transform: translateY(-5%);
+    z-index: 3;
+    animation: slideInFromLeft 1s forwards;
 }
 
 /* Animación de arriba a abajo hacia la esquina inferior derecha - Vino/Borgoña */
 .slide-top-to-bottom-right {
-    background: rgba(128, 0, 32, 0.7); /* Maroon */
     color: #fff;
-    top: -100%;
-    right: 10%;
-    animation: slideTopToBottomRight 1.5s forwards;
+    bottom: 49%;
+    left: 10%;
+    transform: translateY(-5%);
+    z-index: 3;
+    animation: slideInFromRight 1.5s forwards;
 }
 
 /* Animación de arriba a abajo hacia la esquina inferior izquierda - Amarillo Mostaza */
 .slide-top-to-bottom-left {
-    background: rgba(218, 165, 32, 0.7); /* Goldenrod */
-    color: #000;
-    top: -100%;
+    color: #fff;
+    bottom: 20%;
     left: 10%;
-    animation: slideTopToBottomLeft 1.5s forwards;
+    transform: translateY(-5%);
+    z-index: 3;
+    animation: slideInFromLeft 1s forwards;
 }
 
 /* Animación diagonal de esquina superior izquierda a inferior derecha - Gris Cian */
 .slide-diagonal {
-    background: rgba(95, 158, 160, 0.7); /* Cadet Blue */
     color: #fff;
-    top: -100%;
-    left: -100%;
-    animation: slideDiagonal 1.5s forwards;
+    bottom: 40%;
+    left: 10%;
+    transform: translateY(-5%);
+    z-index: 3;
+    animation: slideInFromRight 1.5s forwards;
 }
 
 /* Keyframes para animaciones */
@@ -510,9 +515,10 @@ body {
     width: 100%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
     text-align: center;
-    padding: 1.5rem;
-    padding-top: 10rem;
-    height: 20rem;
+    /*padding: 1.5rem;*/
+    padding-top: 5rem;
+    height: 18rem;
+    z-index:100;
 }
 
 
@@ -567,6 +573,320 @@ nav {
 
 /**************************FIN TOP menu******************/
 /*******************************Gallery************************/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header section */
+
+header {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 100px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1000;
+}
+
+    header nav a {
+        color: #fff;
+        margin-right: 5px;
+        padding: 5px 10px;
+        font-size: 16px;
+        transition: 0.2s;
+        text-decoration: none;
+    }
+
+a.active {
+    background: #14ff72cb;
+    border-radius: 2px;
+}
+
+a:hover {
+    background: #14ff72cb;
+    border-radius: 2px;
+}
+
+/* Header section */
+
+
+
+/* carousel */
+
+.carousel {
+    width: 100vw;
+    height: 100vh;
+    margin-top: -50px;
+    overflow: hidden;
+    position: relative;
+}
+
+    .carousel .list .item {
+        width: 180px;
+        height: 250px;
+        position: absolute;
+        top: 80%;
+        transform: translateY(-70%);
+        left: 70%;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        background-position: 50% 50%;
+        background-size: cover;
+        z-index: 100;
+        transition: 1s;
+    }
+
+        .carousel .list .item:nth-child(1),
+        .carousel .list .item:nth-child(2) {
+            top: 0;
+            left: 0;
+            transform: translate(0, 0);
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel .list .item:nth-child(3) {
+            left: 67%;
+        }
+
+        .carousel .list .item:nth-child(4) {
+            left: calc(67% + 200px);
+        }
+
+        .carousel .list .item:nth-child(5) {
+            left: calc(67% + 400px);
+        }
+
+        .carousel .list .item:nth-child(6) {
+            left: calc(67% + 600px);
+        }
+
+        .carousel .list .item:nth-child(n+7) {
+            left: calc(67% + 800px);
+            opacity: 0;
+        }
+
+
+
+
+
+.list .item .content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    transform: translateY(-50%);
+    width: 400px;
+    text-align: left;
+    color: #fff;
+    display: none;
+}
+
+.list .item:nth-child(2) .content {
+    display: block;
+}
+
+.content .title {
+    font-size: 70px;
+    text-transform: uppercase;
+    color: #14ff72cb;
+    font-weight: bold;
+    line-height: 1;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.3s 1 forwards;
+}
+
+.content .name {
+    font-size: 100px;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1;
+    text-shadow: 3px 4px 4px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.6s 1 forwards;
+}
+
+.content .des {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    margin-left: 5px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.9s 1 forwards;
+}
+
+.content .btn {
+    margin-left: 5px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 1.2s 1 forwards;
+}
+
+    .content .btn button {
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border: 2px solid #fff;
+    }
+
+        .content .btn button:nth-child(1) {
+            margin-right: 15px;
+        }
+
+        .content .btn button:nth-child(2) {
+            background: transparent;
+            color: #14ff72cb;
+            border: 2px solid #fff;
+            transition: 0.3s;
+        }
+
+            .content .btn button:nth-child(2):hover {
+                background-color: #14ff72cb;
+                color: #fff;
+                border-color: #14ff72cb;
+            }
+
+
+@keyframes animate {
+
+    from {
+        opacity: 0;
+        transform: translate(0, 100px);
+        filter: blur(33px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0);
+        filter: blur(0);
+    }
+}
+
+/* Carousel */
+
+
+
+
+
+
+/* next prev arrows */
+
+.arrows {
+    position: absolute;
+    top: 80%;
+    right: 52%;
+    z-index: 101;
+    width: 300px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+    .arrows button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #14ff72cb;
+        color: #fff;
+        border: none;
+        outline: none;
+        font-size: 16px;
+        font-family: monospace;
+        font-weight: bold;
+        transition: .5s;
+        cursor: pointer;
+    }
+
+        .arrows button:hover {
+            background: #fff;
+            color: #000;
+        }
+
+
+/* time running */
+.carousel .timeRunning {
+    position: absolute;
+    z-index: 1000;
+    width: 0%;
+    height: 4px;
+    background-color: #14ff72cb;
+    left: 0;
+    top: 0;
+    animation: runningTime 7s linear 1 forwards;
+}
+
+@keyframes runningTime {
+
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+
+/* Responsive Design */
+
+@media screen and (max-width: 999px) {
+
+    header {
+        padding-left: 50px;
+    }
+
+    .list .item .content {
+        left: 50px;
+    }
+
+    .content .title, .content  {
+        font-size: 40px;
+    }
+
+    .name {
+        font-size: 50px!important;
+    }
+
+    .content .des {
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 690px) {
+    header nav a {
+        font-size: 14px;
+        margin-right: 0;
+    }
+
+    .list .item .content {
+        top: 40%;
+    }
+
+    .content .title, .content  {
+        font-size: 25px;
+    }
+
+    .name {
+        font-size: 35px;
+    }
+
+    .content .btn button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/*****************************NEW GALLERY********************/
+
 /* Contenedor de la galería */
 .gallery-container {
     position: relative; /* Permitir superposición de elementos */
@@ -1038,6 +1358,137 @@ nav {
 .lightbox-image {
     max-width: 90%;
     max-height: 90%;
+}
+
+/*************NEW COLLAGE******/
+/* Estilos generales */
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #D2D2D2;
+}
+
+.collage-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.banner {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    z-index:2;
+}
+
+.slider {
+    position: absolute;
+    width: 200px;
+    height: 250px;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+    transform: translate(-50%, -50%) perspective(1000px) rotateX(0deg);
+    animation: rotateSlider 40s infinite linear;
+}
+
+@keyframes rotateSlider {
+    from {
+        transform: translate(-50%, -50%) perspective(1000px) rotateY(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) perspective(1000px) rotateY(360deg);
+    }
+}
+
+/* Ajustes en las sombras según la posición */
+.slider .item {
+    position: absolute;
+    width: 150px;
+    height: 200px;
+    transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(500px);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, calc(0.2 + var(--position) * 0.05));
+    opacity: calc(0.3 + var(--position) * 0.07); /* Las imágenes más atrás son más oscuras */
+}
+
+    .slider .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* Cambia la sombra al acercarse al frente */
+    .slider .item:hover {
+        transform: scale(1.1); /* Ligero zoom cuando se hace hover */
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+
+/* Lightbox */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    align-content: center;
+}
+
+/* Lightbox con animación de zoom */
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: cover;
+    animation: zoomIn 0.5s ease-in-out forwards;
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* Responsividad */
+@media screen and (max-width: 1024px) {
+    .slider {
+        width: 160px;
+        height: 200px;
+    }
+
+        .slider .item {
+            transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(400px);
+        }
+}
+
+@media screen and (max-width: 768px) {
+    .slider {
+        width: 120px;
+        height: 150px;
+    }
+
+        .slider .item {
+            transform: rotateY(calc((var(--position) - 1) * 36deg)) translateZ(300px);
+        }
 }
 
 

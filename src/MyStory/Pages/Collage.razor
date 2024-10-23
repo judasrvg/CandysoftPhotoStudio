@@ -4,26 +4,35 @@
 <div class="collage-container">
     <!-- Fondo desenfocado y oscurecido -->
     <div class="collage-background"></div>
-    <!-- SVG Animado -->
+
+    <!-- SVG Animado (se mantiene el header) -->
     <div class="collage-header">
         <svg class="collage-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20">
-            <!-- Aquí irá el contenido del SVG con animación -->
             <text x="10" y="15" class="collage-text">INSPIRACION</text>
             <text x="12" y="19" class="collage-text-dos">CREATIVIDAD</text>
         </svg>
     </div>
 
-    <!-- Miniaturas de fotos con Lightbox -->
-    <div class="collage-thumbnails">
-        <img src="css/images/thumbnails/collage1.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl1)" />
-        <img src="css/images/thumbnails/collage2.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl2)" />
-        <img src="css/images/thumbnails/collage3.webp" class="thumbnail" @onclick="() => OpenLightbox(CollageUrl3)" />
+    <!-- Carrusel 3D -->
+    <div class="banner">
+        <div class="slider" style="--quantity: 10">
+            <div class="item" style="--position: 1"><img src="css/images/thumbnails/collage1.webp" alt="" @onclick="() => OpenLightbox(CollageUrl1)" /></div>
+            <div class="item" style="--position: 2"><img src="css/images/thumbnails/collage2.webp" alt="" @onclick="() => OpenLightbox(CollageUrl2)" /></div>
+            <div class="item" style="--position: 3"><img src="css/images/thumbnails/collage3.webp" alt="" @onclick="() => OpenLightbox(CollageUrl3)" /></div>
+            <div class="item" style="--position: 4"><img src="css/images/thumbnails/collage4.webp" alt="" @onclick="() => OpenLightbox(CollageUrl4)" /></div>
+            <div class="item" style="--position: 5"><img src="css/images/thumbnails/collage5.webp" alt="" @onclick="() => OpenLightbox(CollageUrl5)" /></div>
+            <div class="item" style="--position: 6"><img src="css/images/thumbnails/collage6.webp" alt="" @onclick="() => OpenLightbox(CollageUrl6)" /></div>
+            <div class="item" style="--position: 7"><img src="css/images/thumbnails/collage7.webp" alt="" @onclick="() => OpenLightbox(CollageUrl7)" /></div>
+            <div class="item" style="--position: 8"><img src="css/images/thumbnails/collage8.webp" alt="" @onclick="() => OpenLightbox(CollageUrl8)" /></div>
+            <div class="item" style="--position: 9"><img src="css/images/thumbnails/collage9.webp" alt="" @onclick="() => OpenLightbox(CollageUrl9)" /></div>
+            <!-- Añade más imágenes según sea necesario -->
+        </div>
     </div>
-</div>
 
-<!-- Lightbox -->
-<div class="lightbox" @onclick="CloseLightbox" style="@(isLightboxOpen ? "display: block;" : "display: none;")">
-    <img src="@lightboxImageUrl" class="lightbox-image" />
+    <!-- Lightbox para la imagen agrandada -->
+    <div class="lightbox" @onclick="CloseLightbox" style="@(isLightboxOpen ? "display: block;" : "display: none;")">
+        <img src="@lightboxImageUrl" class="lightbox-image" />
+    </div>
 </div>
 
 @code {
@@ -32,6 +41,12 @@
     private static readonly string CollageUrl1 = "css/images/collage1.webp";
     private static readonly string CollageUrl2 = "css/images/collage2.webp";
     private static readonly string CollageUrl3 = "css/images/collage3.webp";
+    private static readonly string CollageUrl4 = "css/images/collage4.webp";
+    private static readonly string CollageUrl5 = "css/images/collage5.webp";
+    private static readonly string CollageUrl6 = "css/images/collage6.webp";
+    private static readonly string CollageUrl7 = "css/images/collage7.webp";
+    private static readonly string CollageUrl8 = "css/images/collage8.webp";
+    private static readonly string CollageUrl9 = "css/images/collage9.webp";
 
     private void OpenLightbox(string imageUrl)
     {

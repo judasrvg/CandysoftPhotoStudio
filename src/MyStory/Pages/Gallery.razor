@@ -7,7 +7,7 @@
             @if (index % 2 == 0)
             {
                 <div class="gallery-image">
-                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
+                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" />
                 </div>
                 <div class="gallery-text">
                     <p>@GetTextForImage(index)</p>
@@ -19,7 +19,7 @@
                     <p>@GetTextForImage(index)</p>
                 </div>
                 <div class="gallery-image">
-                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" @onclick="() => OpenLightbox(index)" />
+                    <img src="@ImagesThumbNails[index]" alt="Foto de la galería" />
                 </div>
             }
         </div>
@@ -107,14 +107,7 @@
             CurrentImageIndex = index;
             IsLightboxOpen = true;
 
-            // Renderiza el DOM
-            await InvokeAsync(StateHasChanged);
-
-            // Espera un breve momento para asegurarte de que el DOM esté completamente cargado
-            await Task.Delay(100);
-
-            // Inicializa Splide
-            await JS.InvokeVoidAsync("initializeSplide");
+            
         }
     }
 
@@ -155,11 +148,4 @@
         return classes[index % classes.Count];
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender && IsLightboxOpen)
-        {
-            await JS.InvokeVoidAsync("initializeSplide");
-        }
-    }
 }

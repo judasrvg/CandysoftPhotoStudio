@@ -1,53 +1,47 @@
-﻿<!-- Contenedor principal del carrusel -->
-<div class="carousel-container">
-    <!-- Sección de Introducción -->
-    
+﻿@page "/newcarousel"
+@inject IJSRuntime JSRuntime
+@inject IConfiguration Configuration
 
-    <!-- Botón anterior -->
-    <button class="carousel-control prev" @onclick="PreviousImage">&#10094;</button>
-
-    <!-- Carrusel de imágenes -->
+<body>
     <div class="carousel">
-        @foreach (var image in Images)
-        {
-            <div class="carousel-item @(image == Images[CurrentImageIndex] ? "active" : "")">
-                <img src="@image" alt="Foto del Carrusel" loading="lazy" />
+        <div class="list">
+            @for (int i = 0; i < Images.Count; i++)
+            {
+                var imageUrl = Images[i];
+                var description = GetMessage(i);
+                var name = GetGeneratedName(i);
+                var showTitle = (i == 0 || i == 1); // Mostrar título solo en la primera y última imagen
 
-                <!-- Mensaje con animación de entrada -->
-                <div class="carousel-message @(GetAnimationClassForCurrentMessage())">
-                    <p>@GetMessageForCurrentImage()</p>
+                <div class="item" style="background-image: url(@imageUrl);">
+                    <div class="content">
+                        
+                            <div class="title">Recuerdos</div>
+                        
+                        <div class="name">@name</div>
+                        <div class="des">@description</div>
+                        
+                    </div>
                 </div>
-            </div>
-
-        }
-    </div>
-
-    <!-- Botón siguiente -->
-    <button class="carousel-control next" @onclick="NextImage">&#10095;</button>
-
-    <!-- Indicadores del carrusel -->
-    <div class="carousel-indicators">
-        @for (int i = 0; i < Images.Count; i++)
-        {
-            <span class="indicator @(i == CurrentImageIndex ? "active" : "")" @onclick="() => GoToImage(i)"></span>
-        }
-    </div>
-
-    <div class="carousel-text-overlay">
-        <div class="intro-container">
-            <h1 class="intro-title MyMissFont">Mi Galería de Recuerdos</h1>
-            <p class="intro-subtitle"></p>
+            }
         </div>
+
+        <!--next prev button-->
+        <div class="arrows">
+            <button class="prev">&#9664;</button> <!-- Flecha izquierda -->
+            <button class="next">&#9654;</button> <!-- Flecha derecha -->
+        </div>
+        <div class="carousel-text-overlay">
+            @* <div class="intro-container">
+                <h1 class="intro-title MyMissFont">Mi Galería de Recuerdos</h1>
+                <p class="intro-subtitle"></p>
+            </div> *@
+        </div>
+        <!-- time running -->
+        <div class="timeRunning"></div>
     </div>
-</div>
-
-
-@inject IConfiguration Configuration;
-@inject IJSRuntime JSRuntime;
+</body>
 
 @code {
-    private string SiteType;
-    private Dictionary<string, List<string>> Messages;
     private List<string> Images = new List<string>
     {
         "css/images/img_1.webp",
@@ -57,28 +51,13 @@
         "css/images/img_5.webp",
     };
 
-    private int CurrentImageIndex = 0; // Índice de la imagen actual
-    private Timer _timer;
-
-
-    private string GetAnimationClassForCurrentMessage()
-    {
-        var animationClasses = new List<string>
-        {
-            "slide-from-right",
-            "slide-from-left",
-            "slide-top-to-bottom-right",
-            "slide-top-to-bottom-left",
-            "slide-diagonal"
-        };
-        return animationClasses[CurrentImageIndex % animationClasses.Count];
-    }
-
+    private Dictionary<string, List<string>> Messages;
+    private string SiteType;
 
     protected override void OnInitialized()
     {
         // Obtiene el tipo de sitio desde la configuración
-        SiteType = Configuration["siteType"];
+        SiteType = Configuration["siteType"] ?? "n"; // Default to 'n' if no type is set
 
         // Define los mensajes para cada tipo de sitio
         Messages = new Dictionary<string, List<string>>
@@ -88,7 +67,7 @@
                     "Sonríe como si fueras un niño",
                     "La felicidad está en los detalles pequeños",
                     "La inocencia captura la belleza del mundo",
-                    "La alegría de ser niño es un regalo que nunca se agota.",
+                    "La alegría de un niño es un regalo inagotable.",
                     "Cada sonrisa es vida.",
                     "Pequeños momentos, grandes recuerdos.",
                     "Que tu imaginación nunca deje de volar.",
@@ -139,62 +118,37 @@
                 }
             }
         };
-
-        // Configura el temporizador para cambiar las imágenes automáticamente
-        _timer = new Timer(ChangeImage, null, 0, 5000); // Cambia cada 3 segundos
     }
 
-    private void ChangeImage(object state)
-    {
-        CurrentImageIndex = (CurrentImageIndex + 1) % Images.Count;
-        InvokeAsync(StateHasChanged); // Forzar redibujar
-    }
-
-    private void NextImage()
-    {
-        PauseAutoRotation();
-        CurrentImageIndex = (CurrentImageIndex + 1) % Images.Count;
-        ResumeAutoRotation();
-    }
-
-    private void PreviousImage()
-    {
-        PauseAutoRotation();
-        CurrentImageIndex = (CurrentImageIndex - 1 + Images.Count) % Images.Count;
-        ResumeAutoRotation();
-    }
-
-    private void GoToImage(int index)
-    {
-        PauseAutoRotation();
-        CurrentImageIndex = index;
-        ResumeAutoRotation();
-    }
-
-    private void PauseAutoRotation()
-    {
-        _timer?.Change(Timeout.Infinite, Timeout.Infinite); // Pausar el temporizador
-    }
-
-    private void ResumeAutoRotation()
-    {
-        _timer?.Change(3000, 3000); // Reanudar después de 3 segundos
-    }
-
-    public void Dispose()
-    {
-        _timer?.Dispose();
-    }
-
-    // Obtiene el mensaje correspondiente al tipo de sitio y al índice actual de imagen
-    private string GetMessageForCurrentImage()
+    private string GetMessage(int index)
     {
         if (Messages.ContainsKey(SiteType))
         {
-            var messages = Messages[SiteType];
-            return messages[CurrentImageIndex % messages.Count];
+            var messagesForType = Messages[SiteType];
+            return messagesForType[index % messagesForType.Count];
         }
-        return string.Empty;
+        return "Descripción no disponible.";
+    }
+
+    private string GetGeneratedName(int index)
+    {
+        var names = new List<string>
+        {
+            "Únicos",
+            "Especiales",
+            "Brillantes",
+            "Mágicos",
+            "Eternos"
+        };
+        return names[index % names.Count];
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Asegúrate de que esta función coincida con la definida en el archivo JS
+            await JSRuntime.InvokeVoidAsync("initializeCarousel");
+        }
     }
 }
-
